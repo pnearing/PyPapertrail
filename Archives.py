@@ -4,7 +4,6 @@ from typing import Optional, Callable
 import os
 import requests
 from datetime import datetime, timezone
-import json
 from common import BASE_URL, is_timezone_aware
 from Exceptions import ArchiveError
 
@@ -314,8 +313,8 @@ class Archives(object):
         # Parse the response:
         try:
             response = r.json()
-        except json.JSONDecodeError as e:
-            error: str = "Server sent invalid json: %s" % e.msg
+        except requests.JSONDecodeError as e:
+            error: str = "Server sent invalid json: error_num=%i, strerror=%s" % (e.errno, e.strerror)
             if raise_on_error:
                 raise ArchiveError(error, exception=e, request=r)
             else:
