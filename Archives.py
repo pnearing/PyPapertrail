@@ -422,7 +422,14 @@ class Archives(object):
         list_url = BASE_URL + 'archives.json'
         headers = {"X-Papertrail-Token": self._api_key}
         # Request the response:
-        r: requests.Response = requests.get(list_url, headers=headers)
+        try:
+            r: requests.Response = requests.get(list_url, headers=headers)
+        except requests.ReadTimeout as e:
+            error: str = "Read Timeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            if raise_on_error:
+                raise ArchiveError(error, exception=e)
+            else:
+                return False, error
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
@@ -437,10 +444,6 @@ class Archives(object):
                 raise ArchiveError(error, exception=e, request=r)
             else:
                 return False, error
-        except requests.ReadTimeout as e:
-            error: str = "Read Timeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e, request=r)
         # Parse the response:
         try:
             response = r.json()
