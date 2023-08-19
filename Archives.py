@@ -6,19 +6,7 @@ import requests
 from datetime import datetime, timezone
 import json
 from common import BASE_URL, is_timezone_aware
-
-
-class ArchiveError(Exception):
-    """
-    Class to store and raise when errors occur.
-    """
-    def __init__(self, error_message: str, **kwargs):
-        """
-        Initialize the Papertrail Archive Error
-        :param error_message: The error message.
-        """
-        self.error_message: str = error_message
-        return
+from Exceptions import ArchiveError
 
 
 class Archive(object):
@@ -188,7 +176,7 @@ class Archive(object):
             self._downloading = False
             error: str = "Destination: %s, is not a directory" % destination_dir
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(error, destination_dir=destination_dir)
             else:
                 return False, error, None
         # Get the filename, and build the full download path.:
@@ -200,9 +188,9 @@ class Archive(object):
             self._downloading = False
             error: str = "Destination: %s, already exists." % download_path
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(error, download_path=download_path)
             else:
-                return False, error, None
+                return False, error, download_path
         # Open the file:
         try:
             file_handle = open(download_path, 'wb')
@@ -210,7 +198,7 @@ class Archive(object):
             self._downloading = False
             error: str = "Failed to open '%s' for writing: %s" % (download_path, e.strerror)
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(error, exception=e, download_path=download_path)
             else:
                 return False, error, download_path
         # Make the http request:
@@ -223,7 +211,7 @@ class Archive(object):
             self._downloading = False
             error: str = "HTTP request failed. ErrNo: %i ErrMsg: %s." % (e.errno, e.strerror)
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(error, exception=e, download_path=download_path, )
             else:
                 return False, error, download_path
         # Do the download:
@@ -235,13 +223,13 @@ class Archive(object):
             if callback is not None:
                 try:
                     callback(self, download_size, argument)
-                except NotImplementedError:
-                    exit(100)
-                else:
+                except SystemExit as e:
+                    raise e
+                except Exception as e:
                     self._downloading = False
                     error: str = "Exception during callback execution."
                     if raise_on_error:
-                        raise ArchiveError(error)
+                        raise ArchiveError(error, exception=e)
                     else:
                         return False, error, file_name
         # Download complete:
@@ -251,7 +239,12 @@ class Archive(object):
             self._downloading = False
             error: str = "Downloaded bytes does not match written bytes. DL:%i != WR:%i" % (download_size, written_size)
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(
+                    error,
+                    download_path=download_path,
+                    downloaded_bytes=download_size,
+                    written_bytes=written_size
+                )
             else:
                 return False, error, download_path
         self._downloading = False
@@ -262,7 +255,7 @@ class Archive(object):
 
 class Archives(object):
     """Class to hold papertrail archive calls."""
-    _archives: list[Archive] = []
+    _ARCHIVES: list[Archive] = []
 
     def __init__(self, api_key: str, do_load=True) -> None:
         """
@@ -305,7 +298,7 @@ class Archives(object):
         except requests.HTTPError as e:
             error: str = "Request HTTP error #%i:%s" % (e.errno, e.strerror)
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(error, exception=e)
             else:
                 return False, error
         # Parse the response:
@@ -314,14 +307,14 @@ class Archives(object):
         except json.JSONDecodeError as e:
             error: str = "Server sent invalid json: %s" % e.msg
             if raise_on_error:
-                raise ArchiveError(error)
+                raise ArchiveError(error, exception=e)
             else:
                 return False, error
         # Return the list as list of Archive objects:
-        self._archives = []
+        self._ARCHIVES = []
         for raw_archive in response:
             archive = Archive(raw_archive, api_key=self._api_key)
-            self._archives.append(archive)
+            self._ARCHIVES.append(archive)
         self._is_loaded = True
         self._last_fetched: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
@@ -345,20 +338,20 @@ class Archives(object):
                 # Make timezone aware, assuming the time is in UTC:
                 item.replace(tzinfo=timezone.utc)
                 search_date = item
-            for archive in self._archives:
+            for archive in self._ARCHIVES:
                 if archive.start_time == search_date:
                     return archive
                 raise IndexError()
         elif isinstance(item, int):
-            return self._archives[item]
+            return self._ARCHIVES[item]
         elif isinstance(item, str):
-            for archive in self._archives:
+            for archive in self._ARCHIVES:
                 if archive.file_name == item:
                     return archive
             raise IndexError()
         elif isinstance(item, slice):
             if isinstance(item.start, int):
-                return self._archives[item]
+                return self._ARCHIVES[item]
             elif isinstance(item.start, datetime):
                 if item.step is not None:
                     # TODO: Slice with step parameter.
@@ -367,12 +360,12 @@ class Archives(object):
                     # TODO: Support reverse slices, when step is negative.
                     raise NotImplementedError("Reverse slices not implemented when using datetime objects to slice.")
                 return_list: list[Archive] = []
-                for archive in self._archives:
+                for archive in self._ARCHIVES:
                     if item.start <= archive.start_time < item.stop:
                         return_list.append(archive)
                 return return_list
             else:
-                raise TypeError
+                raise TypeError()
         else:
             raise TypeError()
 
