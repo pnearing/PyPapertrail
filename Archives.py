@@ -21,18 +21,8 @@ class Archive(object):
         """
         # Store api key:
         self._api_key: str = api_key
-        # Extract data from raw_archive dict:
-        try:
-            self._start_time: datetime = datetime.fromisoformat(raw_archive['start'][:-1]).replace(tzinfo=timezone.utc)
-            self._end_time: datetime = datetime.fromisoformat(raw_archive['end'][:-1]).replace(tzinfo=timezone.utc)
-            self._formatted_start_time: str = raw_archive['start_formatted']
-            self._formatted_duration: str = raw_archive['duration_formatted']
-            self._file_name: str = raw_archive['filename']
-            self._file_size: int = raw_archive['filesize']
-            self._link: str = raw_archive['_links']['download']['href']
-        except KeyError:
-            error: str = "KeyError while extracting data from raw_archive. Maybe papertrail changed their response."
-            raise ArchiveError(error)
+        # Parse raw_archive:
+        self.__from_raw_archive__(raw_archive)
         # Calculate duration in minutes:
         self._duration: int
         if self._formatted_duration.lower() == '1 hour':
@@ -45,6 +35,21 @@ class Archive(object):
         self._downloading: bool = False
         self._is_downloaded: bool = False
         self._download_path: Optional[str] = None
+        return
+
+    def __from_raw_archive__(self, raw_archive: dict) -> None:
+        # Extract data from raw_archive dict:
+        try:
+            self._start_time: datetime = datetime.fromisoformat(raw_archive['start'][:-1]).replace(tzinfo=timezone.utc)
+            self._end_time: datetime = datetime.fromisoformat(raw_archive['end'][:-1]).replace(tzinfo=timezone.utc)
+            self._formatted_start_time: str = raw_archive['start_formatted']
+            self._formatted_duration: str = raw_archive['duration_formatted']
+            self._file_name: str = raw_archive['filename']
+            self._file_size: int = raw_archive['filesize']
+            self._link: str = raw_archive['_links']['download']['href']
+        except KeyError:
+            error: str = "KeyError while extracting data from raw_archive. Maybe papertrail changed their response."
+            raise ArchiveError(error)
         return
 
     @property
