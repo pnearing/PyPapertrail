@@ -12,45 +12,121 @@ class Archive(object):
     """
     Class representing a Papertrail archive.
     """
-    def __init__(self, raw_archive: dict, api_key: str) -> None:
+    def __init__(self,
+                 api_key: str,
+                 raw_archive: Optional[dict] = None,
+                 from_dict: Optional[dict] = None,
+                 ) -> None:
         """
         Initialize the archive.
-        :param raw_archive: Dict. The raw dict from papertrail listing.
-        :param api_key: Str. The api key.
+        :param api_key: Str: The api key.
+        :param raw_archive: Optional[dict]: The raw dict from papertrail listing. Default = None
+        :param from_dict: Optional[dict]: Load from a saved dict created by __to_dict__().
         :return: None
         """
         # Store api key:
         self._api_key: str = api_key
-        # Parse raw_archive:
-        self.__from_raw_archive__(raw_archive)
-        # Calculate duration in minutes:
+
+        # Define properties:
+        self._start_time: datetime
+        self._end_time: datetime
+        self._formatted_start_time: str
+        self._formatted_duration: str
+        self._file_name: str
+        self._file_size: int
+        self._link: str
         self._duration: int
-        if self._formatted_duration.lower() == '1 hour':
-            self._duration = 60  # 1 hour in minutes
-        elif self._formatted_duration.lower() == '1 day':
-            self._duration = 24 * 60  # 1 day in minutes.
+        self._is_downloaded: bool
+        self._download_path: str
+
+        # Load archive properties:
+        if raw_archive is None and from_dict is None:
+            error: str = "Either raw_archive or from_dict must be defined, but not both."
+            raise ArchiveError(error)
+        elif raw_archive is not None and from_dict is not None:
+            error: str = "Either raw_archive or from_dict must be defined, but not both."
+            raise ArchiveError(error)
+        elif raw_archive is not None:
+            self.__from_raw_archive__(raw_archive)
         else:
-            raise NotImplementedError("Unknown duration_formatted value.")
+            self.__from_dict__(from_dict)
+
         # Store downloading properties:
         self._downloading: bool = False
-        self._is_downloaded: bool = False
-        self._download_path: Optional[str] = None
         return
 
     def __from_raw_archive__(self, raw_archive: dict) -> None:
+        """
+        Load the properties from the raw archive dict received from papertrail.
+        :param raw_archive: Dict: The raw response dict from papertrail.
+        :raises: ArchiveError: On key error.
+        :return: None
+        """
         # Extract data from raw_archive dict:
         try:
-            self._start_time: datetime = datetime.fromisoformat(raw_archive['start'][:-1]).replace(tzinfo=timezone.utc)
-            self._end_time: datetime = datetime.fromisoformat(raw_archive['end'][:-1]).replace(tzinfo=timezone.utc)
-            self._formatted_start_time: str = raw_archive['start_formatted']
-            self._formatted_duration: str = raw_archive['duration_formatted']
-            self._file_name: str = raw_archive['filename']
-            self._file_size: int = raw_archive['filesize']
-            self._link: str = raw_archive['_links']['download']['href']
-        except KeyError:
+            self._start_time = datetime.fromisoformat(raw_archive['start'][:-1]).replace(tzinfo=timezone.utc)
+            self._end_time = datetime.fromisoformat(raw_archive['end'][:-1]).replace(tzinfo=timezone.utc)
+            self._formatted_start_time = raw_archive['start_formatted']
+            self._formatted_duration = raw_archive['duration_formatted']
+            self._file_name = raw_archive['filename']
+            self._file_size = raw_archive['filesize']
+            self._link = raw_archive['_links']['download']['href']
+            # Calculate duration in minutes:
+            if self._formatted_duration.lower() == '1 hour':
+                self._duration = 60  # 1 hour in minutes
+            elif self._formatted_duration.lower() == '1 day':
+                self._duration = 24 * 60  # 1 day in minutes.
+            else:
+                raise NotImplementedError("Unknown duration_formatted value.")
+            # Set downloaded and download path, assume not downloaded.
+            self._is_downloaded = False
+            self._download_path = None
+        except KeyError as e:
             error: str = "KeyError while extracting data from raw_archive. Maybe papertrail changed their response."
-            raise ArchiveError(error)
+            raise ArchiveError(error, exception=e)
         return
+
+    def __from_dict__(self, from_dict: dict) -> None:
+        """
+        Load the properties from a dict made by __to_dict__().
+        :param from_dict: Dict: the dictionary to load from.
+        :raises: ArchiveError: On key error.
+        :return: None
+        """
+        try:
+            self._start_time = datetime.fromisoformat(from_dict['start_time']).replace(tzinfo=timezone.utc)
+            self._end_time = datetime.fromisoformat(from_dict['end_time']).replace(tzinfo=timezone.utc)
+            self._formatted_start_time = from_dict['formatted_start_time']
+            self._formatted_duration = from_dict['formatted_duration']
+            self._file_name = from_dict['file_name']
+            self._file_size = from_dict['file_size']
+            self._link = from_dict['link']
+            self._duration = from_dict['duration']
+            self._is_downloaded = from_dict['is_downloaded']
+            self._download_path = from_dict['download_path']
+        except KeyError as e:
+            error: str = "KeyError while extracting data from the from_dict dictionary."
+            raise ArchiveError(error, exception=e)
+        return
+
+    def __to_dict__(self) -> dict:
+        """
+        Create a dict containing all the information in a json / pickle friendly format.
+        :return: Dict.
+        """
+        return_dict: dict = {
+            'start_time': self._start_time.isoformat(),
+            'end_time': self._end_time.isoformat(),
+            'formatted_start_time': self._formatted_start_time,
+            'formatted_duration': self._formatted_duration,
+            'file_name': self._file_name,
+            'file_size': self._file_size,
+            'link': self._link,
+            'is_downloaded': self._is_downloaded,
+            'download_path': self._download_path,
+        }
+
+        return return_dict
 
     @property
     def start_time(self) -> datetime:
@@ -261,27 +337,77 @@ class Archives(object):
     """Class to hold papertrail archive calls."""
     _ARCHIVES: list[Archive] = []
 
-    def __init__(self, api_key: str, do_load=True) -> None:
+    def __init__(self,
+                 api_key: str,
+                 from_dict: Optional[dict] = None,
+                 do_load: bool = True,
+                 ) -> None:
         """
         Initialize Papertrail API.
-        :param api_key: Str, the papertrail "API Token" found in papertrail under: settings / profile / API Token
-        :param do_load: Bool, Load the archive list on initialization. Default = True.
+        :param api_key: Str: The papertrail "API Token" found in papertrail under: settings / profile / API Token
+        :param from_dict: Dict: Load from a dict created by __to_dict__().
+            NOTE: If not set to None, it will ignore do_load.
+        :param do_load: Bool: Load the archive list on initialization.
+            Default = True.
         :raises: ArchiveError: Raises ArchiveError on error during loading.
         :returns: None
         """
+        # Store api key:
         self._api_key = api_key
+        # Define the properties:
         self._last_fetched: Optional[datetime] = None
         self._is_loaded: bool = False
-        if do_load:
+        if from_dict is not None:
+            self.__from_dict__(from_dict)
+        elif do_load:
             self.load()
         return
 
+    def __from_dict__(self, from_dict: dict) -> None:
+        """
+        Load the archive list from a dict created by __to_dict__().
+        :param from_dict: Dict: The dict to load from.
+        :return: None
+        """
+        self._last_fetched = None
+        if from_dict['last_fetched'] is not None:
+            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+        self._ARCHIVES = []
+        for archive_dict in from_dict['_archives']:
+            archive = Archive(api_key=self._api_key, from_dict=archive_dict)
+            self._ARCHIVES.append(archive)
+        return
+
+    def __to_dict__(self) -> dict:
+        """
+        Create a json / pickle friendly dict containing all the archives.
+        :return: Dict.
+        """
+        return_dict = {
+            'last_fetched': None,
+            '_archives': [],
+        }
+        if self._last_fetched is not None:
+            return_dict['last_fetched'] = self._last_fetched.isoformat()
+        for archive in self._ARCHIVES:
+            archive_dict = archive.__to_dict__()
+            return_dict['_archives'].append(archive_dict)
+        return return_dict
+
     @property
     def last_fetched(self) -> Optional[datetime]:
+        """
+        Time the archive list was last fetched from papertrail.
+        :return: Optional[datetime]: Timezone-aware datetime object in UTC.
+        """
         return self._last_fetched
 
     @property
     def is_loaded(self) -> bool:
+        """
+        Is the archive list loaded?
+        :return: Bool.
+        """
         return self._is_loaded
 
     def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
@@ -327,7 +453,7 @@ class Archives(object):
         # Return the list as list of Archive objects:
         self._ARCHIVES = []
         for raw_archive in response:
-            archive = Archive(raw_archive, api_key=self._api_key)
+            archive = Archive(api_key=self._api_key, raw_archive=raw_archive)
             self._ARCHIVES.append(archive)
         self._is_loaded = True
         self._last_fetched: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
