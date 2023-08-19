@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import Optional, Callable
+from typing import Optional, Callable, Iterator
 import os
 import requests
 from datetime import datetime, timezone
@@ -378,6 +378,11 @@ class Archives(object):
         else:
             raise TypeError()
 
-
+    def __iter__(self) -> Iterator[Archive]:
+        """
+        Get an iterator of all the archives.
+        :return: Iterator[Archive]
+        """
+        return iter(self._ARCHIVES)
 
 
