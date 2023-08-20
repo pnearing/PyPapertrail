@@ -336,6 +336,7 @@ class Archive(object):
 class Archives(object):
     """Class to hold papertrail archive calls."""
     _ARCHIVES: list[Archive] = []
+    _IS_LOADED: bool = False
 
     def __init__(self,
                  api_key: str,
@@ -356,7 +357,6 @@ class Archives(object):
         self._api_key = api_key
         # Define the properties:
         self._last_fetched: Optional[datetime] = None
-        self._is_loaded: bool = False
         if from_dict is not None:
             self.__from_dict__(from_dict)
         elif do_load:
@@ -376,6 +376,7 @@ class Archives(object):
         for archive_dict in from_dict['_archives']:
             archive = Archive(api_key=self._api_key, from_dict=archive_dict)
             self._ARCHIVES.append(archive)
+        self._IS_LOADED = True
         return
 
     def __to_dict__(self) -> dict:
@@ -408,7 +409,7 @@ class Archives(object):
         Is the archive list loaded?
         :return: Bool.
         """
-        return self._is_loaded
+        return self._IS_LOADED
 
     def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
         """
@@ -458,7 +459,7 @@ class Archives(object):
         for raw_archive in response:
             archive = Archive(api_key=self._api_key, raw_archive=raw_archive)
             self._ARCHIVES.append(archive)
-        self._is_loaded = True
+        self._IS_LOADED = True
         self._last_fetched: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
 
