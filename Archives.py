@@ -494,7 +494,7 @@ class Archives(object):
             raise IndexError()
         elif isinstance(item, slice):
             if isinstance(item.start, int):
-                return self._ARCHIVES[item]
+                return self._ARCHIVES[item.start:item.stop:item.step]
             elif isinstance(item.start, datetime):
                 if item.step is not None:
                     # TODO: Slice with step parameter.
