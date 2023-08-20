@@ -57,7 +57,7 @@ class SavedSearchError(PapertrailError):
         return
 
 
-class LogDestinationError(PapertrailError):
+class DestinationError(PapertrailError):
     """
     Exception to raise when a log destination api call produces an error.
     """
