@@ -36,8 +36,8 @@ class Archive(object):
         self._file_size: int
         self._link: str
         self._duration: int
-        self._is_downloaded: bool
-        self._download_path: str
+        self._is_downloaded: bool = False
+        self._download_path: Optional[str] = None
 
         # Load archive properties:
         if raw_archive is None and from_dict is None:
@@ -73,9 +73,9 @@ class Archive(object):
             self._link = raw_archive['_links']['download']['href']
             # Calculate duration in minutes:
             if self._formatted_duration.lower() == '1 hour':
-                self._duration = 60  # 1 hour in minutes
+                self._duration = 60  # One hour in minutes
             elif self._formatted_duration.lower() == '1 day':
-                self._duration = 24 * 60  # 1 day in minutes.
+                self._duration = 24 * 60  # One day in minutes.
             else:
                 raise NotImplementedError("Unknown duration_formatted value.")
             # Set downloaded and download path, assume not downloaded.
@@ -518,5 +518,3 @@ class Archives(object):
         :return: Iterator[Archive]
         """
         return iter(self._ARCHIVES)
-
-
