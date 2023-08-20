@@ -525,3 +525,10 @@ class Archives(object):
         :return: Iterator[Archive]
         """
         return iter(self._ARCHIVES)
+
+    def __len__(self) -> int:
+        """
+        Return the number of archives:
+        :return: int
+        """
+        return len(self._ARCHIVES)
