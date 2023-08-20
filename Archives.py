@@ -337,6 +337,7 @@ class Archives(object):
     """Class to hold papertrail archive calls."""
     _ARCHIVES: list[Archive] = []
     _IS_LOADED: bool = False
+    _LAST_FETCHED: Optional[datetime] = None
 
     def __init__(self,
                  api_key: str,
@@ -355,8 +356,7 @@ class Archives(object):
         """
         # Store api key:
         self._api_key = api_key
-        # Define the properties:
-        self._last_fetched: Optional[datetime] = None
+
         if from_dict is not None:
             self.__from_dict__(from_dict)
         elif do_load:
@@ -369,9 +369,9 @@ class Archives(object):
         :param from_dict: Dict: The dict to load from.
         :return: None
         """
-        self._last_fetched = None
+        self._LAST_FETCHED = None
         if from_dict['last_fetched'] is not None:
-            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
         self._ARCHIVES = []
         for archive_dict in from_dict['_archives']:
             archive = Archive(api_key=self._api_key, from_dict=archive_dict)
@@ -388,8 +388,8 @@ class Archives(object):
             'last_fetched': None,
             '_archives': [],
         }
-        if self._last_fetched is not None:
-            return_dict['last_fetched'] = self._last_fetched.isoformat()
+        if self._LAST_FETCHED is not None:
+            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
         for archive in self._ARCHIVES:
             archive_dict = archive.__to_dict__()
             return_dict['_archives'].append(archive_dict)
@@ -401,7 +401,7 @@ class Archives(object):
         Time the archive list was last fetched from papertrail.
         :return: Optional[datetime]: Timezone-aware datetime object in UTC.
         """
-        return self._last_fetched
+        return self._LAST_FETCHED
 
     @property
     def is_loaded(self) -> bool:
