@@ -4,7 +4,7 @@ from typing import Optional, Callable, Iterator
 import os
 import requests
 from datetime import datetime, timezone
-from common import BASE_URL, is_timezone_aware
+from common import BASE_URL, is_timezone_aware, __type_error__
 from Exceptions import ArchiveError
 
 
@@ -47,8 +47,12 @@ class Archive(object):
             error: str = "Either raw_archive or from_dict must be defined, but not both."
             raise ArchiveError(error)
         elif raw_archive is not None:
+            if not isinstance(raw_archive, dict):
+                __type_error__("dict", raw_archive)
             self.__from_raw_archive__(raw_archive)
         else:
+            if not isinstance(from_dict, dict):
+                __type_error__("dict", from_dict)
             self.__from_dict__(from_dict)
 
         # Store downloading properties:
@@ -358,6 +362,8 @@ class Archives(object):
         self._api_key = api_key
 
         if from_dict is not None:
+            if not isinstance(from_dict, dict):
+                __type_error__("dict", from_dict)
             self.__from_dict__(from_dict)
         elif do_load:
             self.load()
@@ -460,7 +466,7 @@ class Archives(object):
             archive = Archive(api_key=self._api_key, raw_archive=raw_archive)
             self._ARCHIVES.append(archive)
         self._IS_LOADED = True
-        self._last_fetched: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._LAST_FETCHED: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
 
     def __getitem__(self, item: datetime | int | str | slice) -> Archive | list[Archive]:
