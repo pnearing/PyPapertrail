@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Optional
+from typing import Optional, Iterator
 from datetime import datetime, timezone
 import requests
 from common import BASE_URL
@@ -64,8 +64,9 @@ class System(object):
             self._name = raw_system['name']
             self._last_event = None
             if raw_system['last_event_at'] is not None:
-                self._last_event = datetime.fromisoformat(raw_system['last_event_at'][:-1]).replace(
-                    tzinfo=timezone.utc)
+                self._last_event = datetime.fromisoformat(raw_system['last_event_at'][:-1])
+                if raw_system['last_event_at'][-1].lower() == 'z':
+                    self._last_event.replace(tzinfo=timezone.utc)
             self._auto_delete = raw_system['auto_delete']
             self._json_info_link = raw_system['_links']['self']['href']
             self._html_info_link = raw_system['_links']['html']['href']
@@ -91,7 +92,7 @@ class System(object):
             self._name = from_dict['name']
             self._last_event = None
             if from_dict['last_event'] is not None:
-                self._last_event = datetime.fromisoformat(from_dict['last_event']).replace(tzinfo=timezone.utc)
+                self._last_event = datetime.fromisoformat(from_dict['last_event'])
             self._auto_delete = from_dict['auto_delete']
             self._json_info_link = from_dict['json_link']
             self._html_info_link = from_dict['html_link']
@@ -277,19 +278,57 @@ class System(object):
 class Systems(object):
     """Class to store the systems as a list."""
     _SYSTEMS: list[System] = []
+    _IS_LOADED: bool = False
+    _LAST_FETCHED: Optional[datetime] = None
 
-    def __init__(self, api_key: str, do_load: bool = True) -> None:
+    def __init__(self,
+                 api_key: str,
+                 from_dict: Optional[dict] = None,
+                 do_load: bool = True,
+                 ) -> None:
         """
         Initialize the systems list.
         :param api_key: Str: The api key.
+        :param from_dict: Dict: The dict to load from created by __to_dict__(), Note if not None do_load is ignored.
         :param do_load: Bool: True, make request from papertrail, False do not.
         :raises: SystemsError: On request error, or if invalid JSON is returned.
         """
         self._api_key: str = api_key
-        self._last_fetched: Optional[datetime] = None
-        self._is_loaded: bool = False
-        if do_load:
+        if from_dict is not None:
+            self.__from_dict__(from_dict)
+        elif do_load:
             self.load()
+        return
+
+    def __to_dict__(self) -> dict:
+        """
+        Create a json / pickle friendly dict.
+        :return: Dict.
+        """
+        return_dict: dict = {
+            'last_fetched': None,
+            '_systems': [],
+        }
+        if self._LAST_FETCHED is not None:
+            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
+        for system in self._SYSTEMS:
+            return_dict['_systems'].append(system.__to_dict__())
+        return return_dict
+
+    def __from_dict__(self, from_dict: dict) -> None:
+        """
+        Load from dict created by __to_dict__()
+        :param from_dict: The dict
+        :return: None
+        """
+        self._LAST_FETCHED = None
+        if from_dict['last_fetched'] is not None:
+            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+        self._SYSTEMS = []
+        for system_dict in from_dict['_systems']:
+            system = System(self._api_key, from_dict=system_dict)
+            self._SYSTEMS.append(system)
+        self._IS_LOADED = True
         return
 
     @property
@@ -298,7 +337,7 @@ class Systems(object):
         When the systems were last fetched from papertrail.
         :return: Optional[datetime]
         """
-        return self._last_fetched
+        return self._LAST_FETCHED
 
     @property
     def is_loaded(self) -> bool:
@@ -306,7 +345,7 @@ class Systems(object):
         Has the systems list been loaded?
         :return: Bool
         """
-        return self._is_loaded
+        return self._IS_LOADED
 
     def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
         # Set url and headers:
@@ -349,9 +388,41 @@ class Systems(object):
         for raw_system in system_list:
             system = System(self._api_key, raw_system)
             self._SYSTEMS.append(system)
-        self._is_loaded = True
-        self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._IS_LOADED = True
+        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
+
+    def __getitem__(self, item) -> System | list[System]:
+        """
+        Index systems.
+        :param item: Str, int, datetime: Index.
+        :return: System | list[System]
+        """
+        if isinstance(item, str):
+            for system in self._SYSTEMS:
+                if system.name == item:
+                    return system
+            raise IndexError("Name: %s not found.")
+        elif isinstance(item, int):
+            return self._SYSTEMS[item]
+        elif isinstance(item, slice):
+            if isinstance(item.start, int):
+                return self._SYSTEMS[item.start:item.stop:item.step]
+            else:
+                raise TypeError("Only slices by ints are supported.")
+        elif isinstance(item, datetime):
+            for system in self._SYSTEMS:
+                if system.last_event == item:
+                    return system
+            raise IndexError("datetime not found in last event.")
+        raise TypeError("Can only index by str, int, and datetime objects.")
+
+    def __iter__(self) -> Iterator:
+        """
+        Get an iterator of systems:
+        :return: Iterator
+        """
+        return iter(self._SYSTEMS)
 
 
 if __name__ == '__main__':
@@ -360,6 +431,7 @@ if __name__ == '__main__':
 
     print("Fetching systems...")
     systems = Systems(API_KEY)
-    a_system = systems._SYSTEMS[0]
+    a_system = systems[0]
+    print("Reloading system [%s]..." % a_system.name)
     a_system.reload()
     exit(0)
