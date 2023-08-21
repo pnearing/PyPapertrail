@@ -31,6 +31,7 @@ class Destination(object):
         self._host_name: str = ''
         self._port: int = -1
         self._description: str = ''
+        self._info_link: str = ''
         if raw_destination is None and from_dict is None:
             error: str = "Either raw_destination or from_dict must be defined, but not both."
             raise DestinationError(error)
@@ -54,6 +55,7 @@ class Destination(object):
         self._host_name = raw_destination['syslog']['hostname']
         self._port = raw_destination['syslog']['port']
         self._description = raw_destination['description']
+        self._info_link = BASE_URL + 'destinations/%i.json' % self._id
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -67,6 +69,7 @@ class Destination(object):
         self._host_name = from_dict['host_name']
         self._port = from_dict['port']
         self._description = from_dict['description']
+        self._info_link = from_dict['info_link']
         return
 
     def __to_dict__(self) -> dict:
@@ -80,6 +83,7 @@ class Destination(object):
             'host_name': self._host_name,
             'port': self._port,
             'description': self._description,
+            'info_link': self._info_link,
         }
         return return_dict
 
