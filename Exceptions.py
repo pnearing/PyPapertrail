@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from requests.models import CaseInsensitiveDict
+from requests import HTTPError
+
 class PapertrailError(Exception):
     """
     Base Exception for Papertrail objects.
@@ -210,4 +212,21 @@ class InvalidServerResponse(PapertrailError):
     def __init__(self, **kwargs):
         message: str = "Server sent invalid JSON."
         PapertrailError.__init__(self, message, **kwargs)
+        return
+
+
+class UnhandledHTTPError(PapertrailError):
+    """
+    Exception to raise when encountering an unhandled HTTP Error code.
+    """
+    def __init__(self, status_code: int, exception: HTTPError, **kwargs):
+        """
+        Initialize an unhandled http error.
+        :param status_code: Int: The http status code.
+        :param exception: Requests.HTTPError: The HTTPError from requests library.
+        :param kwargs: Any additional key word arguments.
+        """
+        message: str = "Unhandled HTTP Status Code: %i" % status_code
+        PapertrailError.__init__(self, message, **kwargs)
+        self.exception = exception
         return
