@@ -31,15 +31,19 @@ class System(object):
         :raises: TypeError: If an invalid type is passed as a parameter.
         :returns: None
         """
-        # Type checks:
+        # Type / value / parameter checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
         elif last_fetched is not None and not isinstance(last_fetched, datetime):
             __type_error__("last_fetched", "datetime", last_fetched)
         elif raw_system is not None and not isinstance(raw_system, dict):
             __type_error__("raw_system", "dict", raw_system)
+        elif raw_system is not None and last_fetched is None:
+            error: str = "If using parameter raw_system, last_fetched must be defined."
+            raise SystemsError(error)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
+
         # Store the api key.
         self._api_key: str = api_key
         # Define the properties:
