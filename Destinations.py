@@ -3,7 +3,7 @@ from typing import Optional, Iterator
 from datetime import datetime, timezone
 import requests
 from common import BASE_URL, __type_error__, __raise_for_http_error__
-from Exceptions import DestinationError
+from Exceptions import DestinationError, RequestReadTimeout, InvalidServerResponse
 
 
 class Destination(object):
@@ -243,8 +243,7 @@ class Destinations(object):
         try:
             r = requests.get(list_url, headers=headers)
         except requests.ReadTimeout as e:
-            error: str = "requests.ReadTimeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise DestinationError(error, exception=e)
+            raise RequestReadTimeout(url=list_url, exception=e)
         except requests.RequestException as e:
             error: str = "requests.RequestException: error_num=%i, strerror='%s'" % (e.errno, e.strerror)
             raise DestinationError(error, exception=e)
@@ -255,10 +254,9 @@ class Destinations(object):
             __raise_for_http_error__(request=r, exception=e)
         # Parse request JSON:
         try:
-            raw_log_destinations = r.json()
+            raw_log_destinations: list[dict] = r.json()
         except requests.JSONDecodeError as e:
-            error: str = "Server sent invalid JSON: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise DestinationError(error, exception=e, request=r)
+            raise InvalidServerResponse(exception=e, request=r)
         # Parse the response from papertrail.
         self._DESTINATIONS = []
         for raw_destination in raw_log_destinations:
