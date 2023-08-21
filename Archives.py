@@ -4,7 +4,7 @@ from typing import Optional, Callable, Iterator
 import os
 import requests
 from datetime import datetime, timezone
-from common import BASE_URL, is_timezone_aware, __type_error__
+from common import BASE_URL, is_timezone_aware, __type_error__, __raise_for_http_error__
 from Exceptions import ArchiveError
 
 
@@ -150,7 +150,6 @@ class Archive(object):
                  callback: Optional[Callable] = None,
                  argument: Optional[object] = None,
                  chunk_size: int = 8196,
-                 raise_on_error: bool = True,
                  ) -> tuple[bool, str | int, Optional[str]]:
         """
         Download this archive.
@@ -162,7 +161,6 @@ class Archive(object):
                             callback (archive: Archive, bytes_downloaded: int, argument: Optional[object])
         :param argument: Object. An optional argument to pass to the callback.  Default = None
         :param chunk_size: Int. The chunk size to download at a time in bytes. Default = 8196 (8K)
-        :param raise_on_error: Bool, Raise ArchiveError instead of returning False when an error occurs. Default = True.
         :return: Tuple[bool, str | int, Optional[str]]: The first element is a status flag indicating success, True
                     being a success, and False a failure. If the first element is True, then the second element will be
                     the total number of bytes downloaded, and the third element will be the path to the downloaded file.
@@ -182,25 +180,17 @@ class Archive(object):
             __type_error__("chunk_size", "int", chunk_size)
         elif chunk_size < 1:
             raise ValueError("chunk_size must be greater than zero.")
-        elif not isinstance(raise_on_error, bool):
-            __type_error__("raise_on_error", "bool", raise_on_error)
         # Check to see if we're already downloading:
         if self._downloading:
             error: str = "Already downloading."
-            if raise_on_error:
-                raise ArchiveError(error)
-            else:
-                return False, error, None
+            raise ArchiveError(error)
         else:
             self._downloading = True
         # Validate destination:
         if not os.path.isdir(destination_dir):
             self._downloading = False
             error: str = "Destination: %s, is not a directory" % destination_dir
-            if raise_on_error:
-                raise ArchiveError(error, destination_dir=destination_dir)
-            else:
-                return False, error, None
+            raise ArchiveError(error, destination_dir=destination_dir)
         # Get the filename, and build the full download path.:
         if file_name is None:
             file_name = self._file_name
@@ -209,33 +199,30 @@ class Archive(object):
         if not overwrite and os.path.exists(download_path):
             self._downloading = False
             error: str = "Destination: %s, already exists." % download_path
-            if raise_on_error:
-                raise ArchiveError(error, download_path=download_path)
-            else:
-                return False, error, download_path
+            raise ArchiveError(error, download_path=download_path)
         # Open the file:
         try:
             file_handle = open(download_path, 'wb')
         except IOError as e:
             self._downloading = False
             error: str = "Failed to open '%s' for writing: %s" % (download_path, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e, download_path=download_path)
-            else:
-                return False, error, download_path
+            raise ArchiveError(error, exception=e, download_path=download_path)
         # Make the http request:
+        headers = {"X-Papertrail-Token": self._api_key}
         try:
-            headers = {"X-Papertrail-Token": self._api_key}
             r = requests.get(self._link, headers=headers, stream=True)
+        except requests.ReadTimeout as e:
+            message = "requests.ReadTimeout: err_num=%i, strerror='%s'" % (e.errno, e.strerror)
+            raise ArchiveError(message, exception=e)
+        except requests.RequestException as e:
+            message = "requests.RequestException: err_num=%i, strerror='%s'" % (e.errno, e.strerror)
+            raise ArchiveError(message, exception=e)
+        try:
             r.raise_for_status()
         except requests.HTTPError as e:
             file_handle.close()
             self._downloading = False
-            error: str = "HTTP request failed. ErrNo: %i ErrMsg: %s." % (e.errno, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e, download_path=download_path, )
-            else:
-                return False, error, download_path
+            __raise_for_http_error__(request=r, exception=e)
         # Do the download:
         download_size: int = 0
         written_size: int = 0
@@ -250,25 +237,19 @@ class Archive(object):
                 except Exception as e:
                     self._downloading = False
                     error: str = "Exception during callback execution."
-                    if raise_on_error:
-                        raise ArchiveError(error, exception=e)
-                    else:
-                        return False, error, file_name
+                    raise ArchiveError(error, exception=e)
         # Download complete:
         file_handle.close()
         # Sanity checks for the download:
         if download_size != written_size:
             self._downloading = False
             error: str = "Downloaded bytes does not match written bytes. DL:%i != WR:%i" % (download_size, written_size)
-            if raise_on_error:
-                raise ArchiveError(
-                    error,
-                    download_path=download_path,
-                    downloaded_bytes=download_size,
-                    written_bytes=written_size
-                )
-            else:
-                return False, error, download_path
+            raise ArchiveError(
+                error,
+                download_path=download_path,
+                downloaded_bytes=download_size,
+                written_bytes=written_size
+            )
         self._downloading = False
         self._is_downloaded = True
         self._download_path = download_path
@@ -441,53 +422,36 @@ class Archives(object):
 #################################################
 # Methods:
 #################################################
-    def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
+    def load(self) -> None:
         """
         Load the archive list from server.
-        :param raise_on_error: Bool, Raise an error instead of returning False on error.
         :return: Tuple[bool, str]: First element, the bool, is True if successful, and False if not, if the first
                     element is True, the second element, the str is the message: "OK"; And if the first element is
                     False, the second element will be an error message.
         """
-        # Type checks:
-        if not isinstance(raise_on_error, bool):
-            __type_error__("raise_on_error", "bool", raise_on_error)
-        # Generate list url and headers:
+       # Generate list url and headers:
         list_url = BASE_URL + 'archives.json'
         headers = {"X-Papertrail-Token": self._api_key}
         # Make the request:
         try:
             r: requests.Response = requests.get(list_url, headers=headers)
         except requests.ReadTimeout as e:
-            error: str = "Read Timeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e)
-            else:
-                return False, error
+            error: str = "requests.ReadTimeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            raise ArchiveError(error, exception=e)
+        except requests.RequestException as e:
+            error: str = "requests.RequestsException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            raise ArchiveError(error, exception=e)
         # Check the response status.
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
-            error: str = "Request HTTP error #%i:%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e, request=r)
-            else:
-                return False, error
-        except requests.RequestException as e:
-            error: str = "Requests Exception: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e, request=r)
-            else:
-                return False, error
+            __raise_for_http_error__(request=r, exception=e)
         # Parse the response:
         try:
             response = r.json()
         except requests.JSONDecodeError as e:
             error: str = "Server sent invalid json: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise ArchiveError(error, exception=e, request=r)
-            else:
-                return False, error
+            raise ArchiveError(error, exception=e, request=r)
         # Return the list as list of Archive objects:
         self._ARCHIVES = []
         for raw_archive in response:
@@ -496,7 +460,7 @@ class Archives(object):
         # Set variables:
         self._IS_LOADED = True
         self._LAST_FETCHED: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
-        return True, "OK"
+        return
 
 ######################################
 # List like overrides.
