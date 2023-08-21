@@ -2,8 +2,8 @@
 from typing import Optional, Iterator
 from datetime import datetime, timezone
 import requests
-from common import BASE_URL, __type_error__
-from Exceptions import SystemsError
+from common import BASE_URL, __type_error__, __raise_for_http_error__
+from Exceptions import SystemsError, InvalidServerResponse, RequestReadTimeout
 from Destinations import Destination
 
 
@@ -125,7 +125,9 @@ class System(object):
             self._host_name = from_dict['host_name']
             self._syslog_host_name = from_dict['syslog_host']
             self._syslog_port = from_dict['syslog_port']
-            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+            self._last_fetched = None
+            if from_dict['last_fetched'] is not None:
+                self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
         except KeyError as e:
             error: str = "KeyError while loading from_dict. Invalid data."
             raise SystemsError(error, exception=e)
@@ -148,67 +150,51 @@ class System(object):
             'host_name': self._host_name,
             'syslog_host': self._syslog_host_name,
             'syslog_port': self._syslog_port,
-            'last_fetched': self._last_fetched,
+            'last_fetched': None,
         }
         if self._last_event is not None:
             return_dict['last_event'] = self._last_event.isoformat()
+        if self._last_fetched is not None:
+            return_dict['last_fetched'] = self._last_fetched.isoformat()
         return return_dict
 
 #############################################
 # Methods:
 #############################################
-    def reload(self, raise_on_error: bool = True) -> tuple[bool, str]:
+    def reload(self) -> None:
         """
         Reload data from papertrail.
-        :param raise_on_error: Bool: True, raise SystemsError when an error occurs, False, return False on error.
-        :raises: SystemsError: When a request error or a JSON error occurs.
         :return: Tuple[bool, str]: The first element, the bool, is True upon success, and False upon failure.
             If the first element is True, the second element will be the message "OK", otherwise if False, the second
             element will be a message describing the error.
         """
-        # Type checks:
-        if not isinstance(raise_on_error, bool):
-            __type_error__("raise_on_error", "bool", raise_on_error)
         # Build url and headers:
-        url = self._json_info_link
+        info_url = self._json_info_link
         headers = {'X-Papertrail-Token': self._api_key}
         # Request the data from papertrail:
         try:
-            r = requests.get(url, headers=headers)
+            r = requests.get(info_url, headers=headers)
         except requests.ReadTimeout as e:
-            error: str = "ReadTimeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e)
-            else:
-                return False, error
+            raise RequestReadTimeout(url=info_url, exception=e)
+        except requests.RequestException as e:
+            error: str = "RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            raise SystemsError(error, exception=e)
         # Check request status:
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
-            error: str = "HTTPError: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e, request=r)
-            else:
-                return False, error
-        except requests.RequestException as e:
-            error: str = "RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e, request=r)
-            else:
-                return False, error
+            __raise_for_http_error__(request=r, exception=e)
         # Parse JSON response:
         try:
             raw_system: dict = r.json()
         except requests.JSONDecodeError as e:
-            error = "Server sent bad JSON: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e, request=r)
-            else:
-                return False, error
+            raise InvalidServerResponse(exception=e, request=r)
         self.__from_raw_system__(raw_system)
-        return True, "OK"
+        # set last fetched:
+        self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
+        return
 
-    def update(self, raise_on_error: bool = True) -> tuple[bool, str]:
+    def update(self) -> None:
         pass
 
 #########################################
@@ -388,46 +374,28 @@ class Systems(object):
 ###############################
 # Methods:
 ###############################
-    def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
-        # Type checks:
-        if not isinstance(raise_on_error, bool):
-            __type_error__("raise_on_error", "bool", raise_on_error)
+    def load(self) -> None:
         # Set url and headers:
-        url = BASE_URL + 'systems.json'
+        list_url = BASE_URL + 'systems.json'
         headers = {'X-Papertrail-Token': self._api_key}
         # Make api http request:
         try:
-            r = requests.get(url, headers=headers)
+            r = requests.get(list_url, headers=headers)
         except requests.ReadTimeout as e:
-            error: str = "Read timeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e)
-            else:
-                return False, error
+            raise RequestReadTimeout(url=list_url, exception=e)
+        except requests.RequestException as e:
+            error: str = "requests.RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            raise SystemsError(error, exception=e)
         # Check HTTP status:
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
-            error: str = "Request HTTP error #%i:%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e, request=r)
-            else:
-                return False, error
-        except requests.RequestException as e:
-            error: str = "Request exception: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e, request=r)
-            else:
-                return False, error
+            __raise_for_http_error__(request=r, exception=e)
         # Parse response:
         try:
             system_list: list[dict] = r.json()
         except requests.JSONDecodeError as e:
-            error: str = "Server sent invalid JSON: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise SystemsError(error, exception=e, request=r)
-            else:
-                return False, error
+            raise InvalidServerResponse(exception=e)
         # Set last fetched time to NOW.
         self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         # Create SYSTEMS list:
@@ -435,11 +403,8 @@ class Systems(object):
             system = System(api_key=self._api_key, last_fetched=self._LAST_FETCHED, raw_system=raw_system)
             self._SYSTEMS.append(system)
         self._IS_LOADED = True
-        return True, "OK"
+        return
 
-###################################################
-# Methods:
-###################################################
     def register(self,
                  name: str,
                  host_name: str,
@@ -450,7 +415,26 @@ class Systems(object):
                  auto_delete: Optional[bool] = None,
                  raise_on_error: bool = True,
                  ) -> tuple[bool, str]:
-        # Type checks:
+        """
+        Register a new system with papertrail.
+        :param name: Str: Papertrail name.
+        :param host_name: Str: System host name.
+        :param destination_port: Int: Syslog target port.
+        :param destination_id: Int: Syslog destination papertrail ID.
+        :param destination: Destination: A Destination object produced by this library.
+        :param description: Optional[str]: The description of this system.
+        :param auto_delete: Optional[bool]: Auto delete system if idle.
+        :param raise_on_error: Bool: Raise SystemError on error if True, return False, if not.
+        :raises: SystemsError: When an error occurs.
+        :raises: TypeError / ValueError: if invalid types or invalid values are passed.
+        :return: Tuple[bool, str]: The first element is a bool indicating success (True), or failure (False), The second
+            element will be the message "OK" if the first element is true, and an error message indicating what went
+            wrong.
+        :NOTE: One of the parameters: 'destination_port', 'destination_id', 'destination', must be defined. If more
+            than one is defined, then they are preferred in this order: 'destination', 'destination_id',
+            'destination_port'.
+        """
+        # Type / value / parameter checks:
         if not isinstance(name, str):
             __type_error__("name", "str", name)
         elif len(name) == 0:
@@ -471,7 +455,31 @@ class Systems(object):
             __type_error__("auto_delete", "bool", auto_delete)
         elif not isinstance(raise_on_error, bool):
             __type_error__("raise_on_error", "bool", raise_on_error)
-        return
+        # Check destination:
+        if destination is None and destination_id is None and destination_port is None:
+            error: str = "One of destination, destination_id, or destination_port must be defined."
+            raise SystemsError(error)
+        # Build url and headers:
+        register_url = BASE_URL + "systems.json"
+        headers = {
+            "X-Papertrail-Token": self._api_key,
+            "ContentType": 'application/json',
+        }
+        # Build JSON dict:
+        json_data = { "system": {}}
+        json_data['system']['name'] = name
+        json_data['system']['hostname'] = host_name
+        if destination is not None:
+            json_data['system']['destination_id'] = destination.id
+        elif destination_id is not None:
+            json_data['system']['destination_id'] = destination_id
+        else:
+            json_data['system']['destination_port'] = destination_port
+        if description is not None:
+            json_data['system']['description'] = description
+        if auto_delete is not None:
+            json_data['system']['auto_delete'] = auto_delete
+        return True, "OK"
 
 ######################################################
 # List like overrides:
