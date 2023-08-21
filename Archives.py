@@ -5,7 +5,7 @@ import os
 import requests
 from datetime import datetime, timezone
 from common import BASE_URL, is_timezone_aware, __type_error__, __raise_for_http_error__
-from Exceptions import ArchiveError, RequestReadTimeout
+from Exceptions import ArchiveError, RequestReadTimeout, InvalidServerResponse
 
 
 class Archive(object):
@@ -448,8 +448,7 @@ class Archives(object):
         try:
             response = r.json()
         except requests.JSONDecodeError as e:
-            error: str = "Server sent invalid json: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise ArchiveError(error, exception=e, request=r)
+            InvalidServerResponse(exception=e, request=e)
         # Return the list as list of Archive objects:
         self._ARCHIVES = []
         for raw_archive in response:
