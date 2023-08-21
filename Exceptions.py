@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from requests.models import CaseInsensitiveDict
 class PapertrailError(Exception):
     """
     Base Exception for Papertrail objects.
@@ -48,7 +48,7 @@ class NotFoundError(PapertrailError):
     """
     Exception to raise when getting a 404, Shouldn't see this in practice.
     """
-    def __init__(self, url:str, **kwargs):
+    def __init__(self, url: str, **kwargs):
         """
         Initialize a 404.
         :param kwargs: Any additional key word arguments.
@@ -77,7 +77,7 @@ class RateLimitError(PapertrailError):
     """
     Exception to throw when a rate limit error occurs.
     """
-    def __init__(self, headers: dict, **kwargs):
+    def __init__(self, headers: CaseInsensitiveDict, **kwargs):
         """
         Initialize a rate limit error.
         :param headers: Dict: The request headers.
