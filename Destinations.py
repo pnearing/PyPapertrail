@@ -70,7 +70,7 @@ class Destination(object):
         self._filter = raw_destination['filter']
         self._host_name = raw_destination['syslog']['hostname']
         self._port = raw_destination['syslog']['port']
-        self._description = raw_destination['description']
+        self._description = raw_destination['syslog']['description']
         self._info_link = BASE_URL + 'destinations/%i.json' % self._id
         return
 
