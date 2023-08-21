@@ -2,7 +2,7 @@
 from typing import Optional, Iterator
 from datetime import datetime, timezone
 import requests
-from common import BASE_URL, __type_error__
+from common import BASE_URL, __type_error__, __raise_for_http_error__
 from Exceptions import DestinationError
 
 
@@ -231,7 +231,11 @@ class Destinations(object):
 ###########################################
 # Methods:
 ###########################################
-    def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
+    def load(self) -> None:
+        """
+        Load destinations from papertrail.
+        :return: None
+        """
         # Set url and headers:
         list_url = BASE_URL + 'destinations.json'
         headers = {'X-Papertrail-Token': self._api_key}
@@ -239,29 +243,22 @@ class Destinations(object):
         try:
             r = requests.get(list_url, headers=headers)
         except requests.ReadTimeout as e:
-            error: str = "ReadTimeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise DestinationError(error, exception=e)
-            else:
-                return False, error
+            error: str = "requests.ReadTimeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            raise DestinationError(error, exception=e)
+        except requests.RequestException as e:
+            error: str = "requests.RequestException: error_num=%i, strerror='%s'" % (e.errno, e.strerror)
+            raise DestinationError(error, exception=e)
         # Check request status:
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
-            error: str = "HTTPError: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise DestinationError(error, exception=e, request=r)
-            else:
-                return False, error
+            __raise_for_http_error__(request=r, exception=e)
         # Parse request JSON:
         try:
             raw_log_destinations = r.json()
         except requests.JSONDecodeError as e:
             error: str = "Server sent invalid JSON: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            if raise_on_error:
-                raise DestinationError(error, exception=e, request=r)
-            else:
-                return False, error
+            raise DestinationError(error, exception=e, request=r)
         # Parse the response from papertrail.
         self._DESTINATIONS = []
         for raw_destination in raw_log_destinations:
@@ -269,7 +266,7 @@ class Destinations(object):
             self._DESTINATIONS.append(destination)
         self._IS_LOADED = True
         self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
-        return True, "OK"
+        return
 
 #########################
 # List like overrides:
