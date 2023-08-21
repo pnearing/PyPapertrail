@@ -4,7 +4,7 @@ Common variables / functions for papertrail api.
 """
 from typing import Any, NoReturn
 from datetime import datetime
-from requests import Response, JSONDecodeError, HTTPError
+import requests
 from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
 from Exceptions import InvalidServerResponse, UnhandledHTTPError
 
@@ -34,7 +34,7 @@ def __type_error__(argument_name: str, desired_types: str, received_obj: Any) ->
     raise TypeError(error)
 
 
-def __raise_for_http_error__(request: Response, exception: HTTPError) -> NoReturn:
+def __raise_for_http_error__(request: requests.Response, exception: requests.HTTPError) -> NoReturn:
     """
     Raise the appropriate Exception on known http errors.
     :param request: A requests.Response object: The request with the http error.
@@ -44,7 +44,7 @@ def __raise_for_http_error__(request: Response, exception: HTTPError) -> NoRetur
     if request.status_code == 400:  # Bad Request
         try:
             error_dict = request.json()
-        except JSONDecodeError as e:
+        except requests.JSONDecodeError as e:
             raise InvalidServerResponse(exception=e, request=request, orig_exception=exception)
         try:
             raise BadRequestError(error_dict['message'], request=request, exception=exception)
