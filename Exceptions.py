@@ -253,12 +253,21 @@ class UnhandledRequestsError(PapertrailError):
     """
     Exception to throw when a requests.RequestException happens.
     """
-    def __init__(self, exception: requests.RequestException, **kwargs):
+    def __init__(self, url: str, method: str, exception: requests.RequestException, **kwargs):
         """
         Initialize an unhandled requests.RequestException.
+        :param url: Str: The url that was requested.
+        :param method: Str: The method that was called, IE: put, post, get.
         :param exception: A requests.RequestException: The exception that happened.
         :param kwargs: Any additional key word arguments.
         """
-        message: str = "requests.RequestException: error_num=%i, strerror=%s" % (exception.errno, exception.strerror)
+        message: str = "requests.RequestException:method='%s', url='%s', error_num=%i, strerror=%s" % (
+                                                                                                method,
+                                                                                                url,
+                                                                                                exception.errno,
+                                                                                                exception.strerror
+                                                                                            )
         PapertrailError.__init__(self, message, **kwargs)
+        self.url: str = url
+        self.method: str = method
         return
