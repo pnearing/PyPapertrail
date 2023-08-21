@@ -230,3 +230,18 @@ class UnhandledHTTPError(PapertrailError):
         PapertrailError.__init__(self, message, **kwargs)
         self.exception = exception
         return
+
+
+class RequestReadTimeout(PapertrailError):
+    """
+    Exception to throw when a read timeout occurs.
+    """
+    def __init__(self, url: str, **kwargs):
+        """
+        Initialize a read timeout error.
+        :param url: The url being requested.
+        :param kwargs: Any additional key word arguments.
+        """
+        message: str = "Read timeout while reading from: %s"
+        PapertrailError.__init__(self, message, **kwargs)
+        return
