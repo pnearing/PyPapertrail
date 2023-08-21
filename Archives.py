@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-from typing import Optional, Callable, Iterator
-import os
+from typing import Optional, Callable, Iterator, Any
 import requests
 from datetime import datetime, timezone
-from common import BASE_URL, is_timezone_aware, __type_error__, __raise_for_http_error__
-from Exceptions import ArchiveError, RequestReadTimeout, InvalidServerResponse
+from common import BASE_URL, is_timezone_aware, __type_error__, __raise_for_http_error__, requests_get
+from Exceptions import ArchiveError, RequestReadTimeout
 
 
 class Archive(object):
@@ -29,7 +28,7 @@ class Archive(object):
         """
         # Type checks:
         if not isinstance(api_key, str):
-            __type_error__("api_key","str", api_key)
+            __type_error__("api_key", "str", api_key)
         elif raw_archive is not None and not isinstance(raw_archive, dict):
             __type_error__("raw_archive", "dict", raw_archive)
         elif from_dict is not None and not isinstance(from_dict, dict):
@@ -148,7 +147,7 @@ class Archive(object):
                  file_name: Optional[str] = None,
                  overwrite: bool = False,
                  callback: Optional[Callable] = None,
-                 argument: Optional[object] = None,
+                 argument: Any = None,
                  chunk_size: int = 8196,
                  ) -> tuple[bool, str | int, Optional[str]]:
         """
@@ -156,16 +155,15 @@ class Archive(object):
         :param destination_dir: Str. Directory to save file in.
         :param file_name: Optional[str]. Override the default file name with this file name. Default=None
         :param overwrite: Bool. Overwrite existing files. Default = False
-        :param callback: Callable. The call back to call each chunk downloaded. Default = None.
-                            The function signature is:
-                            callback (archive: Archive, bytes_downloaded: int, argument: Optional[object])
+        :param callback: Optional[Callable]. The call back to call each chunk downloaded. Default = None.
+            The function signature is: callback (archive: Archive, bytes_downloaded: int, argument: Any)
         :param argument: Object. An optional argument to pass to the callback.  Default = None
         :param chunk_size: Int. The chunk size to download at a time in bytes. Default = 8196 (8K)
         :return: Tuple[bool, str | int, Optional[str]]: The first element is a status flag indicating success, True
-                    being a success, and False a failure. If the first element is True, then the second element will be
-                    the total number of bytes downloaded, and the third element will be the path to the downloaded file.
-                    If the first element is False, the second element will be an error message indicating what went
-                    wrong, and the third element will optionally be the path to the partially downloaded file.
+            being a success, and False a failure. If the first element is True, then the second element will be
+            the total number of bytes downloaded, and the third element will be the path to the downloaded file.
+            If the first element is False, the second element will be an error message indicating what went
+            wrong, and the third element will optionally be the path to the partially downloaded file.
         """
         # Type checks:
         if not isinstance(destination_dir, str):
@@ -222,7 +220,17 @@ class Archive(object):
             file_handle.close()
             self._downloading = False
             __raise_for_http_error__(request=r, exception=e)
-        # Do the download:
+        # Call the callback with zero bytes downloaded:
+        if callback is not None:
+            try:
+                callback(self, 0, argument)
+            except SystemExit as e:
+                raise e
+            except Exception as e:
+                self._downloading = False
+                error: str = "Exception during callback execution."
+                raise ArchiveError(error, exception=e)
+        # Download started:
         download_size: int = 0
         written_size: int = 0
         for chunk in r.iter_content(chunk_size):
@@ -377,7 +385,7 @@ class Archives(object):
 
         if from_dict is not None:
             if not isinstance(from_dict, dict):
-                __type_error__("dict", from_dict)
+                __type_error__("from_dict", "dict", from_dict)
             self.__from_dict__(from_dict)
         elif do_load:
             self.load()
@@ -428,27 +436,9 @@ class Archives(object):
                     element is True, the second element, the str is the message: "OK"; And if the first element is
                     False, the second element will be an error message.
         """
-        # Generate list url and headers:
+        # Generate list url:
         list_url = BASE_URL + 'archives.json'
-        headers = {"X-Papertrail-Token": self._api_key}
-        # Make the request:
-        try:
-            r: requests.Response = requests.get(list_url, headers=headers)
-        except requests.ReadTimeout as e:
-            raise RequestReadTimeout(url=list_url, exception=e)
-        except requests.RequestException as e:
-            error: str = "requests.RequestsException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise ArchiveError(error, exception=e)
-        # Check the response status.
-        try:
-            r.raise_for_status()
-        except requests.HTTPError as e:
-            __raise_for_http_error__(request=r, exception=e)
-        # Parse the response:
-        try:
-            response = r.json()
-        except requests.JSONDecodeError as e:
-            InvalidServerResponse(exception=e, request=e)
+        response = requests_get(list_url, self._api_key)
         # Return the list as list of Archive objects:
         self._ARCHIVES = []
         for raw_archive in response:
@@ -545,3 +535,44 @@ class Archives(object):
         :return: Bool.
         """
         return self._IS_LOADED
+
+
+########################################################################################################################
+# Test code:
+########################################################################################################################
+
+
+def download_callback(archive: Archive, bytes_downloaded: int, argument: Any):
+    from time import sleep
+    print("\r", end='')
+    print("Downloading archive: %s... %i bytes" % (archive.file_name, bytes_downloaded), end='')
+    if argument is not None:
+        print(str(argument), end='')
+    sleep(0.25)
+    return
+
+
+if __name__ == '__main__':
+    from apiKey import API_KEY
+    import os
+
+    print("Fetching archive list...")
+    archives = Archives(API_KEY)
+
+    home_dir = os.environ.get("HOME")
+
+    test_list: bool = True
+    test_download: bool = True
+
+    # Test list:
+    if test_list:
+        for test_archive in archives:
+            print(test_archive.file_name)
+
+    if test_download:
+        # Download the latest archive, overwriting if exists.
+        test_archive = archives[-1]
+        print("Downloading archive: %s" % test_archive.file_name, end='')
+        test_archive.download(destination_dir=home_dir, overwrite=True, callback=download_callback)
+        print()
+    exit(0)
