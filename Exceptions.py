@@ -2,6 +2,7 @@
 from requests.models import CaseInsensitiveDict
 from requests import HTTPError
 
+
 class PapertrailError(Exception):
     """
     Base Exception for Papertrail objects.
@@ -242,6 +243,6 @@ class RequestReadTimeout(PapertrailError):
         :param url: The url being requested.
         :param kwargs: Any additional key word arguments.
         """
-        message: str = "Read timeout while reading from: %s"
+        message: str = "Read timeout while reading from: %s" % url
         PapertrailError.__init__(self, message, **kwargs)
         return
