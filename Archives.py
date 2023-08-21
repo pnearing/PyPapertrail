@@ -5,7 +5,7 @@ import os
 import requests
 from datetime import datetime, timezone
 from common import BASE_URL, is_timezone_aware, __type_error__, __raise_for_http_error__
-from Exceptions import ArchiveError
+from Exceptions import ArchiveError, RequestReadTimeout
 
 
 class Archive(object):
@@ -212,8 +212,7 @@ class Archive(object):
         try:
             r = requests.get(self._link, headers=headers, stream=True)
         except requests.ReadTimeout as e:
-            message = "requests.ReadTimeout: err_num=%i, strerror='%s'" % (e.errno, e.strerror)
-            raise ArchiveError(message, exception=e)
+            raise RequestReadTimeout(url=self._link, exception=e)
         except requests.RequestException as e:
             message = "requests.RequestException: err_num=%i, strerror='%s'" % (e.errno, e.strerror)
             raise ArchiveError(message, exception=e)
@@ -429,15 +428,14 @@ class Archives(object):
                     element is True, the second element, the str is the message: "OK"; And if the first element is
                     False, the second element will be an error message.
         """
-       # Generate list url and headers:
+        # Generate list url and headers:
         list_url = BASE_URL + 'archives.json'
         headers = {"X-Papertrail-Token": self._api_key}
         # Make the request:
         try:
             r: requests.Response = requests.get(list_url, headers=headers)
         except requests.ReadTimeout as e:
-            error: str = "requests.ReadTimeout: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise ArchiveError(error, exception=e)
+            raise RequestReadTimeout(url=list_url, exception=e)
         except requests.RequestException as e:
             error: str = "requests.RequestsException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
             raise ArchiveError(error, exception=e)
