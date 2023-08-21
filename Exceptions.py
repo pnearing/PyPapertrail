@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import requests
 from requests.models import CaseInsensitiveDict
 from requests import HTTPError
 
@@ -244,5 +245,20 @@ class RequestReadTimeout(PapertrailError):
         :param kwargs: Any additional key word arguments.
         """
         message: str = "Read timeout while reading from: %s" % url
+        PapertrailError.__init__(self, message, **kwargs)
+        return
+
+
+class UnhandledRequestsError(PapertrailError):
+    """
+    Exception to throw when a requests.RequestException happens.
+    """
+    def __init__(self, exception: requests.RequestException, **kwargs):
+        """
+        Initialize an unhandled requests.RequestException.
+        :param exception: A requests.RequestException: The exception that happened.
+        :param kwargs: Any additional key word arguments.
+        """
+        message: str = "requests.RequestException: error_num=%i, strerror=%s" % (exception.errno, exception.strerror)
         PapertrailError.__init__(self, message, **kwargs)
         return
