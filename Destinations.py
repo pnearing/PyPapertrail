@@ -52,6 +52,9 @@ class Destination(object):
             self.__from_raw_log_destination__(raw_destination)
         else:
             self.__from_dict__(from_dict)
+        # Check port for port # 514, which is special. I'm assuming that Papertrail should never give this to us.
+        if self._port == 514:
+            raise DestinationError("port should never be 514.")
         return
 
 ##################################
