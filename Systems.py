@@ -407,24 +407,24 @@ class Systems(object):
 
     def register(self,
                  name: str,
-                 host_name: str,
+                 host_name: Optional[str] = None,
+                 ip_address: Optional[str] = None,
                  destination_port: Optional[int] = None,
                  destination_id: Optional[int] = None,
                  destination: Optional[Destination] = None,
                  description: Optional[str] = None,
                  auto_delete: Optional[bool] = None,
-                 raise_on_error: bool = True,
-                 ) -> tuple[bool, str]:
+                 ) -> None:
         """
         Register a new system with papertrail.
         :param name: Str: Papertrail name.
-        :param host_name: Str: System host name.
-        :param destination_port: Int: Syslog target port.
+        :param host_name: Optional[str]: Filter events to only those from this syslog host name.
+        :param ip_address: Optional[str]: The Ip address of the system, it should be a static public ip.
+        :param destination_port: Int: Syslog target port. If set to port 519, ip_address must be specified.
         :param destination_id: Int: Syslog destination papertrail ID.
         :param destination: Destination: A Destination object produced by this library.
         :param description: Optional[str]: The description of this system.
         :param auto_delete: Optional[bool]: Auto delete system if idle.
-        :param raise_on_error: Bool: Raise SystemError on error if True, return False, if not.
         :raises: SystemsError: When an error occurs.
         :raises: TypeError / ValueError: if invalid types or invalid values are passed.
         :return: Tuple[bool, str]: The first element is a bool indicating success (True), or failure (False), The second
@@ -439,10 +439,14 @@ class Systems(object):
             __type_error__("name", "str", name)
         elif len(name) == 0:
             raise ValueError("name must not be of 0 length.")
-        elif not isinstance(host_name, str):
+        elif host_name is not None and not isinstance(host_name, str):
             __type_error__("host_name", "str", host_name)
-        elif len(host_name) == 0:
+        elif host_name is not None and len(host_name) == 0:
             raise ValueError("host_name must not be of 0 length.")
+        elif ip_address is not None and not isinstance(ip_address, str):
+            __type_error__("ip_address", "str", ip_address)
+        elif ip_address is not None and len(ip_address) < 7:
+            raise ValueError("ip_address must be at least 7 characters.")
         elif destination_port is not None and not isinstance(destination_port, int):
             __type_error__("destination_port", "int", destination_port)
         elif destination_id is not None and not isinstance(destination_id, int):
@@ -453,8 +457,17 @@ class Systems(object):
             __type_error__("description", "str", description)
         elif auto_delete is not None and not isinstance(auto_delete, bool):
             __type_error__("auto_delete", "bool", auto_delete)
-        elif not isinstance(raise_on_error, bool):
-            __type_error__("raise_on_error", "bool", raise_on_error)
+        # Check the host name and ip address:
+        if host_name is None and ip_address is None:
+            error: str = "One of host_name or ip_address must be defined."
+            raise SystemsError(error)
+        # Check for port 514:
+        if destination_port is not None and destination_port == 514:
+            if ip_address is None:
+                error: str = "If using destination_port=514, then ip_address must be defined."
+                raise SystemsError(error)
+            elif host_name is not None:
+                error: str = "If using destination_port=514, then ip_address must be defined."
         # Check destination:
         if destination is None and destination_id is None and destination_port is None:
             error: str = "One of destination, destination_id, or destination_port must be defined."
@@ -463,7 +476,7 @@ class Systems(object):
         register_url = BASE_URL + "systems.json"
         headers = {
             "X-Papertrail-Token": self._api_key,
-            "ContentType": 'application/json',
+            "Content-Type": 'application/json',
         }
         # Build JSON dict:
         json_data = { "system": {}}
@@ -479,7 +492,29 @@ class Systems(object):
             json_data['system']['description'] = description
         if auto_delete is not None:
             json_data['system']['auto_delete'] = auto_delete
-        return True, "OK"
+        # Make the request(POST)
+        try:
+            r = requests.post(register_url, headers=headers, json=json_data)
+        except requests.ReadTimeout as e:
+            raise RequestReadTimeout(url=register_url, exception=e)
+        except requests.RequestException as e:
+            error: str = "requests.RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
+            raise SystemsError(error, exception=e)
+        # Parse the http status response:
+        try:
+            r.raise_for_status()
+        except requests.HTTPError as e:
+            __raise_for_http_error__(request=r, exception=e)
+        # Parse JSON response:
+        try:
+            raw_system: dict = r.json()
+        except requests.JSONDecodeError as e:
+            raise InvalidServerResponse(exception=e)
+        # Convert the raw system to a system object and store:
+        utc_now = datetime.utcnow().replace(tzinfo=timezone.utc)
+        system = System(api_key=self._api_key, last_fetched=utc_now, raw_system=raw_system)
+        self._SYSTEMS.append(system)
+        return
 
 ######################################################
 # List like overrides:
@@ -522,7 +557,6 @@ class Systems(object):
         :return: Int
         """
         return len(self._SYSTEMS)
-
 ###################################################
 # Properties:
 ###################################################
