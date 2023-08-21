@@ -201,3 +201,13 @@ class QueryError(PapertrailError):
         """
         PapertrailError.__init__(self, error_message, **kwargs)
         return
+
+
+class InvalidServerResponse(PapertrailError):
+    """
+    Exception to throw when the server sends invalid JSON.
+    """
+    def __init__(self, **kwargs):
+        message: str = "Server sent invalid JSON."
+        PapertrailError.__init__(self, message, **kwargs)
+        return
