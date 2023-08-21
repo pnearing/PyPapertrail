@@ -88,7 +88,7 @@ class Destinations(object):
     """
     Class to store a list of log destinations. Handles loading from papertrail.
     """
-    _LOG_DESTINATIONS: list[Destination] = []
+    _DESTINATIONS: list[Destination] = []
     _IS_LOADED: bool = False
     _LAST_FETCHED: Optional[datetime] = None
 
@@ -123,10 +123,10 @@ class Destinations(object):
         self._LAST_FETCHED = None
         if from_dict['last_fetched'] is not None:
             self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
-        self._LOG_DESTINATIONS = []
+        self._DESTINATIONS = []
         for destination_dict in from_dict['_destinations']:
             destination = Destination(self._api_key, from_dict=destination_dict)
-            self._LOG_DESTINATIONS.append(destination)
+            self._DESTINATIONS.append(destination)
         return
 
     def __to_dict__(self) -> dict:
@@ -140,7 +140,7 @@ class Destinations(object):
         }
         if self._LAST_FETCHED is not None:
             return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
-        for destination in self._LOG_DESTINATIONS:
+        for destination in self._DESTINATIONS:
             destination_dict = destination.__to_dict__()
             return_dict['_destinations'].append(destination_dict)
         return return_dict
@@ -177,13 +177,37 @@ class Destinations(object):
             else:
                 return False, error
         # Parse the response from papertrail.
-        self._LOG_DESTINATIONS = []
+        self._DESTINATIONS = []
         for raw_destination in raw_log_destinations:
             destination = Destination(self._api_key, raw_destination)
-            self._LOG_DESTINATIONS.append(destination)
+            self._DESTINATIONS.append(destination)
         self._IS_LOADED = True
         self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
+
+    def __getitem__(self, item) -> Destination | list[Destination]:
+        """
+        Index _DESTINATIONS as a list.
+        :param item: Int | slice: Index to return.
+        :return: Destination.
+        """
+        if isinstance(item, int) or isinstance(item, slice):
+            return self._DESTINATIONS[item]
+        raise TypeError("Can only index by int.")
+
+    def __iter__(self) -> Iterator:
+        """
+        Return an Iterator.
+        :return: Iterator.
+        """
+        return iter(self._DESTINATIONS)
+
+    def __len__(self) -> int:
+        """
+        Return number of destinations.
+        :return: Int
+        """
+        return len(self._DESTINATIONS)
 
 
 # Test code:
