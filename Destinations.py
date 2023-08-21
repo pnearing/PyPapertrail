@@ -2,7 +2,7 @@
 from typing import Optional, Iterator
 from datetime import datetime, timezone
 import requests
-from common import BASE_URL, __type_error__, __raise_for_http_error__
+from common import BASE_URL, __type_error__, requests_get
 from Exceptions import DestinationError, RequestReadTimeout, InvalidServerResponse
 
 
@@ -241,25 +241,7 @@ class Destinations(object):
         """
         # Set url and headers:
         list_url = BASE_URL + 'destinations.json'
-        headers = {'X-Papertrail-Token': self._api_key}
-        # Make request:
-        try:
-            r = requests.get(list_url, headers=headers)
-        except requests.ReadTimeout as e:
-            raise RequestReadTimeout(url=list_url, exception=e)
-        except requests.RequestException as e:
-            error: str = "requests.RequestException: error_num=%i, strerror='%s'" % (e.errno, e.strerror)
-            raise DestinationError(error, exception=e)
-        # Check request status:
-        try:
-            r.raise_for_status()
-        except requests.HTTPError as e:
-            __raise_for_http_error__(request=r, exception=e)
-        # Parse request JSON:
-        try:
-            raw_log_destinations: list[dict] = r.json()
-        except requests.JSONDecodeError as e:
-            raise InvalidServerResponse(exception=e, request=r)
+        raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail.
         self._DESTINATIONS = []
         for raw_destination in raw_log_destinations:
