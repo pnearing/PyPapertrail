@@ -15,6 +15,82 @@ class PapertrailError(Exception):
         return
 
 
+class BadRequestError(PapertrailError):
+    """
+    Exception to throw when there is a bad request.
+    """
+    def __init__(self, papertrail_message: str, **kwargs) -> None:
+        """
+        Initialize a bad request error.
+        :param papertrail_message: Message from papertrail json.
+        :param kwargs: Any additional key word arguments.
+        """
+        message: str = "400: Bad Request: papertrail error: %s" % papertrail_message
+        PapertrailError.__init__(self, message, **kwargs)
+        return
+
+
+class AuthenticationError(PapertrailError):
+    """
+    Exception when given an invalid API key.
+    """
+    def __init__(self, **kwargs):
+        """
+        Initialize an authentication error.
+        :param kwargs: Any additional key work arguments.
+        """
+        message: str = "401: Unauthorized: Invalid API key."
+        PapertrailError.__init__(self, message, **kwargs)
+        return
+
+
+class NotFoundError(PapertrailError):
+    """
+    Exception to raise when getting a 404, Shouldn't see this in practice.
+    """
+    def __init__(self, url:str, **kwargs):
+        """
+        Initialize a 404.
+        :param kwargs: Any additional key word arguments.
+        """
+        message = "404: Not Found: url=%s" % url
+        PapertrailError(message, **kwargs)
+        return
+
+
+class MethodNotAllowedError(PapertrailError):
+    """
+    Exception to raise when calling an invalid method.
+    """
+    def __init__(self, **kwargs):
+        """
+        Initialize a method not found error.
+        :param kwargs: Any additional arguments.
+        """
+        message: str = ("405: Method Not Allowed. Methods applied to an endpoint where they are not supported return "
+                        "405.")
+        PapertrailError(message, **kwargs)
+        return
+
+
+class RateLimitError(PapertrailError):
+    """
+    Exception to throw when a rate limit error occurs.
+    """
+    def __init__(self, headers: dict, **kwargs):
+        """
+        Initialize a rate limit error.
+        :param headers: Dict: The request headers.
+        :param kwargs: Any additional key word arguments.
+        """
+        message = "429: Rate Limit Exceeded."
+        PapertrailError.__init__(self, message, **kwargs)
+        self.limit = headers['X-Rate-Limit-Limit']
+        self.remaining = headers['X-Rate-Limit-Remaining']
+        self.reset = headers['X-Rate-Limit-Reset']
+        return
+
+
 class SystemsError(PapertrailError):
     """
     Exception to raise when system api calls produce an error.
