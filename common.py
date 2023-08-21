@@ -69,6 +69,7 @@ def requests_get(url: str, api_key: str) -> list | dict:
     :param api_key: Str: The api key
     :return: List | dict: The response data.
     """
+    # Generate headers:
     headers = {'X-Papertrail-Token': api_key}
     # Make the request.
     try:
@@ -88,3 +89,37 @@ def requests_get(url: str, api_key: str) -> list | dict:
     except requests.JSONDecodeError as e:
         raise InvalidServerResponse(request=request, exception=e)
     return response
+
+
+def requests_post(url: str, api_key: str, json_data: Any) -> list | dict:
+    """
+    Make a requests.post() call, and return the json data.
+    :param url: Str: The url to post to.
+    :param api_key: Str: The API Key.
+    :param json_data: Any: The json data to post.
+    :return: A list | dict: The server response.
+    """
+    # Generate headers:
+    headers = {
+        'X-Papertrail-Token': api_key,
+        'Content-Type': 'application/json',
+    }
+    # Make the request:
+    try:
+        request = requests.post(url, headers=headers, json=json_data)
+    except requests.ReadTimeout as e:
+        raise RequestReadTimeout(url=url, exception=e)
+    except requests.RequestException as e:
+        raise UnhandledRequestsError(url=url, method="POST", exception=e)
+    # Parse the HTTP Status:
+    try:
+        request.raise_for_status()
+    except requests.HTTPError as e:
+        __raise_for_http_error__(request=request, exception=e)
+    # Parse the JSON data:
+    try:
+        response: list | dict = request.json()
+    except requests.JSONDecodeError as e:
+        raise InvalidServerResponse(request=request, exception=e)
+    return response
+
