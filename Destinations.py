@@ -11,6 +11,9 @@ class Destination(object):
     Class storing a single log destination.
     """
 
+##############################################
+# Initialize:
+##############################################
     def __init__(self,
                  api_key: str,
                  raw_destination: Optional[dict] = None,
@@ -23,6 +26,13 @@ class Destination(object):
         :param from_dict: Dict: The dict created by __to_dict__().
         :return: None
         """
+        # Type checks:
+        if not isinstance(api_key, str):
+            __type_error__("api_key", "str", api_key)
+        elif raw_destination is not None and not isinstance(raw_destination, dict):
+            __type_error__("raw_destination", "dict", raw_destination)
+        elif from_dict is not None and not isinstance(from_dict, dict):
+            __type_error__("from_dict", "dict", from_dict)
         # Store api key:
         self._api_key: str = api_key
         # Initialize properties.
@@ -44,6 +54,9 @@ class Destination(object):
             self.__from_dict__(from_dict)
         return
 
+##################################
+# Load / Save functions:
+##################################
     def __from_raw_log_destination__(self, raw_destination) -> None:
         """
         Load from raw destination response from papertrail.
@@ -87,6 +100,59 @@ class Destination(object):
         }
         return return_dict
 
+###########################
+# Properties:
+###########################
+    @property
+    def id(self) -> int:
+        """
+        Papertrail ID
+        :return: Int
+        """
+        return self._id
+
+    @property
+    def filter(self) -> str:
+        """
+        Filters for this destination.
+        :return: Str
+        """
+        return self._filter
+
+    @property
+    def host_name(self) -> str:
+        """
+        Syslog target host name
+        :return: Str
+        """
+        return self._host_name
+
+    @property
+    def port(self) -> int:
+        """
+        Syslog target port.
+        :return: Int
+        """
+        return self._port
+
+    @property
+    def description(self) -> str:
+        """
+        Destination description.
+        :return: Str
+        """
+        return self._description
+
+    @property
+    def info_link(self) -> str:
+        """
+        Link to json info.
+        :return: Str
+        """
+        return self._info_link
+########################################################################################################################
+########################################################################################################################
+
 
 class Destinations(object):
     """
@@ -96,6 +162,9 @@ class Destinations(object):
     _IS_LOADED: bool = False
     _LAST_FETCHED: Optional[datetime] = None
 
+##########################################
+# Initialize:
+##########################################
     def __init__(self,
                  api_key: str,
                  from_dict: Optional[dict] = None,
@@ -108,6 +177,13 @@ class Destinations(object):
                             then the parameter do_load is ignored.
         :param do_load: Bool: True = load from papertrail on initialize.
         """
+        # Type checks:
+        if not isinstance(api_key, str):
+            __type_error__("api_key", "str", api_key)
+        elif from_dict is not None and not isinstance(from_dict, dict):
+            __type_error__("from_dict", "str", from_dict)
+        elif not isinstance(do_load, bool):
+            __type_error__("do_load", "bool", do_load)
         # Store api key:
         self._api_key: str = api_key
         if from_dict is not None:
@@ -118,6 +194,9 @@ class Destinations(object):
             self.load()
         return
 
+###########################
+# Load / Save functions:
+###########################
     def __from_dict__(self, from_dict: dict) -> None:
         """
         Load from a dict created by __to_dict__().
@@ -149,6 +228,9 @@ class Destinations(object):
             return_dict['_destinations'].append(destination_dict)
         return return_dict
 
+###########################################
+# Methods:
+###########################################
     def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
         # Set url and headers:
         list_url = BASE_URL + 'destinations.json'
@@ -189,6 +271,9 @@ class Destinations(object):
         self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
 
+#########################
+# List like overrides:
+#########################
     def __getitem__(self, item) -> Destination | list[Destination]:
         """
         Index _DESTINATIONS as a list.
@@ -212,6 +297,27 @@ class Destinations(object):
         :return: Int
         """
         return len(self._DESTINATIONS)
+
+###########################
+# Properties:
+###########################
+    @property
+    def last_fetched(self) -> Optional[datetime]:
+        """
+        The last time this list was fetched.
+        :return: Optional[datetime]
+        """
+        return self._LAST_FETCHED
+
+    @property
+    def is_loaded(self) -> bool:
+        """
+        Has the list been loaded?
+        :return: Bool
+        """
+        return self._IS_LOADED
+########################################################################################################################
+########################################################################################################################
 
 
 # Test code:
