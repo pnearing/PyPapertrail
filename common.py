@@ -6,7 +6,7 @@ from typing import Any, NoReturn
 from datetime import datetime
 import requests
 from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
-from Exceptions import InvalidServerResponse, UnhandledHTTPError
+from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
 
 BASE_URL: str = 'https://papertrailapp.com/api/v1/'
 
@@ -60,3 +60,31 @@ def __raise_for_http_error__(request: requests.Response, exception: requests.HTT
         raise RateLimitError(headers=request.headers, request=request, exception=exception)
     else:
         raise UnhandledHTTPError(request.status_code, exception=exception, request=request)
+
+
+def requests_get(url: str, api_key: str) -> list | dict:
+    """
+    Make a requests.get() call, and return the json data.
+    :param url: Str: The url to get.
+    :param api_key: Str: The api key
+    :return: List | dict: The response data.
+    """
+    headers = {'X-Papertrail-Token': api_key}
+    # Make the request.
+    try:
+        request = requests.get(url, headers=headers)
+    except requests.ReadTimeout as e:
+        raise RequestReadTimeout(url, exception=e)
+    except requests.RequestException as e:
+        raise UnhandledRequestsError(url=url, method="GET", exception=e)
+    # Parse the HTTP Status:
+    try:
+        request.raise_for_status()
+    except requests.HTTPError as e:
+        __raise_for_http_error__(request=request, exception=e)
+    # Parse the JSON data:
+    try:
+        response: list | dict = request.json()
+    except requests.JSONDecodeError as e:
+        raise InvalidServerResponse(request=request, exception=e)
+    return response
