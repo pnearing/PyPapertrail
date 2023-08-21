@@ -12,6 +12,9 @@ class Archive(object):
     """
     Class representing a Papertrail archive.
     """
+###########################################
+# Initialize:
+###########################################
     def __init__(self,
                  api_key: str,
                  raw_archive: Optional[dict] = None,
@@ -24,6 +27,13 @@ class Archive(object):
         :param from_dict: Optional[dict]: Load from a saved dict created by __to_dict__().
         :return: None
         """
+        # Type checks:
+        if not isinstance(api_key, str):
+            __type_error__("api_key","str", api_key)
+        elif raw_archive is not None and not isinstance(raw_archive, dict):
+            __type_error__("raw_archive", "dict", raw_archive)
+        elif from_dict is not None and not isinstance(from_dict, dict):
+            __type_error__("from_dict", "dict", from_dict)
         # Store api key:
         self._api_key: str = api_key
 
@@ -47,18 +57,16 @@ class Archive(object):
             error: str = "Either raw_archive or from_dict must be defined, but not both."
             raise ArchiveError(error)
         elif raw_archive is not None:
-            if not isinstance(raw_archive, dict):
-                __type_error__("dict", raw_archive)
             self.__from_raw_archive__(raw_archive)
         else:
-            if not isinstance(from_dict, dict):
-                __type_error__("dict", from_dict)
             self.__from_dict__(from_dict)
-
         # Store downloading properties:
         self._downloading: bool = False
         return
 
+#########################################
+# Load / Save functions:
+#########################################
     def __from_raw_archive__(self, raw_archive: dict) -> None:
         """
         Load the properties from the raw archive dict received from papertrail.
@@ -132,94 +140,9 @@ class Archive(object):
 
         return return_dict
 
-    @property
-    def start_time(self) -> datetime:
-        """
-        Start time of the archive.
-        :return: Timezone-aware datetime object.
-        """
-        return self._start_time
-
-    @property
-    def end_time(self) -> datetime:
-        """
-        End time of the archive.
-        :return: Timezone-aware datetime object.
-        """
-        return self._end_time
-
-    @property
-    def formatted_start_time(self) -> str:
-        """
-        Formatted start time.
-        :return: English str.
-        """
-        return self._formatted_start_time
-
-    @property
-    def formatted_duration(self) -> str:
-        """
-        Formatted duration of the archive.
-        :return: English str.
-        """
-        return self._formatted_duration
-
-    @property
-    def file_name(self) -> str:
-        """
-        File name of the archive.
-        :return: Str
-        """
-        return self._file_name
-
-    @property
-    def file_size(self) -> int:
-        """
-        Size of the archive in bytes.
-        :return: Int
-        """
-        return self._file_size
-
-    @property
-    def link(self) -> str:
-        """
-        Download link of the archive.
-        :return: Str
-        """
-        return self._link
-
-    @property
-    def duration(self) -> int:
-        """
-        Duration of the archive in minutes.
-        :return: Int
-        """
-        return self._duration
-
-    @property
-    def is_downloading(self) -> bool:
-        """
-        Is the archive currently downloading? True if downloading, False if not.
-        :return: Bool
-        """
-        return self._downloading
-
-    @property
-    def is_downloaded(self) -> bool:
-        """
-        Has the archive been downloaded? True if so, False if not.
-        :return: Bool
-        """
-        return self._is_downloaded
-
-    @property
-    def download_path(self) -> Optional[str]:
-        """
-        Path to the downloaded file if successfully downloaded. None if not downloaded.
-        :return: Optional[str]
-        """
-        return self._download_path
-
+##################################
+# Methods:
+##################################
     def download(self,
                  destination_dir: str,
                  file_name: Optional[str] = None,
@@ -246,6 +169,21 @@ class Archive(object):
                     If the first element is False, the second element will be an error message indicating what went
                     wrong, and the third element will optionally be the path to the partially downloaded file.
         """
+        # Type checks:
+        if not isinstance(destination_dir, str):
+            __type_error__("destination_dir", "str", destination_dir)
+        elif file_name is not None and not isinstance(file_name, str):
+            __type_error__("file_name", "str", file_name)
+        elif not isinstance(overwrite, bool):
+            __type_error__("overwrite", "bool", overwrite)
+        elif callback is not None and not callable(callback):
+            __type_error__("callback", "Callable", callback)
+        elif not isinstance(chunk_size, int):
+            __type_error__("chunk_size", "int", chunk_size)
+        elif chunk_size < 1:
+            raise ValueError("chunk_size must be greater than zero.")
+        elif not isinstance(raise_on_error, bool):
+            __type_error__("raise_on_error", "bool", raise_on_error)
         # Check to see if we're already downloading:
         if self._downloading:
             error: str = "Already downloading."
@@ -336,6 +274,99 @@ class Archive(object):
         self._download_path = download_path
         return True, download_size, download_path
 
+##################################
+# Properties:
+##################################
+    @property
+    def start_time(self) -> datetime:
+        """
+        Start time of the archive.
+        :return: Timezone-aware datetime object.
+        """
+        return self._start_time
+
+    @property
+    def end_time(self) -> datetime:
+        """
+        End time of the archive.
+        :return: Timezone-aware datetime object.
+        """
+        return self._end_time
+
+    @property
+    def formatted_start_time(self) -> str:
+        """
+        Formatted start time.
+        :return: English str.
+        """
+        return self._formatted_start_time
+
+    @property
+    def formatted_duration(self) -> str:
+        """
+        Formatted duration of the archive.
+        :return: English str.
+        """
+        return self._formatted_duration
+
+    @property
+    def file_name(self) -> str:
+        """
+        File name of the archive.
+        :return: Str
+        """
+        return self._file_name
+
+    @property
+    def file_size(self) -> int:
+        """
+        Size of the archive in bytes.
+        :return: Int
+        """
+        return self._file_size
+
+    @property
+    def link(self) -> str:
+        """
+        Download link of the archive.
+        :return: Str
+        """
+        return self._link
+
+    @property
+    def duration(self) -> int:
+        """
+        Duration of the archive in minutes.
+        :return: Int
+        """
+        return self._duration
+
+    @property
+    def is_downloading(self) -> bool:
+        """
+        Is the archive currently downloading? True if downloading, False if not.
+        :return: Bool
+        """
+        return self._downloading
+
+    @property
+    def is_downloaded(self) -> bool:
+        """
+        Has the archive been downloaded? True if so, False if not.
+        :return: Bool
+        """
+        return self._is_downloaded
+
+    @property
+    def download_path(self) -> Optional[str]:
+        """
+        Path to the downloaded file if successfully downloaded. None if not downloaded.
+        :return: Optional[str]
+        """
+        return self._download_path
+########################################################################################################################
+########################################################################################################################
+
 
 class Archives(object):
     """Class to hold papertrail archive calls."""
@@ -343,6 +374,9 @@ class Archives(object):
     _IS_LOADED: bool = False
     _LAST_FETCHED: Optional[datetime] = None
 
+#########################################
+# Initialize:
+#########################################
     def __init__(self,
                  api_key: str,
                  from_dict: Optional[dict] = None,
@@ -369,6 +403,9 @@ class Archives(object):
             self.load()
         return
 
+#####################################
+# Load / save functions:
+#####################################
     def __from_dict__(self, from_dict: dict) -> None:
         """
         Load the archive list from a dict created by __to_dict__().
@@ -401,22 +438,9 @@ class Archives(object):
             return_dict['_archives'].append(archive_dict)
         return return_dict
 
-    @property
-    def last_fetched(self) -> Optional[datetime]:
-        """
-        Time the archive list was last fetched from papertrail.
-        :return: Optional[datetime]: Timezone-aware datetime object in UTC.
-        """
-        return self._LAST_FETCHED
-
-    @property
-    def is_loaded(self) -> bool:
-        """
-        Is the archive list loaded?
-        :return: Bool.
-        """
-        return self._IS_LOADED
-
+#################################################
+# Methods:
+#################################################
     def load(self, raise_on_error: bool = True) -> tuple[bool, str]:
         """
         Load the archive list from server.
@@ -425,10 +449,13 @@ class Archives(object):
                     element is True, the second element, the str is the message: "OK"; And if the first element is
                     False, the second element will be an error message.
         """
+        # Type checks:
+        if not isinstance(raise_on_error, bool):
+            __type_error__("raise_on_error", "bool", raise_on_error)
         # Generate list url and headers:
         list_url = BASE_URL + 'archives.json'
         headers = {"X-Papertrail-Token": self._api_key}
-        # Request the response:
+        # Make the request:
         try:
             r: requests.Response = requests.get(list_url, headers=headers)
         except requests.ReadTimeout as e:
@@ -437,6 +464,7 @@ class Archives(object):
                 raise ArchiveError(error, exception=e)
             else:
                 return False, error
+        # Check the response status.
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
@@ -465,9 +493,14 @@ class Archives(object):
         for raw_archive in response:
             archive = Archive(api_key=self._api_key, raw_archive=raw_archive)
             self._ARCHIVES.append(archive)
+        # Set variables:
         self._IS_LOADED = True
         self._LAST_FETCHED: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
         return True, "OK"
+
+######################################
+# List like overrides.
+######################################
 
     def __getitem__(self, item: datetime | int | str | slice) -> Archive | list[Archive]:
         """
@@ -501,7 +534,7 @@ class Archives(object):
             raise IndexError()
         elif isinstance(item, slice):
             if isinstance(item.start, int):
-                return self._ARCHIVES[item.start:item.stop:item.step]
+                return self._ARCHIVES[item]
             elif isinstance(item.start, datetime):
                 if item.step is not None:
                     # TODO: Slice with step parameter.
@@ -532,3 +565,22 @@ class Archives(object):
         :return: int
         """
         return len(self._ARCHIVES)
+
+##################################
+# Properties:
+##################################
+    @property
+    def last_fetched(self) -> Optional[datetime]:
+        """
+        Time the archive list was last fetched from papertrail.
+        :return: Optional[datetime]: Timezone-aware datetime object in UTC.
+        """
+        return self._LAST_FETCHED
+
+    @property
+    def is_loaded(self) -> bool:
+        """
+        Is the archive list loaded?
+        :return: Bool.
+        """
+        return self._IS_LOADED
