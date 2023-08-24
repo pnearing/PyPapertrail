@@ -123,3 +123,33 @@ def requests_post(url: str, api_key: str, json_data: Any) -> list | dict:
         raise InvalidServerResponse(request=request, exception=e)
     return response
 
+
+def requests_put(url: str, api_key: str, json_data: Any) -> list | dict:
+    """
+    Make a requests.put() call, and return the json response data.
+    :param url: Str: The url to put to.
+    :param api_key: Str: The API Key
+    :param json_data: Any: The json data to send.
+    :return: A list | dict: The server response data.
+    """
+    # Generate headers:
+    headers = {
+        "X-Papertrail-Token": api_key,
+        "Content-Type": "application/json",
+    }
+    # Make the request:
+    try:
+        request = requests.put(url, headers=headers, json=json_data)
+    except requests.ReadTimeout as e:
+        raise RequestReadTimeout(url=url, exception=e, request=request)
+    # Parse HTTP Status:
+    try:
+        request.raise_for_status()
+    except requests.HTTPError as e:
+        __raise_for_http_error__(request=request, exception=e)
+    # Parse the JSON data:
+    try:
+        response: list | dict = request.json()
+    except requests.JSONDecodeError as e:
+        raise InvalidServerResponse(request=request, exception=e)
+    return response
