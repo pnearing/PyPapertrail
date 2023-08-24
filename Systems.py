@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-from typing import Optional, Iterator
+from __future__ import annotations
+from typing import Optional, Iterator, TypeVar
 from datetime import datetime, timezone
-import requests
-from common import BASE_URL, __type_error__, __raise_for_http_error__
-from Exceptions import SystemsError, InvalidServerResponse, RequestReadTimeout
+from common import BASE_URL, __type_error__, requests_get, requests_post, requests_put
+from Exceptions import SystemsError
 from Destinations import Destination
+
+Self = TypeVar("Self", bound="System")
 
 
 class System(object):
     """Class to store a single system."""
-
 ################################
 # Initialize:
 ################################
@@ -67,7 +68,6 @@ class System(object):
             error: str = "Either raw_system must be defined, but not both."
             raise SystemsError(error)
         elif raw_system is not None:
-            # Parse the raw_system dict:
             self.__from_raw_system__(raw_system)
         else:
             self.__from_dict__(from_dict)
@@ -161,45 +161,95 @@ class System(object):
 #############################################
 # Methods:
 #############################################
-    def reload(self) -> None:
+    def reload(self) -> Self:
         """
         Reload data from papertrail.
-        :return: Tuple[bool, str]: The first element, the bool, is True upon success, and False upon failure.
-            If the first element is True, the second element will be the message "OK", otherwise if False, the second
-            element will be a message describing the error.
+        :return: System: The updated system instance.
         """
         # Build url and headers:
         info_url = self._json_info_link
-        headers = {'X-Papertrail-Token': self._api_key}
-        # Request the data from papertrail:
-        try:
-            r = requests.get(info_url, headers=headers)
-        except requests.ReadTimeout as e:
-            raise RequestReadTimeout(url=info_url, exception=e)
-        except requests.RequestException as e:
-            error: str = "RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise SystemsError(error, exception=e)
-        # Check request status:
-        try:
-            r.raise_for_status()
-        except requests.HTTPError as e:
-            __raise_for_http_error__(request=r, exception=e)
-        # Parse JSON response:
-        try:
-            raw_system: dict = r.json()
-        except requests.JSONDecodeError as e:
-            raise InvalidServerResponse(exception=e, request=r)
+        raw_system: dict = requests_get(url=info_url, api_key=self._api_key)
         self.__from_raw_system__(raw_system)
         # set last fetched:
         self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
-        return
+        return self
 
-    def update(self) -> None:
-        pass
+    def update(self,
+               name: Optional[str] = None,
+               ip_address: Optional[str] = None,
+               host_name: Optional[str] = None,
+               description: Optional[str] = None,
+               auto_delete: Optional[bool] = None,
+               ) -> Self:
+        """
+        Update this system.
+        :param name: Optional[Str]: The friendly name of the system.
+        :param ip_address: Optional[Str]: The ip address of the system.
+        :param host_name: Optional[Str]: The host name of the system.
+        :param description: Optional[Str]: The freeform description of the system.
+        :param auto_delete: Optional[Bool]: Whether to automatically delete the system.
+        :raises TypeError: If an invalid type is passed.
+        :raises ValueError: If an invalid valid is passed.
+        :raises InvalidServerResponse: If server sends bad JSON.
+        :raises RequestReadTimeout: If the server fails to respond in time.
+        :raises SystemsError:
+            -> When nothing passed.
+            -> When requests.RequestException occurs.
+        :return: System: The updated system instance.
+        """
+        # Type / value / parameter checks:
+        if name is not None and not isinstance(name, str):
+            __type_error__("name", "str", name)
+        elif ip_address is not None and not isinstance(ip_address, str):
+            __type_error__("ip_address", "str", ip_address)
+        elif host_name is not None and not isinstance("host_name", str):
+            __type_error__("host_name", "str", host_name)
+        elif description is not None and not isinstance(description, str):
+            __type_error__("description", "str", description)
+        elif auto_delete is not None and not isinstance(auto_delete, bool):
+            __type_error__("auto_delete", "bool", auto_delete)
+        all_none = True
+        for parameter in (name, ip_address, host_name, description, auto_delete):
+            if parameter is not None:
+                all_none = False
+        if all_none:
+            error: str = "At least one parameter must be defined."
+            raise SystemsError(error)
+        # Build url and headers:
+        update_url: str = BASE_URL + "systems/%i.json" % self._id
+        # Build json data:
+        json_data = {'system': {}}
+        if name is not None:
+            json_data['system']['name'] = name
+        if ip_address is not None:
+            json_data['system']['ip_address'] = ip_address
+        if host_name is not None:
+            json_data['system']['hostname'] = host_name
+        if description is not None:
+            json_data['system']['description'] = description
+        if auto_delete is not None:
+            json_data['system']['auto_delete'] = auto_delete
+        # Make the PUT request:
+        raw_system: dict = requests_put(url=update_url, api_key=self._api_key, json_data=json_data)
+        # Reload from raw_system response, and set last fetched:
+        self.__from_raw_system__(raw_system)
+        self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
+        return self
+#########################################
+# Overrides:
+#########################################
 
+    def __eq__(self, other: System) -> bool:
+        """
+        Equality test, tests system.id.
+        :param other: System: The system to compare to.
+        :return: Bool: True if ids are equal.
+        """
+        return self._id == other._id
 #########################################
 # Properties:
 #########################################
+
     @property
     def id(self) -> int:
         """
@@ -377,25 +427,7 @@ class Systems(object):
     def load(self) -> None:
         # Set url and headers:
         list_url = BASE_URL + 'systems.json'
-        headers = {'X-Papertrail-Token': self._api_key}
-        # Make api http request:
-        try:
-            r = requests.get(list_url, headers=headers)
-        except requests.ReadTimeout as e:
-            raise RequestReadTimeout(url=list_url, exception=e)
-        except requests.RequestException as e:
-            error: str = "requests.RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise SystemsError(error, exception=e)
-        # Check HTTP status:
-        try:
-            r.raise_for_status()
-        except requests.HTTPError as e:
-            __raise_for_http_error__(request=r, exception=e)
-        # Parse response:
-        try:
-            system_list: list[dict] = r.json()
-        except requests.JSONDecodeError as e:
-            raise InvalidServerResponse(exception=e)
+        system_list: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Set last fetched time to NOW.
         self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         # Create SYSTEMS list:
@@ -414,7 +446,7 @@ class Systems(object):
                  destination: Optional[Destination] = None,
                  description: Optional[str] = None,
                  auto_delete: Optional[bool] = None,
-                 ) -> None:
+                 ) -> System:
         """
         Register a new system with papertrail.
         :param name: Str: Papertrail name.
@@ -461,27 +493,32 @@ class Systems(object):
         if host_name is None and ip_address is None:
             error: str = "One of host_name or ip_address must be defined."
             raise SystemsError(error)
-        # Check for port 514:
+        # Make sure that host name is defined, when using either destination_port != 514, a destination object, or a
+        #   destination_id.
+        if (destination_port != 514) or destination is not None or destination_id is not None:
+            if host_name is None:
+                error: str = ("host_name must be defined if destination_port != 514 or using destination_id, or using "
+                              "a destination object, the host_name must be defined.")
+                raise SystemsError(error)
+        # Check for port 514, and force ip_address:
         if destination_port is not None and destination_port == 514:
             if ip_address is None:
                 error: str = "If using destination_port=514, then ip_address must be defined."
                 raise SystemsError(error)
-            elif host_name is not None:
-                error: str = "If using destination_port=514, then ip_address must be defined."
+
         # Check destination:
         if destination is None and destination_id is None and destination_port is None:
             error: str = "One of destination, destination_id, or destination_port must be defined."
             raise SystemsError(error)
-        # Build url and headers:
+        # Build url:
         register_url = BASE_URL + "systems.json"
-        headers = {
-            "X-Papertrail-Token": self._api_key,
-            "Content-Type": 'application/json',
-        }
-        # Build JSON dict:
-        json_data = { "system": {}}
+        # Build JSON data dict:
+        json_data = {"system": {}}
         json_data['system']['name'] = name
-        json_data['system']['hostname'] = host_name
+        if host_name is not None:
+            json_data['system']['hostname'] = host_name
+        if ip_address is not None:
+            json_data['system']['ip_address'] = ip_address
         if destination is not None:
             json_data['system']['destination_id'] = destination.id
         elif destination_id is not None:
@@ -492,29 +529,41 @@ class Systems(object):
             json_data['system']['description'] = description
         if auto_delete is not None:
             json_data['system']['auto_delete'] = auto_delete
-        # Make the request(POST)
-        try:
-            r = requests.post(register_url, headers=headers, json=json_data)
-        except requests.ReadTimeout as e:
-            raise RequestReadTimeout(url=register_url, exception=e)
-        except requests.RequestException as e:
-            error: str = "requests.RequestException: error_num=%i, strerror=%s" % (e.errno, e.strerror)
-            raise SystemsError(error, exception=e)
-        # Parse the http status response:
-        try:
-            r.raise_for_status()
-        except requests.HTTPError as e:
-            __raise_for_http_error__(request=r, exception=e)
-        # Parse JSON response:
-        try:
-            raw_system: dict = r.json()
-        except requests.JSONDecodeError as e:
-            raise InvalidServerResponse(exception=e)
+        # Make the request:
+        raw_system: dict = requests_post(url=register_url, api_key=self._api_key, json_data=json_data)
         # Convert the raw system to a system object and store:
         utc_now = datetime.utcnow().replace(tzinfo=timezone.utc)
         system = System(api_key=self._api_key, last_fetched=utc_now, raw_system=raw_system)
         self._SYSTEMS.append(system)
-        return
+        return system
+
+    def remove(self, index: System | int | str) -> bool:
+        """
+        Remove a system from papertrail.
+        :param index: System | int | str: The system to remove, if System, if int, it's index to remove, if str it's
+            the system name that is used to look up which system to remove.
+        :return: Bool: True = Successfully removed. False = Failure.
+        """
+        # Type checks:
+        if not isinstance(index, System) and not isinstance(index, int) and not isinstance(index, str):
+            raise __type_error__("index", "System | int | str", index)
+        # Determine system to remove:
+        sys_to_remove: Optional[System] = None
+        if isinstance(index, System):
+            for system in self._SYSTEMS:
+                if system.id == index.id:
+                    sys_to_remove = system
+                    break
+            if sys_to_remove is None:
+                raise IndexError("System object not found.")
+        elif isinstance(index, int):
+            sys_to_remove = self._SYSTEMS[index]
+        elif isinstance(index, str):
+            for system in self._SYSTEMS:
+                if system.name == index:
+                    sys_to_remove = system
+            if sys_to_remove is None:
+                raise IndexError("System name '%s' not found." % index)
 
 ######################################################
 # List like overrides:
@@ -581,10 +630,38 @@ class Systems(object):
 if __name__ == '__main__':
     # Tests:
     from apiKey import API_KEY
+    from Destinations import Destinations
 
+# Turn on / off tests:
+    test_list: bool = True
+    test_reload: bool = False
+    test_register: bool = False
+    test_update: bool = True
+# Load stuff:
     print("Fetching systems...")
-    systems = Systems(API_KEY)
-    a_system = systems[0]
-    print("Reloading system [%s]..." % a_system.name)
-    a_system.reload()
-    exit(0)
+    systems = Systems(api_key=API_KEY)
+    print("Fetching destinations...")
+    destinations = Destinations(api_key=API_KEY)
+# test list:
+    if test_list:
+        for a_system in systems:
+            print(a_system.name)
+
+# Test reload
+    if test_reload:
+        a_system = systems[0]
+        print("Reloading system [%s]..." % a_system.name)
+        a_system.reload()
+
+# Test register
+    if test_register:
+        print("Adding test system.")
+        a_destination = destinations[0]
+        new_system = systems.register(name='test2', host_name='test2', destination=a_destination, description="TEST2")
+        print("Registered: %s" % new_system.name)
+
+# Test update:
+    if test_update:
+        smoke = systems['smoke']
+        print("Updating: %s..." % smoke.name)
+        result = smoke.update(description="test")
