@@ -74,6 +74,7 @@ class Groups(object):
             for group_dict in from_dict['_groups']:
                 group = Group(api_key=self._api_key, from_dict=group_dict)
                 self._GROUPS.append(group)
+            self._IS_LOADED = True
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
@@ -175,7 +176,8 @@ class Groups(object):
         The date / time this was last retrieved from papertrail, time in UTC.
         :return: Datetime object.
         """
-        return
+        return self._LAST_FETCHED
+
 ########################################################################################################################
 # TEST CODE:
 ########################################################################################################################

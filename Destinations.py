@@ -78,6 +78,7 @@ class Destinations(object):
             for destination_dict in from_dict['_destinations']:
                 destination = Destination(self._api_key, from_dict=destination_dict)
                 self._DESTINATIONS.append(destination)
+                self._IS_LOADED = True
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise DestinationError(error, exception=e)

@@ -21,7 +21,7 @@ except ImportError:
 from typing import Optional, Iterator, Any
 from datetime import datetime
 import pytz
-from common import BASE_URL, is_timezone_aware, __type_error__, convert_to_utc, requests_get
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 from Exceptions import ArchiveError
 from Archive import Archive
 
@@ -132,7 +132,7 @@ class Archives(object):
         Get an archive, use a datetime object to search by date/time. Timezone-aware datetime objects will be converted
          to UTC before indexing. Timezone-unaware datetime objects are assumed to be in UTC. Use an int to index as a
          list, and a str to search by file_name, use a slice of ints to obtain a slice. Use a slice of datetime objects
-         to slice by dates, note: Slicing by datetime objects with a step parameter is currently not supported.
+         to slice by dates, note: Slicing by datetime objects with a step parameter are currently not supported.
         :param item: Datetime | int | str | slice: Index / Slice to search by.
         :raises: IndexError | TypeError. Index error if item is not found, TypeError if item is not of type datetime,
                     int, str, or slice of ints / datetime objects.
