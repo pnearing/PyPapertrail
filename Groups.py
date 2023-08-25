@@ -16,12 +16,11 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
+from typing import Optional, Iterator
 from common import BASE_URL, __type_error__, requests_get
 from Exceptions import GroupError
 from datetime import datetime, timezone
 from Group import Group
-
 
 
 class Groups(object):
@@ -87,9 +86,63 @@ class Groups(object):
         list_url = BASE_URL + "groups.json"
         raw_groups: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail:
+        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         for raw_group in raw_groups:
-            group = Group(api_key=self._api_key, raw_group=raw_group)
+            group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=self._LAST_FETCHED)
             self._GROUPS.append(group)
         self._IS_LOADED = True
-        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
         return self
+
+#############################
+# Overrides:
+#############################
+    def __getitem__(self, item: int | str | slice) -> Group | list[Group]:
+        """
+        Access this as a list / dict with an index.
+        :param item: Int | str | slice: The index, if item is an int, index as a list, if item is a str, index by name,
+            otherwise if index is a slice of type int, returns a list of groups as per the slice.
+        :return: Group | list[Group]
+        """
+        if isinstance(item, int):
+            return self._GROUPS[item]
+        elif isinstance(item, str):
+            for group in self._GROUPS:
+                if group.name == item:
+                    return group
+            error: str = "Indexing as string, name '%s' not found." % item
+            raise IndexError(error)
+        elif isinstance(item, slice):
+            error: str = "Can only slice Group by int."
+            if not isinstance(item.start, int):
+                raise ValueError(error)
+            elif item.stop is not None and not isinstance(item.stop, int):
+                raise ValueError(error)
+            elif item.step is not None and not isinstance(item.step, int):
+                raise ValueError(error)
+            return self._GROUPS[item]
+        error: str = "Can only index by Group, int, str, or slice with type int, not: %s" % str(type(item))
+        raise TypeError(error)
+
+    def __len__(self) -> int:
+        """
+        Return the number of groups.
+        :return: Int
+        """
+        return len(self._GROUPS)
+
+    def __iter__(self) -> Iterator:
+        """
+        Return an iterator of the groups.
+        :return: Iterator
+        """
+        return iter(self._GROUPS)
+
+
+########################################################################################################################
+# TEST CODE:
+########################################################################################################################
+if __name__ == '__main__':
+    from apiKey import API_KEY
+    groups = Groups(api_key=API_KEY)
+
+    groups[0].reload()
