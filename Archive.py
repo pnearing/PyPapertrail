@@ -20,7 +20,7 @@ from typing import Optional, Callable, Any
 import os
 import requests
 from datetime import datetime, timezone
-from common import __type_error__, __raise_for_http_error__
+from common import __type_error__, convert_to_utc, __raise_for_http_error__
 from Exceptions import ArchiveError, RequestReadTimeout
 
 
@@ -35,11 +35,13 @@ class Archive(object):
                  api_key: str,
                  raw_archive: Optional[dict] = None,
                  from_dict: Optional[dict] = None,
+                 last_fetched: Optional[datetime] = None,
                  ) -> None:
         """
         Initialize the archive.
         :param api_key: Str: The api key.
         :param raw_archive: Optional[dict]: The raw dict from papertrail listing. Default = None
+            Note: if raw_archive is used last_fetched must be defined.
         :param from_dict: Optional[dict]: Load from a saved dict created by __to_dict__().
         :return: None
         """
@@ -50,18 +52,30 @@ class Archive(object):
             __type_error__("raw_archive", "dict", raw_archive)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
-        # Store api key:
-        self._api_key: str = api_key
+        elif last_fetched is not None and not isinstance(last_fetched):
+            __type_error__("last_fetched", "datetime", last_fetched)
+        # Parameter checks:
+        if (raw_archive is None and from_dict is None) or (raw_archive is not None and from_dict is not None):
+            error: str = "ParameterError: Either from_dict or raw_archive must be defined, but not both."
+            raise ArchiveError(error)
+        elif raw_archive is not None and last_fetched is None:
+            error: str = "ParameterError: If using raw_archive, last_fetched must be defined."
+            raise ArchiveError(error)
 
+        # Store api key, and last fetched:
+        self._api_key: str = api_key
+        self._last_fetched: Optional[datetime] = None
+        if last_fetched is not None:
+            self._last_fetched = convert_to_utc(last_fetched)
         # Define properties:
-        self._start_time: datetime
-        self._end_time: datetime
-        self._formatted_start_time: str
-        self._formatted_duration: str
-        self._file_name: str
-        self._file_size: int
-        self._link: str
-        self._duration: int
+        self._start_time: datetime = datetime(year=1970, month=1, day=1)
+        self._end_time: datetime = datetime(year=1970, month=1, day=1)
+        self._formatted_start_time: str = ''
+        self._formatted_duration: str = ''
+        self._file_name: str = ''
+        self._file_size: int = -1
+        self._link: str = ''
+        self._duration: int = -1
         self._is_downloaded: bool = False
         self._download_path: Optional[str] = None
 
@@ -402,3 +416,12 @@ class Archive(object):
         :return: Optional[str]
         """
         return self._download_path
+
+    @property
+    def last_fetched(self) -> datetime:
+        """
+        Last time this was read from the server, times in UTC.
+        :return: Datetime object.
+        """
+        return self._last_fetched
+    

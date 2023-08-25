@@ -12,7 +12,7 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Groups")
+            Self = TypeVar("Self", bound="Archives")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
@@ -108,12 +108,12 @@ class Archives(object):
         response = requests_get(list_url, self._api_key)
         # Return the list as list of Archive objects:
         self._ARCHIVES = []
+        self._LAST_FETCHED: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
         for raw_archive in response:
-            archive = Archive(api_key=self._api_key, raw_archive=raw_archive)
+            archive = Archive(api_key=self._api_key, raw_archive=raw_archive, last_fetched=self._LAST_FETCHED)
             self._ARCHIVES.append(archive)
         # Set variables:
         self._IS_LOADED = True
-        self._LAST_FETCHED: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
         return
 
 ######################################
