@@ -17,8 +17,8 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional
-from datetime import datetime, timezone
-from common import BASE_URL, __type_error__, requests_get, requests_put
+from datetime import datetime
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put
 from Exceptions import SystemsError
 
 
@@ -101,9 +101,7 @@ class System(object):
             self._name = raw_system['name']
             self._last_event = None
             if raw_system['last_event_at'] is not None:
-                self._last_event = datetime.fromisoformat(raw_system['last_event_at'][:-1])
-                if raw_system['last_event_at'][-1].lower() == 'z':
-                    self._last_event.replace(tzinfo=timezone.utc)
+                self._last_event = convert_to_utc(datetime.fromisoformat(raw_system['last_event_at'][:-1]))
             self._auto_delete = raw_system['auto_delete']
             self._json_info_link = raw_system['_links']['self']['href']
             self._html_info_link = raw_system['_links']['html']['href']
@@ -112,7 +110,7 @@ class System(object):
             self._host_name = raw_system['hostname']
             self._syslog_host_name = raw_system['syslog']['hostname']
             self._syslog_port = raw_system['syslog']['port']
-            self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
+            self._last_fetched = convert_to_utc(datetime.utcnow())
         except KeyError as e:
             error: str = "KeyError: %s. Maybe papertrail changed their response." % str(e)
             raise SystemsError(error, exception=e)
@@ -140,7 +138,7 @@ class System(object):
             self._syslog_port = from_dict['syslog_port']
             self._last_fetched = None
             if from_dict['last_fetched'] is not None:
-                self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+                self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
         except KeyError as e:
             error: str = "KeyError while loading from_dict. Invalid data."
             raise SystemsError(error, exception=e)
@@ -184,7 +182,7 @@ class System(object):
         raw_system: dict = requests_get(url=info_url, api_key=self._api_key)
         self.__from_raw_system__(raw_system)
         # set last fetched:
-        self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._last_fetched = convert_to_utc(datetime.utcnow())
         return self
 
     def update(self,
@@ -246,7 +244,7 @@ class System(object):
         raw_system: dict = requests_put(url=update_url, api_key=self._api_key, json_data=json_data)
         # Reload from raw_system response, and set last fetched:
         self.__from_raw_system__(raw_system)
-        self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._last_fetched = convert_to_utc(datetime.utcnow())
         return self
 
 #########################################
