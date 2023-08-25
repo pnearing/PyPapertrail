@@ -12,7 +12,7 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Groups")
+            Self = TypeVar("Self", bound="Archive")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
@@ -155,6 +155,37 @@ class Archive(object):
         }
 
         return return_dict
+
+##################################
+# Overrides:
+##################################
+    def __eq__(self, other: Self | int | str):
+        """
+        Equality test, tests start time equality if other == System object, file size if other == Int, and
+            file name if other == Str.
+        :param other: System | int | str: The other object.
+        :return: Bool.
+        """
+        if isinstance(other, Self):
+            return self._start_time == other._start_time
+        elif isinstance(other, int):
+            return self._file_size == other
+        elif isinstance(other, str):
+            return self._file_name == other
+
+    def __str__(self) -> str:
+        """
+        Refer to this as a str, produce the file name.
+        :return: Str: The file name.
+        """
+        return self._file_name
+
+    def __int__(self) -> int:
+        """
+        Refer to this as an int, produce the file size in bytes.
+        :return: Int: The file size in bytes.
+        """
+        return self._file_size
 
 ##################################
 # Methods:
