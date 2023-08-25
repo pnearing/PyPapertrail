@@ -159,7 +159,7 @@ class Archive(object):
 ##################################
 # Overrides:
 ##################################
-    def __eq__(self, other: Self | int | str):
+    def __eq__(self, other: Self | int | str) -> bool:
         """
         Equality test, tests start time equality if other == System object, file size if other == Int, and
             file name if other == Str.
@@ -172,6 +172,7 @@ class Archive(object):
             return self._file_size == other
         elif isinstance(other, str):
             return self._file_name == other
+        raise TypeError("Cannot compare Archive to %s" % str(type(other)))
 
     def __str__(self) -> str:
         """
