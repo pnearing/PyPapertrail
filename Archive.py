@@ -17,6 +17,7 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional, Callable, Any
+import os
 import requests
 from datetime import datetime, timezone
 from common import __type_error__, __raise_for_http_error__
