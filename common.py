@@ -8,6 +8,7 @@ if sys.version_info.major != 3 or sys.version_info.minor < 10:
     exit(1)
 from typing import Any, NoReturn
 from datetime import datetime
+import pytz
 import requests
 from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
 from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
@@ -23,6 +24,18 @@ def is_timezone_aware(dt: datetime) -> bool:
     """
     #
     return dt.tzinfo is not None and dt.tzinfo.utcoffset(dt) is not None
+
+
+def convert_to_utc(date_time_obj: datetime) -> datetime:
+    """
+    Takes a datetime object that is either timezone-aware or timezone-naive, and returns a datetime object that is
+    timezone-aware and is in UTC time.
+    :param date_time_obj: Datetime object: The datetime to convert.
+    :return: Datetime: Timezone-aware UTC datetime.
+    """
+    if is_timezone_aware(date_time_obj):
+        return date_time_obj.astimezone(pytz.utc)
+    return pytz.utc.localize(date_time_obj)
 
 
 def __type_error__(argument_name: str, desired_types: str, received_obj: Any) -> NoReturn:
@@ -62,8 +75,7 @@ def __raise_for_http_error__(request: requests.Response, exception: requests.HTT
         raise MethodNotAllowedError(request=request, exception=exception)
     elif request.status_code == 429:  # Rate Limit Exceeded
         raise RateLimitError(headers=request.headers, request=request, exception=exception)
-    else:
-        raise UnhandledHTTPError(request.status_code, exception=exception, request=request)
+    raise UnhandledHTTPError(request.status_code, exception=exception, request=request)
 
 
 def requests_get(url: str, api_key: str) -> list | dict:
