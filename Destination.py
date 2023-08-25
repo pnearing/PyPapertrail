@@ -12,13 +12,13 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Groups")
+            Self = TypeVar("Self", bound="Destination")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional
-from common import BASE_URL, __type_error__, requests_get
-from Exceptions import DestinationError, RequestReadTimeout, InvalidServerResponse
+from common import BASE_URL, __type_error__
+from Exceptions import DestinationError
 
 
 class Destination(object):
@@ -48,27 +48,31 @@ class Destination(object):
             __type_error__("raw_destination", "dict", raw_destination)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
+
+        # Parameter checks:
+        if (raw_destination is None and from_dict is None) or (raw_destination is not None and from_dict is not None):
+            error: str = "ParameterError: Either raw_destination or from_dict must be defined, but not both."
+            raise DestinationError(error)
+
         # Store api key:
         self._api_key: str = api_key
+
         # Initialize properties.
         self._id: int = -1
         self._filter: Optional[str] = None
-        self._host_name: str = ''
-        self._port: int = -1
+        self._syslog_host_name: str = ''
+        self._syslog_port: int = -1
         self._description: str = ''
         self._info_link: str = ''
-        if raw_destination is None and from_dict is None:
-            error: str = "Either raw_destination or from_dict must be defined, but not both."
-            raise DestinationError(error)
-        elif raw_destination is not None and from_dict is not None:
-            error: str = "Either raw_destination or from_dict must be defined, but not both."
-            raise DestinationError(error)
-        elif raw_destination is not None:
+
+        # Load this instance:
+        if raw_destination is not None:
             self.__from_raw_log_destination__(raw_destination)
-        else:
+        elif from_dict is not None:
             self.__from_dict__(from_dict)
+
         # Check port for port # 514, which is special. I'm assuming that Papertrail should never give this to us.
-        if self._port == 514:
+        if self._syslog_port == 514:
             raise DestinationError("port should never be 514.")
         return
 
@@ -83,8 +87,8 @@ class Destination(object):
         """
         self._id = raw_destination['id']
         self._filter = raw_destination['filter']
-        self._host_name = raw_destination['syslog']['hostname']
-        self._port = raw_destination['syslog']['port']
+        self._syslog_host_name = raw_destination['syslog']['hostname']
+        self._syslog_port = raw_destination['syslog']['port']
         self._description = raw_destination['syslog']['description']
         self._info_link = BASE_URL + 'destinations/%i.json' % self._id
         return
@@ -97,8 +101,8 @@ class Destination(object):
         """
         self._id = from_dict['id']
         self._filter = from_dict['filter']
-        self._host_name = from_dict['host_name']
-        self._port = from_dict['port']
+        self._syslog_host_name = from_dict['host_name']
+        self._syslog_port = from_dict['port']
         self._description = from_dict['description']
         self._info_link = from_dict['info_link']
         return
@@ -111,12 +115,45 @@ class Destination(object):
         return_dict: dict = {
             'id': self._id,
             'filter': self._filter,
-            'host_name': self._host_name,
-            'port': self._port,
+            'host_name': self._syslog_host_name,
+            'port': self._syslog_port,
             'description': self._description,
             'info_link': self._info_link,
         }
         return return_dict
+
+###########################
+# Overrides:
+###########################
+    def __eq__(self, other: Self | int | str) -> bool:
+        """
+        Equality check, of other is Destination object, it compares id, if other is an int, it compares syslog port,
+        otherwise if other is a str it compares syslog host name.
+        :param other: Destination | int | str: The object to compare to.
+        :return: Bool.
+        """
+        if isinstance(other, Self):
+            return self._id == other._id
+        elif isinstance(other, int):
+            return self._syslog_port == other
+        elif isinstance(other, str):
+            return self._syslog_host_name == other
+        error: str = "Cannot compare Destination object to %s" % str(type(other))
+        raise TypeError(error)
+
+    def __str__(self) -> str:
+        """
+        Referring as a string returns the syslog host name.
+        :return: Str: The syslog host name.
+        """
+        return self._syslog_host_name
+
+    def __int__(self) -> int:
+        """
+        Referring as an int returns the syslog port.
+        :return: Int: The syslog port.
+        """
+        return self._syslog_port
 
 ###########################
 # Properties:
@@ -138,20 +175,20 @@ class Destination(object):
         return self._filter
 
     @property
-    def host_name(self) -> str:
+    def syslog_host_name(self) -> str:
         """
         Syslog target host name
         :return: Str
         """
-        return self._host_name
+        return self._syslog_host_name
 
     @property
-    def port(self) -> int:
+    def syslog_port(self) -> int:
         """
         Syslog target port.
         :return: Int
         """
-        return self._port
+        return self._syslog_port
 
     @property
     def description(self) -> str:
