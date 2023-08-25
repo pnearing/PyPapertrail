@@ -12,7 +12,7 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Groups")
+            Self = TypeVar("Self", bound="System")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
@@ -248,21 +248,33 @@ class System(object):
         self.__from_raw_system__(raw_system)
         self._last_fetched = datetime.utcnow().replace(tzinfo=timezone.utc)
         return self
+
 #########################################
 # Overrides:
 #########################################
-
-    def __eq__(self, other: System) -> bool:
+    def __eq__(self, other: Self | int | str) -> bool:
         """
         Equality test, tests system.id.
         :param other: System: The system to compare to.
         :return: Bool: True if ids are equal.
         """
-        return self._id == other._id
+        if isinstance(other, Self):
+            return self._id == other._id
+        elif isinstance(other, int):
+            return self._id == other
+        elif isinstance(other, str):
+            return self._name == other
+        raise TypeError("Cannot compare System to %s" % str(type(other)))
+
+    def __str__(self) -> str:
+        return self._name
+
+    def __int__(self) -> int:
+        return self._id
+
 #########################################
 # Properties:
 #########################################
-
     @property
     def id(self) -> int:
         """
