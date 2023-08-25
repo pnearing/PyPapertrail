@@ -88,12 +88,16 @@ class Group(object):
         :param raw_group: Dict: The dict provided by papertrail.
         :return: None
         """
-        self._id = raw_group['id']
-        self._name = raw_group['name']
-        self._system_wildcard = raw_group['system_wildcard']
-        self._self_link = raw_group['_links']['self']['href']
-        self._html_link = raw_group['_links']['html']['href']
-        self._search_link = raw_group['_links']['search']['href']
+        try:
+            self._id = raw_group['id']
+            self._name = raw_group['name']
+            self._system_wildcard = raw_group['system_wildcard']
+            self._self_link = raw_group['_links']['self']['href']
+            self._html_link = raw_group['_links']['html']['href']
+            self._search_link = raw_group['_links']['search']['href']
+        except KeyError as e:
+            error: str "Key not found, perhaps papertrail changed their response."
+            raise GroupError(error, exception=e)
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -102,15 +106,19 @@ class Group(object):
         :param from_dict: Dict: The dict provided by __to_dict_().
         :return: None
         """
-        self._id = from_dict['id']
-        self._name = from_dict['name']
-        self._system_wildcard = from_dict['wildcard']
-        self._self_link = from_dict['self_link']
-        self._html_link = from_dict['html_link']
-        self._search_link = from_dict['search_link']
-        self._last_fetched = None
-        if from_dict['last_fetched'] is not None:
-            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
+        try:
+            self._id = from_dict['id']
+            self._name = from_dict['name']
+            self._system_wildcard = from_dict['wildcard']
+            self._self_link = from_dict['self_link']
+            self._html_link = from_dict['html_link']
+            self._search_link = from_dict['search_link']
+            self._last_fetched = None
+            if from_dict['last_fetched'] is not None:
+                self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
+        except KeyError as e:
+            error: str = "Invalid dict passed to __from_dict__()"
+            raise GroupError(error, exception=e)
         return
 
     def __to_dict__(self) -> dict:

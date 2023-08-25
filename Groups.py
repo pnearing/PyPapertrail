@@ -66,13 +66,17 @@ class Groups(object):
         :param from_dict: Dict: The dict provided by __to_dict__().
         :return: Dict.
         """
-        self._LAST_FETCHED = None
-        if from_dict['last_fetched'] is not None:
-            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-        self._GROUPS = []
-        for group_dict in from_dict['_groups']:
-            group = Group(api_key=self._api_key, from_dict=group_dict)
-            self._GROUPS.append(group)
+        try:
+            self._LAST_FETCHED = None
+            if from_dict['last_fetched'] is not None:
+                self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+            self._GROUPS = []
+            for group_dict in from_dict['_groups']:
+                group = Group(api_key=self._api_key, from_dict=group_dict)
+                self._GROUPS.append(group)
+        except KeyError as e:
+            error: str = "Invalid dict passed to __from_dict__()"
+            raise GroupError(error, exception=e)
         return
 
     def __to_dict__(self) -> dict:
