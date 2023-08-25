@@ -18,11 +18,12 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(128)
 from typing import Optional, Iterator
-from datetime import datetime, timezone
-from common import BASE_URL, __type_error__, requests_get, requests_post
+from datetime import datetime
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post
 from Exceptions import SystemsError
 from Destinations import Destination
 from System import System
+
 
 class Systems(object):
     """Class to store the systems as a list."""
@@ -87,7 +88,7 @@ class Systems(object):
         """
         self._LAST_FETCHED = None
         if from_dict['last_fetched'] is not None:
-            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
         self._SYSTEMS = []
         for system_dict in from_dict['_systems']:
             system = System(self._api_key, from_dict=system_dict)
@@ -103,7 +104,7 @@ class Systems(object):
         list_url = BASE_URL + 'systems.json'
         system_list: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Set last fetched time to NOW.
-        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
         # Create SYSTEMS list:
         for raw_system in system_list:
             system = System(api_key=self._api_key, last_fetched=self._LAST_FETCHED, raw_system=raw_system)
@@ -206,7 +207,7 @@ class Systems(object):
         # Make the request:
         raw_system: dict = requests_post(url=register_url, api_key=self._api_key, json_data=json_data)
         # Convert the raw system to a system object and store:
-        utc_now = datetime.utcnow().replace(tzinfo=timezone.utc)
+        utc_now = convert_to_utc(datetime.utcnow())
         system = System(api_key=self._api_key, last_fetched=utc_now, raw_system=raw_system)
         self._SYSTEMS.append(system)
         return system
@@ -355,4 +356,3 @@ if __name__ == '__main__':
         smoke = systems['smoke']
         print("Updating: %s..." % smoke.name)
         result = smoke.update(description="test")
-
