@@ -2,6 +2,10 @@
 """
 Common variables / functions for papertrail api.
 """
+import sys
+if sys.version_info.major != 3 or sys.version_info.minor < 10:
+    print("Only python >= 3.10 supported")
+    exit(1)
 from typing import Any, NoReturn
 from datetime import datetime
 import requests
@@ -141,7 +145,7 @@ def requests_put(url: str, api_key: str, json_data: Any) -> list | dict:
     try:
         request = requests.put(url, headers=headers, json=json_data)
     except requests.ReadTimeout as e:
-        raise RequestReadTimeout(url=url, exception=e, request=request)
+        raise RequestReadTimeout(url=url, exception=e)
     # Parse HTTP Status:
     try:
         request.raise_for_status()
