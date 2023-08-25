@@ -43,7 +43,7 @@ class Groups(object):
         """
         # Type checks:
         if not isinstance(api_key, str):
-            __type_error__("api_key","str", api_key)
+            __type_error__("api_key", "str", api_key)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
         elif not isinstance(do_load, bool):
@@ -177,6 +177,7 @@ class Groups(object):
         :return: Datetime object.
         """
         return self._LAST_FETCHED
+
 
 ########################################################################################################################
 # TEST CODE:
