@@ -163,9 +163,35 @@ def requests_put(url: str, api_key: str, json_data: Any) -> list | dict:
         request.raise_for_status()
     except requests.HTTPError as e:
         __raise_for_http_error__(request=request, exception=e)
+    except requests.RequestException as e:
+        raise UnhandledRequestsError(url=url, method="PUT", exception=e)
     # Parse the JSON data:
     try:
         response: list | dict = request.json()
+    except requests.JSONDecodeError as e:
+        raise InvalidServerResponse(request=request, exception=e)
+    return response
+
+
+def requests_del(url: str, api_key: str) -> dict:
+    """
+    Send a 'delete' request to the given url.
+    :param url: Str: The url to send the request to.
+    :param api_key: The API Key.
+    :return: Dict: JSON Decoded response.
+    """
+    # Generate headers:
+    headers = {'X-Papertrail-Token': api_key}
+    # Make the request:
+    try:
+        request = requests.delete(url, headers=headers)
+    except requests.ReadTimeout as e:
+        raise RequestReadTimeout(url=url, exception=e)
+    except requests.RequestException as e:
+        raise UnhandledRequestsError(url=url, method="DELETE", exception=e)
+    # Parse the JSON data:
+    try:
+        response: dict = request.json()
     except requests.JSONDecodeError as e:
         raise InvalidServerResponse(request=request, exception=e)
     return response
