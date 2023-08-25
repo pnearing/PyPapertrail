@@ -19,7 +19,7 @@ except ImportError:
 from typing import Optional
 from datetime import datetime
 import pytz
-from common import __type_error__, is_timezone_aware, requests_get
+from common import __type_error__, convert_to_utc, requests_get
 from Exceptions import GroupError
 
 
@@ -62,12 +62,8 @@ class Group(object):
         # Store api_key and last_fetched:
         self._api_key: str = api_key
         self._last_fetched: Optional[datetime] = None
-        if self._last_fetched is not None:
-            if is_timezone_aware(self._last_fetched):
-                self._last_fetched = self._last_fetched.astimezone(pytz.utc)
-            else:
-                self._last_fetched = pytz.utc.localize(self._last_fetched)
-
+        if last_fetched is not None:
+            self._last_fetched = convert_to_utc(last_fetched)
         # Set properties:
         self._name: str = ''
         self._id: int = -1
@@ -86,7 +82,7 @@ class Group(object):
 ##########################################
 # Load / save functions:
 ##########################################
-    def __from_raw_group__(self, raw_group:dict) -> None:
+    def __from_raw_group__(self, raw_group: dict) -> None:
         """
         Load from raw group dict provided by papertrail.
         :param raw_group: Dict: The dict provided by papertrail.
@@ -100,7 +96,7 @@ class Group(object):
         self._search_link = raw_group['_links']['search']['href']
         return
 
-    def __from_dict__(self, from_dict:dict) -> None:
+    def __from_dict__(self, from_dict: dict) -> None:
         """
         Load from a dict provided by __to_dict__().
         :param from_dict: Dict: The dict provided by __to_dict_().

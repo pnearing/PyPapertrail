@@ -17,9 +17,10 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+from common import BASE_URL, __type_error__, convert_to_utc
 from Exceptions import DestinationError
 from datetime import datetime
+import pytz
 
 
 class Destination(object):

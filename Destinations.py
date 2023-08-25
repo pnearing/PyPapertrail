@@ -17,8 +17,8 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional, Iterator
-from datetime import datetime, timezone
-from common import BASE_URL, __type_error__, requests_get
+from datetime import datetime
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 from Exceptions import DestinationError
 from Destination import Destination
 
@@ -56,8 +56,6 @@ class Destinations(object):
         # Store api key:
         self._api_key: str = api_key
         if from_dict is not None:
-            if not isinstance(from_dict, dict):
-                __type_error__("from_dict", "dict", from_dict)
             self.__from_dict__(from_dict)
         elif do_load:
             self.load()
@@ -74,7 +72,7 @@ class Destinations(object):
         """
         self._LAST_FETCHED = None
         if from_dict['last_fetched'] is not None:
-            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
         self._DESTINATIONS = []
         for destination_dict in from_dict['_destinations']:
             destination = Destination(self._api_key, from_dict=destination_dict)
@@ -137,7 +135,7 @@ class Destinations(object):
         raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail.
         self._DESTINATIONS = []
-        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
         for raw_destination in raw_log_destinations:
             destination = Destination(self._api_key, raw_destination=raw_destination, last_fetched=self._LAST_FETCHED)
             self._DESTINATIONS.append(destination)
