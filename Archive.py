@@ -424,4 +424,3 @@ class Archive(object):
         :return: Datetime object.
         """
         return self._last_fetched
-    
