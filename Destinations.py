@@ -70,13 +70,17 @@ class Destinations(object):
         :param from_dict: Dict: The dict to load from.
         :return: None
         """
-        self._LAST_FETCHED = None
-        if from_dict['last_fetched'] is not None:
-            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-        self._DESTINATIONS = []
-        for destination_dict in from_dict['_destinations']:
-            destination = Destination(self._api_key, from_dict=destination_dict)
-            self._DESTINATIONS.append(destination)
+        try:
+            self._LAST_FETCHED = None
+            if from_dict['last_fetched'] is not None:
+                self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+            self._DESTINATIONS = []
+            for destination_dict in from_dict['_destinations']:
+                destination = Destination(self._api_key, from_dict=destination_dict)
+                self._DESTINATIONS.append(destination)
+        except KeyError as e:
+            error: str = "Invalid dict passed to __from_dict__()"
+            raise DestinationError(error, exception=e)
         return
 
     def __to_dict__(self) -> dict:

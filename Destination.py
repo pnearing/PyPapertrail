@@ -97,12 +97,16 @@ class Destination(object):
         :param raw_destination: Dict: dict received from papertrail.
         :return: None
         """
-        self._id = raw_destination['id']
-        self._filter = raw_destination['filter']
-        self._syslog_host_name = raw_destination['syslog']['hostname']
-        self._syslog_port = raw_destination['syslog']['port']
-        self._description = raw_destination['syslog']['description']
-        self._info_link = BASE_URL + 'destinations/%i.json' % self._id
+        try:
+            self._id = raw_destination['id']
+            self._filter = raw_destination['filter']
+            self._syslog_host_name = raw_destination['syslog']['hostname']
+            self._syslog_port = raw_destination['syslog']['port']
+            self._description = raw_destination['syslog']['description']
+            self._info_link = BASE_URL + 'destinations/%i.json' % self._id
+        except KeyError as e:
+            error: str = "Key not found, perhaps papertrail changed their response."
+            raise DestinationError(error, exception=e)
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -111,15 +115,19 @@ class Destination(object):
         :param from_dict: Dict: The dict to load from.
         :return: None
         """
-        self._id = from_dict['id']
-        self._filter = from_dict['filter']
-        self._syslog_host_name = from_dict['host_name']
-        self._syslog_port = from_dict['port']
-        self._description = from_dict['description']
-        self._info_link = from_dict['info_link']
-        self._last_fetched = None
-        if from_dict['last_fetched'] is not None:
-            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
+        try:
+            self._id = from_dict['id']
+            self._filter = from_dict['filter']
+            self._syslog_host_name = from_dict['host_name']
+            self._syslog_port = from_dict['port']
+            self._description = from_dict['description']
+            self._info_link = from_dict['info_link']
+            self._last_fetched = None
+            if from_dict['last_fetched'] is not None:
+                self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
+        except KeyError as e:
+            error: str = "Invalid dict passed to __from_dict__()"
+            raise DestinationError(error, exception=e)
         return
 
     def __to_dict__(self) -> dict:
