@@ -148,7 +148,7 @@ class Archive(object):
             self._is_downloaded = from_dict['is_downloaded']
             self._download_path = from_dict['download_path']
         except KeyError as e:
-            error: str = "KeyError while extracting data from the from_dict dictionary."
+            error: str = "Invalid dict passed to __from_dict__()"
             raise ArchiveError(error, exception=e)
         return
 
