@@ -19,7 +19,8 @@ except ImportError:
 from typing import Optional, Callable, Any
 import os
 import requests
-from datetime import datetime, timezone
+from datetime import datetime
+import pytz
 from common import __type_error__, convert_to_utc, __raise_for_http_error__
 from Exceptions import ArchiveError, RequestReadTimeout
 
@@ -41,7 +42,7 @@ class Archive(object):
         Initialize the archive.
         :param api_key: Str: The api key.
         :param raw_archive: Optional[dict]: The raw dict from papertrail listing. Default = None
-            Note: if raw_archive is used last_fetched must be defined.
+            Note: if raw_archive is used, last_fetched must be defined.
         :param from_dict: Optional[dict]: Load from a saved dict created by __to_dict__().
         :return: None
         """
@@ -52,7 +53,7 @@ class Archive(object):
             __type_error__("raw_archive", "dict", raw_archive)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
-        elif last_fetched is not None and not isinstance(last_fetched):
+        elif last_fetched is not None and not isinstance(last_fetched, datetime):
             __type_error__("last_fetched", "datetime", last_fetched)
         # Parameter checks:
         if (raw_archive is None and from_dict is None) or (raw_archive is not None and from_dict is not None):
@@ -106,8 +107,8 @@ class Archive(object):
         """
         # Extract data from raw_archive dict:
         try:
-            self._start_time = datetime.fromisoformat(raw_archive['start'][:-1]).replace(tzinfo=timezone.utc)
-            self._end_time = datetime.fromisoformat(raw_archive['end'][:-1]).replace(tzinfo=timezone.utc)
+            self._start_time = pytz.utc.localize(datetime.fromisoformat(raw_archive['start'][:-1]))
+            self._end_time = pytz.utc.localize(datetime.fromisoformat(raw_archive['end'][:-1]))
             self._formatted_start_time = raw_archive['start_formatted']
             self._formatted_duration = raw_archive['duration_formatted']
             self._file_name = raw_archive['filename']
@@ -136,8 +137,8 @@ class Archive(object):
         :return: None
         """
         try:
-            self._start_time = datetime.fromisoformat(from_dict['start_time']).replace(tzinfo=timezone.utc)
-            self._end_time = datetime.fromisoformat(from_dict['end_time']).replace(tzinfo=timezone.utc)
+            self._start_time = datetime.fromisoformat(from_dict['start_time'])
+            self._end_time = datetime.fromisoformat(from_dict['end_time'])
             self._formatted_start_time = from_dict['formatted_start_time']
             self._formatted_duration = from_dict['formatted_duration']
             self._file_name = from_dict['file_name']
