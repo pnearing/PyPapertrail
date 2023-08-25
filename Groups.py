@@ -17,9 +17,10 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional, Iterator
+from datetime import datetime
+import pytz
 from common import BASE_URL, __type_error__, requests_get
 from Exceptions import GroupError
-from datetime import datetime, timezone
 from Group import Group
 
 
@@ -59,20 +60,36 @@ class Groups(object):
 ########################################
 # To / From dict methods:
 ########################################
-    def __from_dict__(self, from_dict: dict):
+    def __from_dict__(self, from_dict: dict) -> None:
         """
         Load from a dict created by __to_dict__()
         :param from_dict: Dict: The dict provided by __to_dict__().
         :return: Dict.
         """
-        pass
+        self._LAST_FETCHED = None
+        if from_dict['last_fetched'] is not None:
+            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+        self._GROUPS = []
+        for group_dict in from_dict['_groups']:
+            group = Group(api_key=self._api_key, from_dict=group_dict)
+            self._GROUPS.append(group)
+        return
 
     def __to_dict__(self) -> dict:
         """
         Store this list of groups as a json / pickle friendly dict.
         :return: Dict
         """
-        pass
+        return_dict: dict = {
+            'last_fetched': None,
+            '_groups': [],
+        }
+        if self._LAST_FETCHED is not None:
+            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
+        for group in self._GROUPS:
+            group_dict = group.__to_dict__()
+            return_dict['_groups'].append(group_dict)
+        return return_dict
 
 #########################
 # Load:
@@ -86,7 +103,7 @@ class Groups(object):
         list_url = BASE_URL + "groups.json"
         raw_groups: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail:
-        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._LAST_FETCHED = pytz.utc.localize(datetime.utcnow())
         for raw_group in raw_groups:
             group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=self._LAST_FETCHED)
             self._GROUPS.append(group)
@@ -137,7 +154,24 @@ class Groups(object):
         """
         return iter(self._GROUPS)
 
+##############################
+# Properties:
+##############################
+    @property
+    def is_loaded(self) -> bool:
+        """
+        Return if this has been loaded somehow.
+        :return: Bool.
+        """
+        return self._IS_LOADED
 
+    @property
+    def last_fetched(self) -> datetime:
+        """
+        The date / time this was last retrieved from papertrail, time in UTC.
+        :return: Datetime object.
+        """
+        return
 ########################################################################################################################
 # TEST CODE:
 ########################################################################################################################
