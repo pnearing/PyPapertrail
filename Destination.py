@@ -17,15 +17,15 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional
-from common import BASE_URL, __type_error__
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 from Exceptions import DestinationError
+from datetime import datetime
 
 
 class Destination(object):
     """
     Class storing a single log destination.
     """
-
 ##############################################
 # Initialize:
 ##############################################
@@ -33,12 +33,15 @@ class Destination(object):
                  api_key: str,
                  raw_destination: Optional[dict] = None,
                  from_dict: Optional[dict] = None,
+                 last_fetched: Optional[datetime] = None,
                  ) -> None:
         """
         Initialize a single destination.
         :param api_key: Str: Api key for papertrail.
         :param raw_destination: Dict: The raw response dict from papertrail.
+            Note: If using raw_destination, last_fetched must be defined.
         :param from_dict: Dict: The dict created by __to_dict__().
+        :param last_fetched: Datetime object: The date and time this was last fetched from the server.
         :return: None
         """
         # Type checks:
@@ -48,14 +51,22 @@ class Destination(object):
             __type_error__("raw_destination", "dict", raw_destination)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
+        elif last_fetched is not None and not isinstance(last_fetched, datetime):
+            __type_error__("last_fetched", "datetime", last_fetched)
 
         # Parameter checks:
         if (raw_destination is None and from_dict is None) or (raw_destination is not None and from_dict is not None):
             error: str = "ParameterError: Either raw_destination or from_dict must be defined, but not both."
             raise DestinationError(error)
+        elif raw_destination is not None and last_fetched is None:
+            error: str = "ParameterError: If using raw_destination you must use last_fetched."
+            raise DestinationError(error)
 
-        # Store api key:
+        # Store api key, and last fetched:
         self._api_key: str = api_key
+        self._last_fetched: Optional[datetime] = None
+        if last_fetched is not None:
+            self._last_fetched = convert_to_utc(last_fetched)
 
         # Initialize properties.
         self._id: int = -1
@@ -105,6 +116,9 @@ class Destination(object):
         self._syslog_port = from_dict['port']
         self._description = from_dict['description']
         self._info_link = from_dict['info_link']
+        self._last_fetched = None
+        if from_dict['last_fetched'] is not None:
+            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
         return
 
     def __to_dict__(self) -> dict:
@@ -119,7 +133,10 @@ class Destination(object):
             'port': self._syslog_port,
             'description': self._description,
             'info_link': self._info_link,
+            'last_fetched': None,
         }
+        if self._last_fetched is not None:
+            return_dict['last_fetched'] = self._last_fetched.isoformat()
         return return_dict
 
 ###########################
@@ -154,6 +171,16 @@ class Destination(object):
         :return: Int: The syslog port.
         """
         return self._syslog_port
+
+###########################
+# Methods:
+###########################
+    def reload(self) -> Self:
+        """
+        Reload this destination from the server.
+        :return: Destination: This instance.
+        """
+        return self
 
 ###########################
 # Properties:

@@ -12,7 +12,7 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Groups")
+            Self = TypeVar("Self", bound="Destinations")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
@@ -97,28 +97,8 @@ class Destinations(object):
             return_dict['_destinations'].append(destination_dict)
         return return_dict
 
-###########################################
-# Methods:
-###########################################
-    def load(self) -> None:
-        """
-        Load destinations from papertrail.
-        :return: None
-        """
-        # Set url and make request:
-        list_url = BASE_URL + 'destinations.json'
-        raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
-        # Parse the response from papertrail.
-        self._DESTINATIONS = []
-        for raw_destination in raw_log_destinations:
-            destination = Destination(self._api_key, raw_destination)
-            self._DESTINATIONS.append(destination)
-        self._IS_LOADED = True
-        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
-        return
-
 #########################
-# List like overrides:
+# Overrides:
 #########################
     def __getitem__(self, item) -> Destination | list[Destination]:
         """
@@ -144,7 +124,27 @@ class Destinations(object):
         """
         return len(self._DESTINATIONS)
 
-###########################
+###########################################
+# Methods:
+###########################################
+    def load(self) -> None:
+        """
+        Load destinations from papertrail.
+        :return: None
+        """
+        # Set url and make request:
+        list_url = BASE_URL + 'destinations.json'
+        raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
+        # Parse the response from papertrail.
+        self._DESTINATIONS = []
+        self._LAST_FETCHED = datetime.utcnow().replace(tzinfo=timezone.utc)
+        for raw_destination in raw_log_destinations:
+            destination = Destination(self._api_key, raw_destination=raw_destination, last_fetched=self._LAST_FETCHED)
+            self._DESTINATIONS.append(destination)
+        self._IS_LOADED = True
+        return
+
+    ###########################
 # Properties:
 ###########################
     @property
@@ -162,10 +162,11 @@ class Destinations(object):
         :return: Bool
         """
         return self._IS_LOADED
-########################################################################################################################
-########################################################################################################################
 
 
+########################################################################################################################
+# Test Code:
+########################################################################################################################
 # Test code:
 if __name__ == '__main__':
     from apiKey import API_KEY
