@@ -140,7 +140,7 @@ class System(object):
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
         except KeyError as e:
-            error: str = "KeyError while loading from_dict. Invalid data."
+            error: str = "Invalid dict passed to __from_dict__"
             raise SystemsError(error, exception=e)
         return
 

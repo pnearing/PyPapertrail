@@ -86,14 +86,18 @@ class Systems(object):
         :param from_dict: The dict
         :return: None
         """
-        self._LAST_FETCHED = None
-        if from_dict['last_fetched'] is not None:
-            self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
-        self._SYSTEMS = []
-        for system_dict in from_dict['_systems']:
-            system = System(self._api_key, from_dict=system_dict)
-            self._SYSTEMS.append(system)
-        self._IS_LOADED = True
+        try:
+            self._LAST_FETCHED = None
+            if from_dict['last_fetched'] is not None:
+                self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
+            self._SYSTEMS = []
+            for system_dict in from_dict['_systems']:
+                system = System(self._api_key, from_dict=system_dict)
+                self._SYSTEMS.append(system)
+            self._IS_LOADED = True
+        except KeyError as e:
+            error: str = "Invalid dict passed to __from_dict__."
+            SystemsError(error, exception=e)
         return
 
     ###############################
