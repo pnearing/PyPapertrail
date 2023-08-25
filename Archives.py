@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+
 if sys.version_info.major != 3 or sys.version_info.minor < 10:
     print("Only python >= 3.10 supported")
     exit(128)
@@ -12,13 +13,15 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
+
             Self = TypeVar("Self", bound="Archives")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional, Iterator, Any
-from datetime import datetime, timezone
-from common import BASE_URL, is_timezone_aware, __type_error__, __raise_for_http_error__, requests_get
+from datetime import datetime
+import pytz
+from common import BASE_URL, is_timezone_aware, __type_error__, convert_to_utc, requests_get
 from Exceptions import ArchiveError
 from Archive import Archive
 
@@ -29,9 +32,9 @@ class Archives(object):
     _IS_LOADED: bool = False
     _LAST_FETCHED: Optional[datetime] = None
 
-#########################################
-# Initialize:
-#########################################
+    #########################################
+    # Initialize:
+    #########################################
     def __init__(self,
                  api_key: str,
                  from_dict: Optional[dict] = None,
@@ -58,9 +61,9 @@ class Archives(object):
             self.load()
         return
 
-#####################################
-# Load / save functions:
-#####################################
+    #####################################
+    # Load / save functions:
+    #####################################
     def __from_dict__(self, from_dict: dict) -> None:
         """
         Load the archive list from a dict created by __to_dict__().
@@ -69,7 +72,7 @@ class Archives(object):
         """
         self._LAST_FETCHED = None
         if from_dict['last_fetched'] is not None:
-            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched']).replace(tzinfo=timezone.utc)
+            self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
         self._ARCHIVES = []
         for archive_dict in from_dict['_archives']:
             archive = Archive(api_key=self._api_key, from_dict=archive_dict)
@@ -93,9 +96,9 @@ class Archives(object):
             return_dict['_archives'].append(archive_dict)
         return return_dict
 
-#################################################
-# Methods:
-#################################################
+    #################################################
+    # Methods:
+    #################################################
     def load(self) -> None:
         """
         Load the archive list from server.
@@ -108,7 +111,7 @@ class Archives(object):
         response = requests_get(list_url, self._api_key)
         # Return the list as list of Archive objects:
         self._ARCHIVES = []
-        self._LAST_FETCHED: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._LAST_FETCHED: datetime = pytz.utc.localize(datetime.utcnow())
         for raw_archive in response:
             archive = Archive(api_key=self._api_key, raw_archive=raw_archive, last_fetched=self._LAST_FETCHED)
             self._ARCHIVES.append(archive)
@@ -116,29 +119,24 @@ class Archives(object):
         self._IS_LOADED = True
         return
 
-######################################
-# List like overrides.
-######################################
+    ######################################
+    # List like overrides.
+    ######################################
 
     def __getitem__(self, item: datetime | int | str | slice) -> Archive | list[Archive]:
         """
         Get an archive, use a datetime object to search by date/time. Timezone-aware datetime objects will be converted
          to UTC before indexing. Timezone-unaware datetime objects are assumed to be in UTC. Use an int to index as a
          list, and a str to search by file_name, use a slice of ints to obtain a slice. Use a slice of datetime objects
-         to slice by dates.
+         to slice by dates, note: Slicing by datetime objects with a step parameter is currently not supported.
         :param item: Datetime | int | str | slice: Index / Slice to search by.
         :raises: IndexError | TypeError. Index error if item is not found, TypeError if item is not of type datetime,
                     int, str, or slice of ints / datetime objects.
         :returns: Archive
         """
         if isinstance(item, datetime):
-            if is_timezone_aware(item):
-                # Convert to utc
-                search_date = item.astimezone(timezone.utc)
-            else:
-                # Make timezone aware, assuming the time is in UTC:
-                item.replace(tzinfo=timezone.utc)
-                search_date = item
+            search_date: datetime = convert_to_utc(item)
+            search_date.replace(microsecond=0)
             for archive in self._ARCHIVES:
                 if archive.start_time == search_date:
                     return archive
@@ -151,24 +149,43 @@ class Archives(object):
                     return archive
             raise IndexError()
         elif isinstance(item, slice):
+            error: str = ("When slicing, all properties of the slice must be ints, or the start and stop can be "
+                          "datetime objects with step being None. Also when slicing by datetime, start must be less"
+                          " than the stop. Reverse slicing is not supported with datetime.")
+            # Slice by ints:
             if isinstance(item.start, int):
+                # Type check:
+                if item.stop is not None and not isinstance(item.stop, int):
+                    raise TypeError(error)
+                elif item.stop is not None and not isinstance(item.step, int):
+                    raise TypeError(error)
+                # Do slice:
                 return self._ARCHIVES[item]
+            # Slice by datetime object:
             elif isinstance(item.start, datetime):
-                if item.step is not None:
-                    # TODO: Slice with step parameter.
-                    raise NotImplementedError("Step not implemented when using datetime objects to slice.")
+                # Type check:
+                if item.stop is not None and not isinstance(item.stop, datetime):
+                    raise TypeError(error)
+                elif item.step is not None:
+                    raise TypeError(error)
                 elif item.start > item.stop:
-                    # TODO: Support reverse slices, when step is negative.
-                    raise NotImplementedError("Reverse slices not implemented when using datetime objects to slice.")
+                    raise TypeError(error)
+                # Do Slice:
                 return_list: list[Archive] = []
-                for archive in self._ARCHIVES:
-                    if item.start <= archive.start_time < item.stop:
-                        return_list.append(archive)
-                return return_list
-            else:
-                raise TypeError()
-        else:
-            raise TypeError()
+                slice_start: datetime = convert_to_utc(item.start)
+                if item.stop is None:
+                    for archive in self._ARCHIVES:
+                        if archive.start_time >= slice_start:
+                            return_list.append(archive)
+                    return return_list
+                else:
+                    slice_stop = convert_to_utc(item.stop)
+                    for archive in self._ARCHIVES:
+                        if slice_start <= archive.start_time < slice_stop:
+                            return_list.append(archive)
+                    return return_list
+        error: str = "Can only index by a datetime object, an int, a str, or a slice."
+        raise TypeError(error)
 
     def __iter__(self) -> Iterator[Archive]:
         """
@@ -184,9 +201,9 @@ class Archives(object):
         """
         return len(self._ARCHIVES)
 
-##################################
-# Properties:
-##################################
+    ##################################
+    # Properties:
+    ##################################
     @property
     def last_fetched(self) -> Optional[datetime]:
         """
