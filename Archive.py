@@ -172,7 +172,8 @@ class Archive(object):
             return self._file_size == other
         elif isinstance(other, str):
             return self._file_name == other
-        raise TypeError("Cannot compare Archive to %s" % str(type(other)))
+        error: str = "Cannot compare Archive to %s" % str(type(other))
+        raise TypeError(error)
 
     def __str__(self) -> str:
         """
@@ -261,8 +262,8 @@ class Archive(object):
         except requests.ReadTimeout as e:
             raise RequestReadTimeout(url=self._link, exception=e)
         except requests.RequestException as e:
-            message = "requests.RequestException: err_num=%i, strerror='%s'" % (e.errno, e.strerror)
-            raise ArchiveError(message, exception=e)
+            error: str = "requests.RequestException: err_num=%i, strerror='%s'" % (e.errno, e.strerror)
+            raise ArchiveError(error, exception=e)
         try:
             r.raise_for_status()
         except requests.HTTPError as e:
