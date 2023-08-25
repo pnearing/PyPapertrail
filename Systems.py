@@ -13,7 +13,7 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Groups")
+            Self = TypeVar("Self", bound="Systems")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(128)
@@ -247,32 +247,37 @@ class Systems(object):
         # TODO: Remove the system.
         return True, "OK"
 
-    ######################################################
-    # List like overrides:
-    ######################################################
-    def __getitem__(self, item) -> System | list[System]:
+######################################################
+# Overrides:
+######################################################
+    def __getitem__(self, item: str | int | datetime | slice) -> System | list[System]:
         """
         Index systems.
-        :param item: Str, int, datetime: Index.
+        :param item: Str, int, datetime | slice: The index, if item is a str, index by name, if item is an int index as
+            a list, if item is a datetime, index by date time of the last event.
         :return: System | list[System]
         """
-        if isinstance(item, str):
+        if isinstance(item, int):
+            return self._SYSTEMS[item]
+        elif isinstance(item, str):
             for system in self._SYSTEMS:
                 if system.name == item:
                     return system
             raise IndexError("Name: %s not found.")
-        elif isinstance(item, int):
-            return self._SYSTEMS[item]
-        elif isinstance(item, slice):
-            if isinstance(item.start, int):
-                return self._SYSTEMS[item.start:item.stop:item.step]
-            else:
-                raise TypeError("Only slices by ints are supported.")
         elif isinstance(item, datetime):
             for system in self._SYSTEMS:
                 if system.last_event == item:
                     return system
             raise IndexError("datetime not found in last event.")
+        elif isinstance(item, slice):
+            error: str = "Systems can only be sliced by ints."
+            if not isinstance(item.start, int):
+                raise TypeError(error)
+            elif item.stop is not None and not isinstance(item.stop, int):
+                raise TypeError(error)
+            elif item.step is not None and not isinstance(item.step, int):
+                raise TypeError(error)
+            return self._SYSTEMS[item]
         raise TypeError("Can only index by str, int, and datetime objects.")
 
     def __iter__(self) -> Iterator:
@@ -289,10 +294,9 @@ class Systems(object):
         """
         return len(self._SYSTEMS)
 
-    ###################################################
-    # Properties:
-    ###################################################
-
+###################################################
+# Properties:
+###################################################
     @property
     def last_fetched(self) -> Optional[datetime]:
         """
@@ -310,6 +314,9 @@ class Systems(object):
         return self._IS_LOADED
 
 
+########################################################################################################################
+# TEst code:
+########################################################################################################################
 if __name__ == '__main__':
     # Tests:
     from apiKey import API_KEY
@@ -348,3 +355,4 @@ if __name__ == '__main__':
         smoke = systems['smoke']
         print("Updating: %s..." % smoke.name)
         result = smoke.update(description="test")
+
