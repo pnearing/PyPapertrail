@@ -19,8 +19,9 @@ except ImportError:
 from typing import Optional
 from datetime import datetime
 import pytz
-from common import __type_error__, convert_to_utc, requests_get
-from Exceptions import GroupError
+from warnings import warn
+from common import __type_error__, convert_to_utc, requests_get, requests_put
+from Exceptions import GroupError, PapertrailWarning
 
 
 class Group(object):
@@ -96,7 +97,7 @@ class Group(object):
             self._html_link = raw_group['_links']['html']['href']
             self._search_link = raw_group['_links']['search']['href']
         except KeyError as e:
-            error: str "Key not found, perhaps papertrail changed their response."
+            error: str = "Key not found, perhaps papertrail changed their response."
             raise GroupError(error, exception=e)
         return
 
@@ -186,6 +187,47 @@ class Group(object):
         # Load from the raw group, and set last fetched:
         self.__from_raw_group__(raw_group)
         self._last_fetched = pytz.utc.localize(datetime.utcnow())
+        return self
+
+    def update(self,
+               name: Optional[str] = None,
+               system_wildcard: Optional[str] = None,
+               ) -> Self:
+        """
+        Update a group.
+        :param name: Optional[str]: The new name.
+        :param system_wildcard: Optional[str]: The new system wildcard.
+        :return: Group: The updated group.
+        """
+        # Type checks:
+        if name is not None and not isinstance(name, str):
+            __type_error__("name", "Optional[str]", name)
+        elif system_wildcard is not None and not isinstance(system_wildcard, str):
+            __type_error__("system_wildcard", "Optional[str]", system_wildcard)
+        # Value checks:
+        if name == self._name:
+            warning: str = "Parameter name == self._name, setting parameter to None."
+            warn(warning, PapertrailWarning)
+        elif system_wildcard == self._system_wildcard:
+            warning: str = "Parameter system_wildcard == self._system_wildcard, setting parameter to None."
+            warn(warning, PapertrailWarning)
+        # Parameter checks:
+        if name is None and system_wildcard is None:
+            error: str = "ParameterError: name and system_wildcard, can't both be None."
+            raise GroupError(error)
+        # Get url:
+        update_url: str = self._self_link
+        # Build json data object:
+        json_data: dict = {'group': {}}
+        if name is not None:
+            json_data['group']['name'] = name
+        if system_wildcard is not None:
+            json_data['group']['system_wildcard'] = system_wildcard
+        # Make the put request:
+        raw_group = requests_put(update_url, self._api_key, json_data)
+        # Parse the response:
+        self._last_fetched = convert_to_utc(datetime.utcnow())
+        self.__from_raw_group__(raw_group)
         return self
 
 ###############################
