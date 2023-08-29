@@ -16,12 +16,14 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
+from typing import Optional, TypeVar
 from datetime import datetime
 import pytz
 from warnings import warn
 from common import __type_error__, convert_to_utc, requests_get, requests_put
 from Exceptions import GroupError, PapertrailWarning
+from System import System
+from Systems import Systems
 
 
 class Group(object):
@@ -72,6 +74,14 @@ class Group(object):
         self._self_link: str = ''
         self._html_link: str = ''
         self._search_link: str = ''
+        self._group_systems: list[System] = []
+
+        # Load up systems if not already loaded.
+        self._systems = Systems(api_key=api_key, from_dict=None, do_load=False)
+        if not self._systems.is_loaded:
+            warning: str = "Loading Systems list from papertrail."
+            warn(warning, PapertrailWarning)
+            self._systems.load()
 
         # Load this instance:
         if raw_group is not None:
@@ -96,6 +106,11 @@ class Group(object):
             self._self_link = raw_group['_links']['self']['href']
             self._html_link = raw_group['_links']['html']['href']
             self._search_link = raw_group['_links']['search']['href']
+            self._group_systems = []
+            for raw_system in raw_group['systems']:
+                sys_id = raw_system['id']
+                system = self._systems[sys_id]
+                self._group_systems.append(system)
         except KeyError as e:
             error: str = "Key not found, perhaps papertrail changed their response."
             raise GroupError(error, exception=e)
@@ -117,6 +132,9 @@ class Group(object):
             self._last_fetched = None
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
+            for sys_id in from_dict['system_ids']:
+                system = self._systems[sys_id]
+                self._group_systems.append(system)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
@@ -135,9 +153,12 @@ class Group(object):
             'html_link': self._html_link,
             'search_link': self._search_link,
             'last_fetched': None,
+            'system_ids': []
         }
         if self._last_fetched is not None:
             return_dict['last_fetched'] = self._last_fetched.isoformat()
+        for system in self._group_systems:
+            return_dict['system_ids'].append(system.id)
         return return_dict
 
 ###############################
@@ -288,3 +309,8 @@ class Group(object):
         :return: Datetime object.
         """
         return self._last_fetched
+
+    @property
+    def systems(self) -> list[System]:
+        return self._group_systems
+    
