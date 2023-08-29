@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+
 if sys.version_info.major != 3 or sys.version_info.minor < 10:
     print("Only python >= 3.10 supported")
     exit(128)
@@ -12,6 +13,7 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
+
             Self = TypeVar("Self", bound="Groups")
         except ImportError:
             print("FATAL: Unable to define Self.")
@@ -19,8 +21,8 @@ except ImportError:
 from typing import Optional, Iterator
 from datetime import datetime
 import pytz
-from common import BASE_URL, __type_error__, requests_get
-from Exceptions import GroupError
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+from Exceptions import GroupError, InvalidServerResponse
 from Group import Group
 
 
@@ -30,9 +32,9 @@ class Groups(object):
     _IS_LOADED: bool = False
     _LAST_FETCHED: Optional[datetime] = None
 
-###################################
-# Initialize:
-###################################
+    ###################################
+    # Initialize:
+    ###################################
     def __init__(self, api_key: str, from_dict: Optional[dict] = None, do_load: bool = True):
         """
         Initialize all the groups, loading from papertrail if requested.
@@ -57,9 +59,9 @@ class Groups(object):
             self.load()
         return
 
-########################################
-# To / From dict methods:
-########################################
+    ########################################
+    # To / From dict methods:
+    ########################################
     def __from_dict__(self, from_dict: dict) -> None:
         """
         Load from a dict created by __to_dict__()
@@ -96,9 +98,9 @@ class Groups(object):
             return_dict['_groups'].append(group_dict)
         return return_dict
 
-#########################
-# Load:
-#########################
+    #########################
+    # Methods:
+    #########################
     def load(self) -> Self:
         """
         Load from papertrail.
@@ -115,9 +117,94 @@ class Groups(object):
         self._IS_LOADED = True
         return self
 
-#############################
-# Overrides:
-#############################
+    def create(self,
+               name: str,
+               system_wildcard: Optional[str] = None,
+               system_ids: Optional[list[int]] = None,
+               ) -> Group:
+        """
+        Create a new group.
+        :param name: Str: The Name of the new group.
+        :param system_wildcard: Optional[str]: The system wildcard.
+        :param system_ids: Optional[list[int]]: A list of system id's to add to the group.
+        :return: Group: The newly created Group object.
+        """
+        # Type Checks:
+        if not isinstance(name, str):
+            __type_error__("name", "str", name)
+        elif system_wildcard is not None and not isinstance(system_wildcard, str):
+            __type_error__("system_wildcard", "str", system_wildcard)
+        elif system_ids is not None and not isinstance(system_ids, list):
+            __type_error__("system_ids", "list[int]", system_ids)
+
+        # Type Check system_ids elements:
+        if system_ids is not None:
+            for index, sys_id in enumerate(system_ids):
+                if not isinstance(sys_id, int):
+                    __type_error__("system_ids[%i]" % index, "int", system_ids[index])
+
+        # Value check system id's for an empty list:
+        if system_ids is not None and len(system_ids) == 0:
+            system_ids = None
+
+        # Build url:
+        create_url: str = BASE_URL + "groups.json"
+        # Build JSON data object:
+        json_data = {'group': {'name': name}}
+        if system_wildcard is not None:
+            json_data['group']['system_wildcard'] = system_wildcard
+        if system_ids is not None:
+            json_data['group']['system_ids'] = system_ids
+        # Make the request:
+        raw_group: dict = requests_post(create_url, self._api_key, json_data)
+        # Parse the response from papertrail:
+        last_fetched = convert_to_utc(datetime.utcnow())
+        group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=last_fetched)
+        self._GROUPS.append(group)
+        return group
+
+    def delete(self, group_idx: Group | int | str) -> None:
+        """
+        Delete a group.
+        :param group_idx: Group | int | str: The group to delete, either a Group object, an int, at which groups
+            will be indexed by id, and a str at which point the group will be deleted by name
+        :return: None
+        """
+        # Type checks:
+        if not isinstance(group_idx, Group) and not isinstance(group_idx, int) and not isinstance(group_idx, str):
+            __type_error__("group_to_delete", "Group | int | str", group_idx)
+        # Get the group object:
+        group_to_delete: Optional[Group] = None
+        if isinstance(group_idx, Group):
+            group_to_delete = group_idx
+        elif isinstance(group_idx, str):
+            for group in self._GROUPS:
+                if group.name == group_idx:
+                    group_to_delete = group
+            if group_to_delete is None:
+                error: str = "IndexError: group name: %s not found." % group_idx
+                raise GroupError(error)
+        elif isinstance(group_idx, int):
+            for group in self._GROUPS:
+                if group.id == group_idx:
+                    group_to_delete = group
+            if group_to_delete is None:
+                error: str = "IndexError: group ID: %i not found." % group_idx
+                raise GroupError(error)
+        # Get URL and Make the 'delete' request.:
+        delete_url = group_to_delete.self_link
+        response: dict = requests_del(delete_url, self._api_key)
+        # Parse response:
+        if response['message'] != 'Group deleted':
+            error: str = "Unexpected response: %s" % response['message']
+            raise InvalidServerResponse(error)
+        # Remove the group from the group list:
+        self._GROUPS.remove(group_to_delete)
+        return
+    
+    #############################
+    # Overrides:
+    #############################
     def __getitem__(self, item: int | str | slice) -> Group | list[Group]:
         """
         Access this as a list / dict with an index.
@@ -159,9 +246,9 @@ class Groups(object):
         """
         return iter(self._GROUPS)
 
-##############################
-# Properties:
-##############################
+    ##############################
+    # Properties:
+    ##############################
     @property
     def is_loaded(self) -> bool:
         """
@@ -184,6 +271,30 @@ class Groups(object):
 ########################################################################################################################
 if __name__ == '__main__':
     from apiKey import API_KEY
+
     groups = Groups(api_key=API_KEY)
 
-    groups[0].reload()
+    test_reload: bool = True
+    test_create: bool = False
+    test_update: bool = False
+    test_delete: bool = True
+
+    if test_reload:
+        print("Init time:", groups[0].last_fetched.isoformat())
+        groups[0].reload()
+        print("reload time:", groups[0].last_fetched.isoformat())
+
+    if test_create:
+        print("Adding TEST group.")
+        new_group = groups.create(name="TEST")
+        print("New group: ", new_group.name)
+
+    if test_update:
+        print("Updating TEST group.")
+        groups['TEST'].update(system_wildcard='*prod*')
+        print("Updated.")
+
+    if test_delete:
+        print("Deleting TEST:")
+        groups.delete('TEST')
+        print("Group Deleted.")
