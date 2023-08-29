@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Papertrail Exceptions and Warnings."""
 import sys
 if sys.version_info.major != 3 or sys.version_info.minor < 10:
     print("Only python >= 3.10 supported")
@@ -8,6 +9,9 @@ from requests.models import CaseInsensitiveDict
 from requests import HTTPError
 
 
+########################################################################################################################
+# Exceptions:
+########################################################################################################################
 class PapertrailError(Exception):
     """
     Base Exception for Papertrail objects.
@@ -215,8 +219,9 @@ class InvalidServerResponse(PapertrailError):
     """
     Exception to throw when the server sends invalid JSON.
     """
-    def __init__(self, **kwargs):
-        message: str = "Server sent invalid JSON."
+    def __init__(self, message: str = None, **kwargs):
+        if message is None:
+            message: str = "Server sent invalid JSON."
         PapertrailError.__init__(self, message, **kwargs)
         return
 
@@ -275,3 +280,15 @@ class UnhandledRequestsError(PapertrailError):
         self.url: str = url
         self.method: str = method
         return
+
+
+########################################################################################################################
+# Warnings:
+########################################################################################################################
+class PapertrailWarning(Warning):
+    """
+    Warning to raise when runtime warnings occur.
+    """
+    pass
+
+
