@@ -101,15 +101,81 @@ class Destinations(object):
         return return_dict
 
 #########################
+# Getters:
+#########################
+    def get_by_id(self, search_id: int) -> Destination | None:
+        """
+        Get a destination by id.
+        :param search_id: Int: the ID to search for.
+        :return: Destination | None
+        """
+        # Type check:
+        if not isinstance(search_id, int):
+            __type_error__("search_id", "int", search_id)
+        # Search destinations:
+        for destination in self._DESTINATIONS:
+            if destination.id == search_id:
+                return destination
+        return None
+
+    def get_by_port(self, search_port: int) -> Destination | None:
+        """
+        Get a destination by port number.
+        :param search_port: Int: The port number to search for.
+        :return: Destination | None
+        """
+        # Type check:
+        if not isinstance(search_port, int):
+            __type_error__("search_port", "int", search_port)
+        # search destinations:
+        for destination in self._DESTINATIONS:
+            if destination.syslog_port == search_port:
+                return destination
+        return None
+
+    def get_by_filter(self, search_filter: str) -> Destination | None:
+        """
+        Get a destination by filter.
+        :param search_filter: Str: The filter to search for.
+        :return: Destination | None
+        """
+        # Type check:
+        if not isinstance(search_filter, str):
+            __type_error__("search_filter", "str", search_filter)
+        # Search destinations:
+        for destination in self._DESTINATIONS:
+            if destination.filter == search_filter:
+                return destination
+        return None
+
+#########################
 # Overrides:
 #########################
-    def __getitem__(self, item) -> Destination | list[Destination]:
+    def __getitem__(self, item: int | str | slice) -> Destination | list[Destination]:
         """
         Index _DESTINATIONS as a list.
-        :param item: Int | slice: Index to return.
+        :param item: Int | str | slice: If item is an int, index by ID, if item is a str, index by name, otherwise if
+            item is a slice of ints, return the appropriate slice
         :return: Destination.
         """
-        if isinstance(item, int) or isinstance(item, slice):
+        if isinstance(item, int):
+            for destination in self._DESTINATIONS:
+                if destination.id == item:
+                    return destination
+            raise IndexError("Index by int, ID: %i not found." % item)
+        elif isinstance(item, str):
+            for destination in self._DESTINATIONS:
+                if destination.filter == item:
+                    return destination
+            raise IndexError("Index by str, filter: %s not found." % item)
+        elif isinstance(item, slice):
+            error: str = "Can only slice with ints."
+            if not isinstance(item.start, int):
+                raise TypeError(error)
+            elif item.stop is not None and not isinstance(item.stop, int):
+                raise TypeError(error)
+            elif item.step is not None and not isinstance(item.step, int):
+                raise TypeError(error)
             return self._DESTINATIONS[item]
         raise TypeError("Can only index by int.")
 
@@ -147,7 +213,7 @@ class Destinations(object):
         self._IS_LOADED = True
         return
 
-    ###########################
+###########################
 # Properties:
 ###########################
     @property
