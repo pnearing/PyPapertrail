@@ -14,6 +14,8 @@ from Exceptions import BadRequestError, AuthenticationError, NotFoundError, Meth
 from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
 
 BASE_URL: str = 'https://papertrailapp.com/api/v1/'
+USE_WARNINGS: bool = True
+# TODO: Finish USE_WARNINGS
 
 
 def is_timezone_aware(dt: datetime) -> bool:
