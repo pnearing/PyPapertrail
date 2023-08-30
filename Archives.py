@@ -123,9 +123,77 @@ class Archives(object):
         self._IS_LOADED = True
         return
 
-    ######################################
-    # List like overrides.
-    ######################################
+######################################
+# Getters:
+######################################
+    def get_by_file_name(self, search_file_name: str) -> Archive | None:
+        """
+        Return an archive with a matching filename.
+        :param search_file_name: Str: The file name to search for.
+        :return: Archive | None
+        """
+        # type check:
+        if not isinstance(search_file_name, str):
+            __type_error__("search_file_name", "str", search_file_name)
+        # Search archives:
+        for archive in self._ARCHIVES:
+            if archive.file_name == search_file_name:
+                return archive
+        return None
+
+    def get_by_start_time(self, search_start_time: datetime) -> Archive | None:
+        """
+        Return an archive matching a given start_time, given time will be converted to UTC if timezone aware or assumed
+            to be un UTC if timezone naive.
+        :param search_start_time: Datetime object: Datetime to search for.
+        :return: Archive | None
+        """
+        # type check:
+        if not isinstance(search_start_time, datetime):
+            __type_error__("search_start_time", "datetime", search_start_time)
+        # Search archives:
+        search_start_time = convert_to_utc(search_start_time)
+        for archive in self._ARCHIVES:
+            if archive.start_time == search_start_time:
+                return archive
+        return None
+
+    def get_by_end_time(self, search_end_time: datetime) -> Archive | None:
+        """
+        Get an archive matching a given stop time. Given time will be converted to UTC if timezone aware or assumed to
+            be UTC if timezone naive.
+        :param search_end_time: Datetime object: Datetime to search for.
+        :return: Archive | None
+        """
+        # Type check:
+        if not isinstance(search_end_time, datetime):
+            __type_error__("search_stop_time", "datetime", search_end_time)
+        # Search archives:
+        search_end_time = convert_to_utc(search_end_time)
+        for archive in self._ARCHIVES:
+            if archive.end_time == search_end_time:
+                return archive
+        return None
+
+    def get_by_time(self, search_time: datetime) -> Archive | None:
+        """
+        Get an archive that contains a given datetime object, matches start_time <= search_time <= end_time.
+        :param search_time: Datetime object: The datetime to search for.
+        :return: Archive | None
+        """
+        # type check:
+        if not isinstance(search_time, datetime):
+            __type_error__("search_time", "datetime", search_time)
+        # Search archives:
+        search_time = convert_to_utc(search_time)
+        for archive in self._ARCHIVES:
+            if archive.start_time <= search_time <= archive.end_time:
+                return archive
+        return None
+
+######################################
+# Overrides:
+######################################
 
     def __getitem__(self, item: datetime | int | str | slice) -> Archive | list[Archive]:
         """
