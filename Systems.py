@@ -19,8 +19,8 @@ except ImportError:
             exit(128)
 from typing import Optional, Iterator
 from datetime import datetime
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post
-from Exceptions import SystemsError
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+from Exceptions import SystemsError, InvalidServerResponse
 from Destinations import Destination
 from System import System
 
@@ -104,6 +104,10 @@ class Systems(object):
     # Methods:
     ###############################
     def load(self) -> None:
+        """
+        Load the systems list from papertrail.
+        :return: None
+        """
         # Set url and headers:
         list_url = BASE_URL + 'systems.json'
         system_list: list[dict] = requests_get(url=list_url, api_key=self._api_key)
@@ -115,6 +119,13 @@ class Systems(object):
             self._SYSTEMS.append(system)
         self._IS_LOADED = True
         return
+
+    def reload(self) -> None:
+        """
+        Reload the systems list.
+        :return: None
+        """
+        return self.load()
 
     def register(self,
                  name: str,
@@ -216,14 +227,12 @@ class Systems(object):
         self._SYSTEMS.append(system)
         return system
 
-    def remove(self, index: System | int | str) -> tuple[bool, str]:
+    def remove(self, index: System | int | str) -> None:
         """
         Remove a system from papertrail.
         :param index: System | int | str: The system to remove, if System, if int, it's index to remove, if str it's
             the system name that is used to look up which system to remove.
-        :return: Tuple[bool, str]: The first element, the bool, is True for success and False for failure.
-            If True, the second element will be the message "OK", and if False, the second element will be an error
-            message.
+        :return: None
         """
         # Type checks:
         if not isinstance(index, System) and not isinstance(index, int) and not isinstance(index, str):
@@ -231,26 +240,76 @@ class Systems(object):
         # Determine system to remove:
         sys_to_remove: Optional[System] = None
         if isinstance(index, System):
-            for system in self._SYSTEMS:
-                if system.id == index.id:
-                    sys_to_remove = system
-                    break
-            if sys_to_remove is None:
-                return False, "System object not found."
-        elif isinstance(index, int):
-            try:
-                sys_to_remove = self._SYSTEMS[index]
-            except IndexError:
-                return False, "Index %i out of bounds." % index
-        elif isinstance(index, str):
-            for system in self._SYSTEMS:
-                if system.name == index:
-                    sys_to_remove = system
-            if sys_to_remove is None:
-                return False, "System name '%s' not found." % index
-        # Remove the system:
-        # TODO: Remove the system.
-        return True, "OK"
+            sys_to_remove = index
+        elif isinstance(index, int) or isinstance(index, str):
+            sys_to_remove = self[index]
+    # Remove the system:
+        # Build the url:
+        del_url = BASE_URL + "systems/%i.json" % sys_to_remove.id
+        # Make the delete request:
+        response: dict = requests_del(url=del_url, api_key=self._api_key)
+        # Verify the response:
+        try:
+            if response['message'] != 'System deleted':
+                error: str = "Unexpected server response: %s" % response['message']
+                raise InvalidServerResponse(error)
+        except KeyError:
+            error: str = "Unexpected server response, KeyError."
+            raise InvalidServerResponse(error)
+        # Remove from _SYSTEMS:
+        self._SYSTEMS.remove(sys_to_remove)
+        return
+
+##################################
+# Getters:
+##################################
+    def get_by_id(self, search_id: int) -> System | None:
+        """
+        Get a system by ID.
+        :param search_id: Int: The system ID to search for.
+        :return: System | None
+        """
+        # Type check:
+        if not isinstance(search_id, int):
+            __type_error__("search_id", "int", search_id)
+        # Search systems:
+        for system in self._SYSTEMS:
+            if system.id == search_id:
+                return system
+        return None
+
+    def get_by_name(self, search_name: str) -> System | None:
+        """
+        Get a system by name.
+        :param search_name: Str: The name to search for
+        :return: Str
+        """
+        # type check:
+        if not isinstance(search_name, str):
+            __type_error__("search_name", "str", search_name)
+        # Search systems:
+        for system in self._SYSTEMS:
+            if system.name == search_name:
+                return system
+        return None
+
+    def find_in_name(self, search_str: str) -> list[System] | None:
+        """
+        Search names for a substring and return a list of matching systems.
+        :param search_str: Str: The substring to search for.
+        :return: list[System] | None
+        """
+        # type check:
+        if not isinstance(search_str, str):
+            __type_error__("search_str", "str", search_str)
+        # Search systems:
+        return_list: list[System] = []
+        for system in self._SYSTEMS:
+            if system.name.find(search_str) != -1:
+                return_list.append(system)
+        if len(return_list) == 0:
+            return None
+        return return_list
 
 ######################################################
 # Overrides:
@@ -258,17 +317,21 @@ class Systems(object):
     def __getitem__(self, item: str | int | datetime | slice) -> System | list[System]:
         """
         Index systems.
-        :param item: Str, int, datetime | slice: The index, if item is a str, index by name, if item is an int index as
-            a list, if item is a datetime, index by date time of the last event.
+        :param item: Str, int, datetime | slice: The index, if item is a str, index by name, if item is an int index by
+            ID, if item is a datetime, index by date time of the last event, finally if item is a slice, only slicing
+            by ints is supported, and will return a slice as though the systems were a list..
         :return: System | list[System]
         """
         if isinstance(item, int):
-            return self._SYSTEMS[item]
+            for system in self._SYSTEMS:
+                if system.id == item:
+                    return system
+            raise IndexError("ID: %i not found." % item)
         elif isinstance(item, str):
             for system in self._SYSTEMS:
                 if system.name == item:
                     return system
-            raise IndexError("Name: %s not found.")
+            raise IndexError("Name: %s not found." % item)
         elif isinstance(item, datetime):
             for system in self._SYSTEMS:
                 if system.last_event == item:
@@ -318,9 +381,13 @@ class Systems(object):
         """
         return self._IS_LOADED
 
+    @property
+    def systems(self) -> tuple[System]:
+        return tuple(self._SYSTEMS)
+
 
 ########################################################################################################################
-# TEst code:
+# Test code:
 ########################################################################################################################
 if __name__ == '__main__':
     # Tests:

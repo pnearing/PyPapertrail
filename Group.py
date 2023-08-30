@@ -16,12 +16,12 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional, TypeVar
+from typing import Optional
 from datetime import datetime
 import pytz
 from warnings import warn
-from common import __type_error__, convert_to_utc, requests_get, requests_put
-from Exceptions import GroupError, PapertrailWarning
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put, requests_post
+from Exceptions import GroupError, PapertrailWarning, InvalidServerResponse
 from System import System
 from Systems import Systems
 
@@ -82,7 +82,6 @@ class Group(object):
             warning: str = "Loading Systems list from papertrail."
             warn(warning, PapertrailWarning)
             self._systems.load()
-
         # Load this instance:
         if raw_group is not None:
             self.__from_raw_group__(raw_group)
@@ -160,6 +159,86 @@ class Group(object):
         for system in self._group_systems:
             return_dict['system_ids'].append(system.id)
         return return_dict
+
+###############################
+# Methods:
+###############################
+    def add_system(self, sys_to_add: System | int | str) -> Self:
+        """
+        Add a given system to this group.
+        :param sys_to_add: System | int | str: The System to add if a System object, the system ID to add if an int, or
+            the system name if a str.
+        :raises IndexError: If System | int | str not found in Systems.
+        :raises GroupError: If the system is already in the group.
+        :return: Self.
+            The updated group.
+        """
+        # Type check:
+        if not isinstance(sys_to_add, System) and not isinstance(sys_to_add, int) and not isinstance(sys_to_add, str):
+            __type_error__("sys_to_add", "System | int| str", sys_to_add)
+        # Warn that we're reloading the systems list.
+        warning: str = "Reloading systems from papertrail."
+        warn(warning, PapertrailWarning)
+        self._systems.reload()
+        # Get system_id:
+        system_id: int
+        if isinstance(sys_to_add, System):
+            if sys_to_add not in self._systems:
+                error: str = "System[%i:'%s']Not a valid system." % (sys_to_add.id, sys_to_add.name)
+                raise IndexError(error)
+            system_id = sys_to_add.id
+        else:
+            system = self._systems[sys_to_add]
+            system_id = system.id
+        # Check if system_id in the group already:
+        for system in self._group_systems:
+            if system.id == system_id:
+                error: str = "System already in group."
+                raise GroupError(error)
+        # Build url:
+        join_url = BASE_URL + 'systems/%i/join.json' % system_id
+        # Build json data:
+        json_data: dict = {"group_id": self._id}
+        # Make the POST request:
+        response: dict = requests_post(url=join_url, api_key=self._api_key, json_data=json_data)
+        # Parse the response:
+        try:
+            if response['message'] != 'System updated':
+                error: str = "Unexpected response message: %s" % response['message']
+                raise InvalidServerResponse(error, url=join_url)
+        except KeyError:
+            error: str = "KeyError while parsing response."
+            raise InvalidServerResponse(error, url=join_url)
+        self.reload()
+        return self
+
+    def remove_system(self, sys_to_del: System | int | str) -> None:
+        """
+        Remove a given system from this group.
+        :param sys_to_del: System | int | str: If sys_to_del is a System, it's the system to delete, if it's an int it's
+            the system ID number, otherwise if it's a str, then it's the name of the system.
+        :raises IndexError: If the system is not found in the system list.
+        :raises GroupError: If the system is not found in the group system list.
+        :return: None
+        """
+        # Type check:
+        if not isinstance(sys_to_del, System) and not isinstance(sys_to_del, int) and not isinstance(sys_to_del, str):
+            __type_error__("sys_to_del", "System | int | str", sys_to_del)
+        # Warn that we're reloading the systems list.
+        warning: str = "Reloading systems from papertrail."
+        warn(warning, PapertrailWarning)
+
+        # Get the system_id to remove:
+        system_id: int
+        if isinstance(sys_to_del, System):
+
+            if sys_to_del not in self._systems:
+                error: str = "System not in systems."
+                raise IndexError(error)
+            system_id = sys_to_del.id
+        else:
+            system = self._systems[sys_to_del]
+            system_id = system.id
 
 ###############################
 # Overrides:
@@ -313,4 +392,3 @@ class Group(object):
     @property
     def systems(self) -> list[System]:
         return self._group_systems
-    

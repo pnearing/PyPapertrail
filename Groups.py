@@ -24,6 +24,7 @@ import pytz
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
 from Exceptions import GroupError, InvalidServerResponse
 from Group import Group
+from System import System
 
 
 class Groups(object):
@@ -195,25 +196,104 @@ class Groups(object):
         delete_url = group_to_delete.self_link
         response: dict = requests_del(delete_url, self._api_key)
         # Parse response:
-        if response['message'] != 'Group deleted':
-            error: str = "Unexpected response: %s" % response['message']
+        try:
+            if response['message'] != 'Group deleted':
+                error: str = "Unexpected response: %s" % response['message']
+                raise InvalidServerResponse(error)
+        except KeyError:
+            error: str = "Unexpected server response, KeyError."
             raise InvalidServerResponse(error)
         # Remove the group from the group list:
         self._GROUPS.remove(group_to_delete)
         return
-    
+
+        ###############################
+        # Getters:
+        ###############################
+    def get_by_id(self, search_id: int) -> Group | None:
+        """
+        Get a Group by ID.
+        :param search_id: Int: The id number of the group.
+        :return: Group | None
+        """
+        # Type check:
+        if not isinstance(search_id, int):
+            __type_error__("search_id", "int", search_id)
+        # Search groups:
+        for group in self._GROUPS:
+            if group.id == search_id:
+                return group
+        return None
+
+    def get_by_name(self, search_name: str) -> Group | None:
+        """
+        Get a Group by name.
+        :param search_name: Str: The name of the group.
+        :return: Group | None
+        """
+        # Type check:
+        if not isinstance(search_name, str):
+            __type_error__("search_name", "str", search_name)
+        # Search groups:
+        for group in self._GROUPS:
+            if group.name == search_name:
+                return group
+        return None
+
+    def get_by_system(self, search_sys: System) -> list[Group] | None:
+        """
+        Get a list of groups that include this system.
+        :param search_sys: System: The system to search for.
+        :return: Group | None
+        """
+        # Type check:
+        if not isinstance(search_sys, System):
+            __type_error__("search_sys", "System", search_sys)
+        # Search groups:
+        return_list: list[Group] = []
+        for group in self._GROUPS:
+            for system in group.systems:
+                if system == search_sys:
+                    return_list.append(group)
+                    break
+        if len(return_list) == 0:
+            return None
+        return return_list
+
+    def find_in_name(self, search_str: str) -> list[Group] | None:
+        """
+        Search names for a substring, and return a list of groups that match.
+        :param search_str: Str: The substring to search for.
+        :return: list[Group] | None
+        """
+        # Type check:
+        if not isinstance(search_str, str):
+            __type_error__("search_str", "str", search_str)
+        # Search groups
+        return_list: list[Group] = []
+        for group in self._GROUPS:
+            if group.name.find(search_str) != -1:
+                return_list.append(group)
+        if len(return_list) == 0:
+            return None
+        return return_list
+
     #############################
     # Overrides:
     #############################
     def __getitem__(self, item: int | str | slice) -> Group | list[Group]:
         """
         Access this as a list / dict with an index.
-        :param item: Int | str | slice: The index, if item is an int, index as a list, if item is a str, index by name,
+        :param item: Int | str | slice: The index, if item is an int, index by ID, if item is a str, index by name,
             otherwise if index is a slice of type int, returns a list of groups as per the slice.
         :return: Group | list[Group]
         """
         if isinstance(item, int):
-            return self._GROUPS[item]
+            for group in self._GROUPS:
+                if group.id == item:
+                    return group
+                error: str = "Indexing as int, id %i not found." % item
+                raise IndexError(error)
         elif isinstance(item, str):
             for group in self._GROUPS:
                 if group.name == item:
@@ -277,13 +357,13 @@ if __name__ == '__main__':
     test_reload: bool = True
     test_create: bool = False
     test_update: bool = False
-    test_delete: bool = True
+    test_delete: bool = False
 
     if test_reload:
-        print("Init time:", groups[0].last_fetched.isoformat())
-        groups[0].reload()
-        print("reload time:", groups[0].last_fetched.isoformat())
-
+        # print("Init time:", groups[0].last_fetched.isoformat())
+        # groups[0].reload()
+        # print("reload time:", groups[0].last_fetched.isoformat())
+        pass
     if test_create:
         print("Adding TEST group.")
         new_group = groups.create(name="TEST")

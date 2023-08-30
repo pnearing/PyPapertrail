@@ -19,7 +19,7 @@ except ImportError:
 from typing import Optional
 from datetime import datetime
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put
-from Exceptions import SystemsError
+from Exceptions import SystemsError, InvalidServerResponse
 
 
 class System(object):
@@ -243,7 +243,11 @@ class System(object):
         # Make the PUT request:
         raw_system: dict = requests_put(url=update_url, api_key=self._api_key, json_data=json_data)
         # Reload from raw_system response, and set last fetched:
-        self.__from_raw_system__(raw_system)
+        try:
+            self.__from_raw_system__(raw_system)
+        except SystemsError:
+            error: str = "Invalid dict sent by server."
+            raise InvalidServerResponse(error)
         self._last_fetched = convert_to_utc(datetime.utcnow())
         return self
 
@@ -253,7 +257,8 @@ class System(object):
     def __eq__(self, other: Self | int | str) -> bool:
         """
         Equality test, tests system.id.
-        :param other: System: The system to compare to.
+        :param other: System | int | str: The system to compare to, either a System object, an int for the system id, or
+            a str for the system name.
         :return: Bool: True if ids are equal.
         """
         if isinstance(other, Self):
@@ -265,9 +270,17 @@ class System(object):
         raise TypeError("Cannot compare System to %s" % str(type(other)))
 
     def __str__(self) -> str:
+        """
+        Refer as a string, return name
+        :return: Str
+        """
         return self._name
 
     def __int__(self) -> int:
+        """
+        Refer as an int, return ID.
+        :return: Int
+        """
         return self._id
 
 #########################################
