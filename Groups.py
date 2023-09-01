@@ -209,7 +209,7 @@ class Groups(object):
         ###############################
         # Getters:
         ###############################
-    def get_by_id(self, search_id: int) -> Group | None:
+    def get_by_id(self, search_id: int) -> Optional[Group]:
         """
         Get a Group by ID.
         :param search_id: Int: The id number of the group.
@@ -224,7 +224,7 @@ class Groups(object):
                 return group
         return None
 
-    def get_by_name(self, search_name: str) -> Group | None:
+    def get_by_name(self, search_name: str) -> Optional[Group]:
         """
         Get a Group by name.
         :param search_name: Str: The name of the group.
@@ -239,7 +239,7 @@ class Groups(object):
                 return group
         return None
 
-    def get_by_system(self, search_sys: System) -> list[Group] | None:
+    def get_by_system(self, search_sys: System) -> Optional[list[Group]]:
         """
         Get a list of groups that include this system.
         :param search_sys: System: The system to search for.
@@ -259,7 +259,7 @@ class Groups(object):
             return None
         return return_list
 
-    def find_in_name(self, search_str: str) -> list[Group] | None:
+    def find_in_name(self, search_str: str) -> Optional[list[Group]]:
         """
         Search names for a substring, and return a list of groups that match.
         :param search_str: Str: The substring to search for.
@@ -344,6 +344,14 @@ class Groups(object):
         """
         return self._LAST_FETCHED
 
+    @property
+    def groups(self) -> tuple[Group]:
+        """
+        Return a tuple of groups.
+        :return: Tuple[Group]
+        """
+        return tuple(self._GROUPS)
+
 
 ########################################################################################################################
 # TEST CODE:
@@ -359,9 +367,10 @@ if __name__ == '__main__':
     test_delete: bool = False
 
     if test_reload:
-        # print("Init time:", groups[0].last_fetched.isoformat())
-        # groups[0].reload()
-        # print("reload time:", groups[0].last_fetched.isoformat())
+        s = slice(0, None, None)
+        print("Init time:", groups[s][0].last_fetched.isoformat())
+        groups[s][0].reload()
+        print("reload time:", groups[s][0].last_fetched.isoformat())
         pass
     if test_create:
         print("Adding TEST group.")
