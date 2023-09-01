@@ -23,9 +23,10 @@ from typing import Optional, Iterator
 from datetime import datetime
 from warnings import warn
 from common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
-from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning
+from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
 from User import User
 from Group import Group
+from Groups import Groups
 
 
 class Users(object):
@@ -57,7 +58,7 @@ class Users(object):
 
         # Store api key:
         self._api_key: str = api_key
-        # Store a groups instance:
+        # Store a 'Groups' instance:
         self._groups: Groups = Groups(api_key=api_key, do_load=False)
         # Load this instance:
         if from_dict is not None:
@@ -84,6 +85,7 @@ class Users(object):
             for user_dict in from_dict['_users']:
                 user = User(api_key=self._api_key, from_dict=user_dict)
                 self._USERS.append(user)
+            self._IS_LOADED = True
         except KeyError:
             error: str = "Invalid dict provided to __from_dict__()"
             raise UsersError(error)
@@ -180,11 +182,11 @@ class Users(object):
         # Parameter check that groups is not an empty list:
         if groups is not None and len(groups) == 0:
             error: str = "Parameter error, groups cannot be an empty list."
-            raise UsersError(error)
+            raise ParameterError(error)
         # Parameter check groups and all groups together:
         if all_groups and groups is not None:
             error: str = "Parameter error, if all_groups is True, then groups must be None."
-            raise UsersError(error)
+            raise ParameterError(error)
         # Build invite url:
         invite_url: str = BASE_URL + 'users/invite.json'
         # Build json data:

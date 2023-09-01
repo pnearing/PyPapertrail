@@ -22,7 +22,7 @@ import requests
 from datetime import datetime
 import pytz
 from common import __type_error__, convert_to_utc, __raise_for_http_error__
-from Exceptions import ArchiveError, RequestReadTimeout
+from Exceptions import ArchiveError, RequestReadTimeout, ParameterError
 
 
 class Archive(object):
@@ -58,10 +58,10 @@ class Archive(object):
         # Parameter checks:
         if (raw_archive is None and from_dict is None) or (raw_archive is not None and from_dict is not None):
             error: str = "ParameterError: Either from_dict or raw_archive must be defined, but not both."
-            raise ArchiveError(error)
+            raise ParameterError(error)
         elif raw_archive is not None and last_fetched is None:
             error: str = "ParameterError: If using raw_archive, last_fetched must be defined."
-            raise ArchiveError(error)
+            raise ParameterError(error)
 
         # Store api key, and last fetched:
         self._api_key: str = api_key
@@ -83,10 +83,10 @@ class Archive(object):
         # Load archive properties:
         if raw_archive is None and from_dict is None:
             error: str = "Either raw_archive or from_dict must be defined, but not both."
-            raise ArchiveError(error)
+            raise ParameterError(error)
         elif raw_archive is not None and from_dict is not None:
             error: str = "Either raw_archive or from_dict must be defined, but not both."
-            raise ArchiveError(error)
+            raise ParameterError(error)
         elif raw_archive is not None:
             self.__from_raw_archive__(raw_archive)
         else:

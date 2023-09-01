@@ -20,7 +20,7 @@ except ImportError:
 from typing import Optional, Iterator
 from datetime import datetime
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
-from Exceptions import SystemsError, InvalidServerResponse
+from Exceptions import SystemsError, InvalidServerResponse, ParameterError
 from Destinations import Destination
 from System import System
 
@@ -142,9 +142,9 @@ class Systems(object):
         :param name: Str: Papertrail name.
         :param host_name: Optional[str]: Filter events to only those from this syslog host name.
         :param ip_address: Optional[str]: The Ip address of the system, it should be a static public ip.
-        :param destination_port: Int: Syslog target port. If set to port 519, ip_address must be specified.
-        :param destination_id: Int: Syslog destination papertrail ID.
-        :param destination: Destination: A Destination object produced by this library.
+        :param destination_port: Optional[int]: Syslog target port. If set to port 519, ip_address must be specified.
+        :param destination_id: Optional[int]: Syslog destination papertrail ID.
+        :param destination: Optional[Destination]: A Destination object produced by this library.
         :param description: Optional[str]: The description of this system.
         :param auto_delete: Optional[bool]: Auto delete system if idle.
         :raises: SystemsError: When an error occurs.
@@ -159,16 +159,10 @@ class Systems(object):
         # Type / value / parameter checks:
         if not isinstance(name, str):
             __type_error__("name", "str", name)
-        elif len(name) == 0:
-            raise ValueError("name must not be of 0 length.")
         elif host_name is not None and not isinstance(host_name, str):
             __type_error__("host_name", "str", host_name)
-        elif host_name is not None and len(host_name) == 0:
-            raise ValueError("host_name must not be of 0 length.")
         elif ip_address is not None and not isinstance(ip_address, str):
             __type_error__("ip_address", "str", ip_address)
-        elif ip_address is not None and len(ip_address) < 7:
-            raise ValueError("ip_address must be at least 7 characters.")
         elif destination_port is not None and not isinstance(destination_port, int):
             __type_error__("destination_port", "int", destination_port)
         elif destination_id is not None and not isinstance(destination_id, int):
@@ -179,27 +173,36 @@ class Systems(object):
             __type_error__("description", "str", description)
         elif auto_delete is not None and not isinstance(auto_delete, bool):
             __type_error__("auto_delete", "bool", auto_delete)
+
+        # Value checks:
+        if len(name) == 0:
+            raise ValueError("name must not be of 0 length.")
+        elif host_name is not None and len(host_name) == 0:
+            raise ValueError("host_name must not be of 0 length.")
+        elif ip_address is not None and len(ip_address) < 7:
+            raise ValueError("ip_address must be at least 7 characters.")
+
         # Check the host name and ip address:
         if host_name is None and ip_address is None:
             error: str = "One of host_name or ip_address must be defined."
-            raise SystemsError(error)
+            raise ParameterError(error)
         # Make sure that host name is defined, when using either destination_port != 514, a destination object, or a
         #   destination_id.
         if (destination_port != 514) or destination is not None or destination_id is not None:
             if host_name is None:
                 error: str = ("host_name must be defined if destination_port != 514 or using destination_id, or using "
                               "a destination object, the host_name must be defined.")
-                raise SystemsError(error)
+                raise ParameterError(error)
         # Check for port 514, and force ip_address:
         if destination_port is not None and destination_port == 514:
             if ip_address is None:
                 error: str = "If using destination_port=514, then ip_address must be defined."
-                raise SystemsError(error)
+                raise ParameterError(error)
 
         # Check destination:
         if destination is None and destination_id is None and destination_port is None:
             error: str = "One of destination, destination_id, or destination_port must be defined."
-            raise SystemsError(error)
+            raise ParameterError(error)
         # Build url:
         register_url = BASE_URL + "systems.json"
         # Build JSON data dict:
@@ -240,6 +243,9 @@ class Systems(object):
         # Determine system to remove:
         sys_to_remove: Optional[System] = None
         if isinstance(index, System):
+            if sys_to_remove not in self._SYSTEMS:
+                error: str = "System not found in system list."
+                raise IndexError(error)
             sys_to_remove = index
         elif isinstance(index, int) or isinstance(index, str):
             sys_to_remove = self[index]

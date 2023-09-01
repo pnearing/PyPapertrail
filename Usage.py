@@ -171,6 +171,22 @@ class Usage(object):
         """
         return self._DATA_HARD_LIMIT
 
+    @property
+    def is_loaded(self) -> bool:
+        """
+        If the usage has been loaded.
+        :return: Bool
+        """
+        return self._IS_LOADED
+
+    @property
+    def last_fetched(self) -> Optional[datetime]:
+        """
+        Last datetime this was last loaded from Papertrail in UTC.
+        :return: Optional[datetime]: None if not loaded.
+        """
+        return self._LAST_FETCHED
+
 
 ########################################################################################################################
 # TEST CODE:

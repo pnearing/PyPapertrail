@@ -18,7 +18,7 @@ except ImportError:
             exit(129)
 from typing import Optional
 from common import BASE_URL, __type_error__, convert_to_utc
-from Exceptions import DestinationError
+from Exceptions import DestinationError, ParameterError, InvalidServerResponse
 from datetime import datetime
 import pytz
 
@@ -58,10 +58,10 @@ class Destination(object):
         # Parameter checks:
         if (raw_destination is None and from_dict is None) or (raw_destination is not None and from_dict is not None):
             error: str = "ParameterError: Either raw_destination or from_dict must be defined, but not both."
-            raise DestinationError(error)
+            raise ParameterError(error)
         elif raw_destination is not None and last_fetched is None:
             error: str = "ParameterError: If using raw_destination you must use last_fetched."
-            raise DestinationError(error)
+            raise ParameterError(error)
 
         # Store api key, and last fetched:
         self._api_key: str = api_key
@@ -106,7 +106,7 @@ class Destination(object):
             self._info_link = BASE_URL + 'destinations/%i.json' % self._id
         except KeyError as e:
             error: str = "Key not found, perhaps papertrail changed their response."
-            raise DestinationError(error, exception=e)
+            raise InvalidServerResponse(error, exception=e)
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -148,6 +148,17 @@ class Destination(object):
             return_dict['last_fetched'] = self._last_fetched.isoformat()
         return return_dict
 
+    ###########################
+    # Methods:
+    ###########################
+    def reload(self) -> Self:
+        """
+        Reload this destination from the server.
+        :return: Destination: This instance.
+        """
+        # TODO: Finish
+        return self
+
 ###########################
 # Overrides:
 ###########################
@@ -180,16 +191,6 @@ class Destination(object):
         :return: Int: The syslog port.
         """
         return self._syslog_port
-
-###########################
-# Methods:
-###########################
-    def reload(self) -> Self:
-        """
-        Reload this destination from the server.
-        :return: Destination: This instance.
-        """
-        return self
 
 ###########################
 # Properties:

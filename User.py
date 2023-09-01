@@ -22,7 +22,7 @@ except ImportError:
 from typing import Optional
 from warnings import warn
 from common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
-from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning
+from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
 from Groups import Groups
 from Group import Group
 
@@ -53,7 +53,7 @@ class User(object):
         # Parameter checks:
         if (from_dict is None and raw_user is None) or (from_dict is not None and raw_user is not None):
             error: str = "ParameterError: Either from_dict or raw_user must be defined, but not both."
-            raise UsersError(error)
+            raise ParameterError(error)
 
         # Store api key:
         self._api_key = api_key
@@ -144,7 +144,7 @@ class User(object):
         # Check that groups isn't an empty list:
         if groups is not None and len(groups) == 0:
             error: str = "ParameterError: groups, if defined, cannot be an empty list."
-            raise UsersError(error)
+            raise ParameterError(error)
         # Parameter check that at least one parameter is defined:
         all_none: bool = True
         for parameter in (email, read_only, manage_members, manage_billing, purge_logs, all_groups, groups):
@@ -152,11 +152,11 @@ class User(object):
                 all_none = False
         if all_none:
             error: str = "ParameterError: At least one parameter must be defined."
-            raise UsersError(error)
-        # Parameter check that if all_groups is True, groups is not defined:
+            raise ParameterError(error)
+        # Parameter check that if all_groups is True, groups are not defined:
         if all_groups and groups is not None:
             error: str = "ParameterError: If all_groups == True, groups must be None."
-            raise UsersError(error)
+            raise ParameterError(error)
         # Build the update url:
         update_url: str = BASE_URL + 'users/%i.json' % self._id
         # Build the JSON data:
@@ -242,4 +242,3 @@ if __name__ == '__main__':
     from apiKey import API_KEY
 
     exit(0)
-

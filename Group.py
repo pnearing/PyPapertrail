@@ -21,7 +21,7 @@ from datetime import datetime
 import pytz
 from warnings import warn
 from common import USE_WARNINGS, BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put, requests_post
-from Exceptions import GroupError, PapertrailWarning, InvalidServerResponse
+from Exceptions import GroupError, PapertrailWarning, InvalidServerResponse, ParameterError
 from System import System
 from Systems import Systems
 
@@ -57,10 +57,10 @@ class Group(object):
         # Parameter checks:
         if (raw_group is None and from_dict is None) or (raw_group is not None and from_dict is not None):
             error: str = "ParameterError: Either raw_group or from_dict must be defined, but not both."
-            raise GroupError(error)
+            raise ParameterError(error)
         elif raw_group is not None and last_fetched is None:
             error: str = "ParameterError: If using raw_group, last_fetched must be defined."
-            raise GroupError(error)
+            raise ParameterError(error)
 
         # Store api_key and last_fetched:
         self._api_key: str = api_key
@@ -178,10 +178,11 @@ class Group(object):
         if not isinstance(sys_to_add, System) and not isinstance(sys_to_add, int) and not isinstance(sys_to_add, str):
             __type_error__("sys_to_add", "System | int| str", sys_to_add)
         # Warn that we're reloading the systems list.
-        if USE_WARNINGS:
-            warning: str = "Reloading systems from papertrail."
-            warn(warning, PapertrailWarning)
-        self._systems.reload()
+        if not self._systems.is_loaded:
+            if USE_WARNINGS:
+                warning: str = "Reloading systems from papertrail."
+                warn(warning, PapertrailWarning)
+            self._systems.reload()
         # Get system_id:
         system_id: int
         if isinstance(sys_to_add, System):
@@ -190,13 +191,12 @@ class Group(object):
                 raise IndexError(error)
             system_id = sys_to_add.id
         else:
-            system = self._systems[sys_to_add]
-            system_id = system.id
+            sys_to_add = self._systems[sys_to_add]  # Raises IndexError if not found.
+            system_id = sys_to_add.id
         # Check if system_id in the group already:
-        for system in self._group_systems:
-            if system.id == system_id:
-                error: str = "System already in group."
-                raise GroupError(error)
+        if sys_to_add in self._group_systems:
+            error: str = "System already in group."
+            raise GroupError(error)
         # Build url:
         join_url = BASE_URL + 'systems/%i/join.json' % system_id
         # Build json data:
@@ -253,6 +253,63 @@ class Group(object):
             error: str = "System not in group."
             raise GroupError(error)
         # Build leave url:
+        # TODO: Finish
+
+###############################
+# Methods:
+###############################
+    def reload(self) -> Self:
+        """
+        Reload this group from papertrail.
+        :return: Group.
+        """
+        # Use self link url and make request:
+        raw_group: dict = requests_get(self._self_link, self._api_key)
+        # Load from the raw group, and set last fetched:
+        self.__from_raw_group__(raw_group)
+        self._last_fetched = pytz.utc.localize(datetime.utcnow())
+        return self
+
+    def update(self,
+               name: Optional[str] = None,
+               system_wildcard: Optional[str] = None,
+               ) -> Self:
+        """
+        Update a group.
+        :param name: Optional[str]: The new name.
+        :param system_wildcard: Optional[str]: The new system wildcard.
+        :return: Group: The updated group.
+        """
+        # Type checks:
+        if name is not None and not isinstance(name, str):
+            __type_error__("name", "Optional[str]", name)
+        elif system_wildcard is not None and not isinstance(system_wildcard, str):
+            __type_error__("system_wildcard", "Optional[str]", system_wildcard)
+        # Value checks:
+        if name == self._name:
+            warning: str = "Parameter name == self._name, setting parameter to None."
+            warn(warning, PapertrailWarning)
+        elif system_wildcard == self._system_wildcard:
+            warning: str = "Parameter system_wildcard == self._system_wildcard, setting parameter to None."
+            warn(warning, PapertrailWarning)
+        # Parameter checks:
+        if name is None and system_wildcard is None:
+            error: str = "ParameterError: name and system_wildcard, can't both be None."
+            raise ParameterError(error)
+        # Get url:
+        update_url: str = self._self_link
+        # Build json data object:
+        json_data: dict = {'group': {}}
+        if name is not None:
+            json_data['group']['name'] = name
+        if system_wildcard is not None:
+            json_data['group']['system_wildcard'] = system_wildcard
+        # Make the put request:
+        raw_group = requests_put(update_url, self._api_key, json_data)
+        # Parse the response:
+        self._last_fetched = convert_to_utc(datetime.utcnow())
+        self.__from_raw_group__(raw_group)
+        return self
 
 ###############################
 # Overrides:
@@ -286,63 +343,6 @@ class Group(object):
         :return:
         """
         return self._id
-
-###############################
-# Methods:
-###############################
-    def reload(self) -> Self:
-        """
-        Reload this group from papertrail.
-        :return: Group.
-        """
-        # Get url and make request:
-        reload_url = self._self_link
-        raw_group: dict = requests_get(reload_url, self._api_key)
-        # Load from the raw group, and set last fetched:
-        self.__from_raw_group__(raw_group)
-        self._last_fetched = pytz.utc.localize(datetime.utcnow())
-        return self
-
-    def update(self,
-               name: Optional[str] = None,
-               system_wildcard: Optional[str] = None,
-               ) -> Self:
-        """
-        Update a group.
-        :param name: Optional[str]: The new name.
-        :param system_wildcard: Optional[str]: The new system wildcard.
-        :return: Group: The updated group.
-        """
-        # Type checks:
-        if name is not None and not isinstance(name, str):
-            __type_error__("name", "Optional[str]", name)
-        elif system_wildcard is not None and not isinstance(system_wildcard, str):
-            __type_error__("system_wildcard", "Optional[str]", system_wildcard)
-        # Value checks:
-        if name == self._name:
-            warning: str = "Parameter name == self._name, setting parameter to None."
-            warn(warning, PapertrailWarning)
-        elif system_wildcard == self._system_wildcard:
-            warning: str = "Parameter system_wildcard == self._system_wildcard, setting parameter to None."
-            warn(warning, PapertrailWarning)
-        # Parameter checks:
-        if name is None and system_wildcard is None:
-            error: str = "ParameterError: name and system_wildcard, can't both be None."
-            raise GroupError(error)
-        # Get url:
-        update_url: str = self._self_link
-        # Build json data object:
-        json_data: dict = {'group': {}}
-        if name is not None:
-            json_data['group']['name'] = name
-        if system_wildcard is not None:
-            json_data['group']['system_wildcard'] = system_wildcard
-        # Make the put request:
-        raw_group = requests_put(update_url, self._api_key, json_data)
-        # Parse the response:
-        self._last_fetched = convert_to_utc(datetime.utcnow())
-        self.__from_raw_group__(raw_group)
-        return self
 
 ###############################
 # Properties:

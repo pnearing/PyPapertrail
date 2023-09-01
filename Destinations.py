@@ -62,7 +62,7 @@ class Destinations(object):
         return
 
 ###########################
-# Load / Save functions:
+# To / From dict:
 ###########################
     def __from_dict__(self, from_dict: dict) -> None:
         """
@@ -100,10 +100,31 @@ class Destinations(object):
             return_dict['_destinations'].append(destination_dict)
         return return_dict
 
+###########################################
+# Methods:
+###########################################
+    def load(self) -> None:
+        """
+        Load destinations from papertrail.
+        :return: None
+        """
+        # Set url and make request:
+        list_url = BASE_URL + 'destinations.json'
+        raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
+        # Parse the response from papertrail.
+        self._DESTINATIONS = []
+        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
+        for raw_destination in raw_log_destinations:
+            destination = Destination(self._api_key, raw_destination=raw_destination,
+                                      last_fetched=self._LAST_FETCHED)
+            self._DESTINATIONS.append(destination)
+        self._IS_LOADED = True
+        return
+
 #########################
 # Getters:
 #########################
-    def get_by_id(self, search_id: int) -> Destination | None:
+    def get_by_id(self, search_id: int) -> Optional[Destination]:
         """
         Get a destination by id.
         :param search_id: Int: the ID to search for.
@@ -118,7 +139,7 @@ class Destinations(object):
                 return destination
         return None
 
-    def get_by_port(self, search_port: int) -> Destination | None:
+    def get_by_port(self, search_port: int) -> Optional[Destination]:
         """
         Get a destination by port number.
         :param search_port: Int: The port number to search for.
@@ -133,7 +154,7 @@ class Destinations(object):
                 return destination
         return None
 
-    def get_by_filter(self, search_filter: str) -> Destination | None:
+    def get_by_filter(self, search_filter: str) -> Optional[Destination]:
         """
         Get a destination by filter.
         :param search_filter: Str: The filter to search for.
@@ -192,26 +213,6 @@ class Destinations(object):
         :return: Int
         """
         return len(self._DESTINATIONS)
-
-###########################################
-# Methods:
-###########################################
-    def load(self) -> None:
-        """
-        Load destinations from papertrail.
-        :return: None
-        """
-        # Set url and make request:
-        list_url = BASE_URL + 'destinations.json'
-        raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
-        # Parse the response from papertrail.
-        self._DESTINATIONS = []
-        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
-        for raw_destination in raw_log_destinations:
-            destination = Destination(self._api_key, raw_destination=raw_destination, last_fetched=self._LAST_FETCHED)
-            self._DESTINATIONS.append(destination)
-        self._IS_LOADED = True
-        return
 
 ###########################
 # Properties:

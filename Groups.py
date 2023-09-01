@@ -139,13 +139,14 @@ class Groups(object):
 
         # Type Check system_ids elements:
         if system_ids is not None:
-            for index, sys_id in enumerate(system_ids):
+            for i, sys_id in enumerate(system_ids):
                 if not isinstance(sys_id, int):
-                    __type_error__("system_ids[%i]" % index, "int", system_ids[index])
+                    __type_error__("system_ids[%i]" % i, "int", system_ids[i])
 
         # Value check system id's for an empty list:
         if system_ids is not None and len(system_ids) == 0:
-            system_ids = None
+            error: str = "system_ids cannot be an empty list."
+            raise ValueError(error)
 
         # Build url:
         create_url: str = BASE_URL + "groups.json"

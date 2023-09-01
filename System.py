@@ -19,7 +19,7 @@ except ImportError:
 from typing import Optional
 from datetime import datetime
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put
-from Exceptions import SystemsError, InvalidServerResponse
+from Exceptions import SystemsError, InvalidServerResponse, ParameterError
 
 
 class System(object):
@@ -45,19 +45,23 @@ class System(object):
         :raises: TypeError: If an invalid type is passed as a parameter.
         :returns: None
         """
-        # Type / value / parameter checks:
+        # Type checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
         elif last_fetched is not None and not isinstance(last_fetched, datetime):
             __type_error__("last_fetched", "datetime", last_fetched)
         elif raw_system is not None and not isinstance(raw_system, dict):
             __type_error__("raw_system", "dict", raw_system)
-        elif raw_system is not None and last_fetched is None:
-            error: str = "If using parameter raw_system, last_fetched must be defined."
-            raise SystemsError(error)
         elif from_dict is not None and not isinstance(from_dict, dict):
             __type_error__("from_dict", "dict", from_dict)
 
+        # Parameter checks:
+        if raw_system is not None and last_fetched is None:
+            error: str = "If using parameter raw_system, last_fetched must be defined."
+            raise ParameterError(error)
+        elif (raw_system is None and from_dict is None) and (raw_system is not None and from_dict is not None):
+            error: str = "Either raw_system or from_dict must be defined, but not both."
+            raise ParameterError(error)
         # Store the api key.
         self._api_key: str = api_key
         # Define the properties:
@@ -113,7 +117,7 @@ class System(object):
             self._last_fetched = convert_to_utc(datetime.utcnow())
         except KeyError as e:
             error: str = "KeyError: %s. Maybe papertrail changed their response." % str(e)
-            raise SystemsError(error, exception=e)
+            raise InvalidServerResponse(error, exception=e)
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -225,7 +229,7 @@ class System(object):
                 all_none = False
         if all_none:
             error: str = "At least one parameter must be defined."
-            raise SystemsError(error)
+            raise ParameterError(error)
         # Build url and headers:
         update_url: str = BASE_URL + "systems/%i.json" % self._id
         # Build json data:
@@ -243,11 +247,7 @@ class System(object):
         # Make the PUT request:
         raw_system: dict = requests_put(url=update_url, api_key=self._api_key, json_data=json_data)
         # Reload from raw_system response, and set last fetched:
-        try:
-            self.__from_raw_system__(raw_system)
-        except SystemsError:
-            error: str = "Invalid dict sent by server."
-            raise InvalidServerResponse(error)
+        self.__from_raw_system__(raw_system)
         self._last_fetched = convert_to_utc(datetime.utcnow())
         return self
 
