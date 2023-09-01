@@ -292,6 +292,13 @@ class Archives(object):
         """
         return self._IS_LOADED
 
+    @property
+    def archives(self) -> tuple[Archive]:
+        """
+        Return a tuple of archives.
+        :return: Tuple[Archive]
+        """
+        return tuple(self._ARCHIVES)
 
 ########################################################################################################################
 # Test code:
