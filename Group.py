@@ -20,7 +20,7 @@ from typing import Optional
 from datetime import datetime
 import pytz
 from warnings import warn
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put, requests_post
+from common import USE_WARNINGS, BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put, requests_post
 from Exceptions import GroupError, PapertrailWarning, InvalidServerResponse
 from System import System
 from Systems import Systems
@@ -79,8 +79,9 @@ class Group(object):
         # Load up systems if not already loaded.
         self._systems = Systems(api_key=api_key, from_dict=None, do_load=False)
         if not self._systems.is_loaded:
-            warning: str = "Loading Systems list from papertrail."
-            warn(warning, PapertrailWarning)
+            if USE_WARNINGS:
+                warning: str = "Loading Systems list from papertrail."
+                warn(warning, PapertrailWarning)
             self._systems.load()
         # Load this instance:
         if raw_group is not None:
@@ -177,8 +178,9 @@ class Group(object):
         if not isinstance(sys_to_add, System) and not isinstance(sys_to_add, int) and not isinstance(sys_to_add, str):
             __type_error__("sys_to_add", "System | int| str", sys_to_add)
         # Warn that we're reloading the systems list.
-        warning: str = "Reloading systems from papertrail."
-        warn(warning, PapertrailWarning)
+        if USE_WARNINGS:
+            warning: str = "Reloading systems from papertrail."
+            warn(warning, PapertrailWarning)
         self._systems.reload()
         # Get system_id:
         system_id: int
@@ -225,8 +227,9 @@ class Group(object):
         if not isinstance(sys_to_del, System) and not isinstance(sys_to_del, int) and not isinstance(sys_to_del, str):
             __type_error__("sys_to_del", "System | int | str", sys_to_del)
         # Warn that we're reloading the systems list.
-        warning: str = "Reloading systems from papertrail."
-        warn(warning, PapertrailWarning)
+        if USE_WARNINGS:
+            warning: str = "Reloading systems from papertrail."
+            warn(warning, PapertrailWarning)
 
         # Get the system_id to remove:
         system_id: int
@@ -239,6 +242,17 @@ class Group(object):
         else:
             system = self._systems[sys_to_del]
             system_id = system.id
+
+        # Check that the system is in the system list.
+        system_exists: bool = False
+        for system in self._group_systems:
+            if system.id == system_id:
+                system_exists = True
+                break
+        if not system_exists:
+            error: str = "System not in group."
+            raise GroupError(error)
+        # Build leave url:
 
 ###############################
 # Overrides:
