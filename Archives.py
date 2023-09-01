@@ -50,9 +50,16 @@ class Archives(object):
         :raises: ArchiveError: Raises ArchiveError on error during loading.
         :returns: None
         """
+        # Type Check:
+        if not isinstance(api_key, str):
+            __type_error__("api_key", "str", api_key)
+        elif from_dict is not None and not isinstance(from_dict, dict):
+            __type_error__("from_dict", "Optional[dict]", from_dict)
+        elif not isinstance(do_load, bool):
+            __type_error__("do_load", "bool", do_load)
         # Store api key:
         self._api_key = api_key
-
+        # Load this instance:
         if from_dict is not None:
             if not isinstance(from_dict, dict):
                 __type_error__("from_dict", "dict", from_dict)
@@ -122,6 +129,13 @@ class Archives(object):
         # Set variables:
         self._IS_LOADED = True
         return
+
+    def reload(self) -> None:
+        """
+        Reload the data from Papertrail.
+        :return: None
+        """
+        return self.load()
 
 ######################################
 # Getters:
