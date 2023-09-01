@@ -214,7 +214,7 @@ class Group(object):
         self.reload()
         return self
 
-    def remove_system(self, sys_to_del: System | int | str) -> None:
+    def remove_system(self, sys_to_del: System | int | str) -> Self:
         """
         Remove a given system from this group.
         :param sys_to_del: System | int | str: If sys_to_del is a System, it's the system to delete, if it's an int it's
@@ -231,29 +231,35 @@ class Group(object):
             warning: str = "Reloading systems from papertrail."
             warn(warning, PapertrailWarning)
 
-        # Get the system_id to remove:
-        system_id: int
+        # Get the system_to_del System 'object' to remove:
         if isinstance(sys_to_del, System):
-
             if sys_to_del not in self._systems:
                 error: str = "System not in systems."
                 raise IndexError(error)
-            system_id = sys_to_del.id
         else:
-            system = self._systems[sys_to_del]
-            system_id = system.id
+            sys_to_del = self._systems[sys_to_del]  # Raises IndexError if not found.
 
         # Check that the system is in the system list.
-        system_exists: bool = False
-        for system in self._group_systems:
-            if system.id == system_id:
-                system_exists = True
-                break
-        if not system_exists:
+        if sys_to_del not in self._group_systems:
             error: str = "System not in group."
             raise GroupError(error)
         # Build leave url:
-        # TODO: Finish
+        leave_url: str = BASE_URL + 'systems/%i/leave.json' % sys_to_del.id
+        # Build JSON data:
+        json_data: dict = {'group_id': self._id}
+        # Make request:
+        response = requests_post(url=leave_url, api_key=self._api_key, json_data=json_data)
+        # Parse response data:
+        try:
+            if response['message'] != 'System updated':
+                error: str = "Unexpected response from server: '%s'." % response['message']
+                raise InvalidServerResponse(error)
+        except KeyError as e:
+            error: str = "Key 'message' not found in server response."
+            raise InvalidServerResponse(error, exception=e)
+        # Remove the system from group systems:
+        self._group_systems.remove(sys_to_del)
+        return self
 
 ###############################
 # Methods:
