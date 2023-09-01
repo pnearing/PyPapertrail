@@ -113,7 +113,7 @@ class Group(object):
                 self._group_systems.append(system)
         except KeyError as e:
             error: str = "Key not found, perhaps papertrail changed their response."
-            raise GroupError(error, exception=e)
+            raise InvalidServerResponse(error, exception=e)
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
