@@ -28,6 +28,7 @@ from Archives import Archives
 from Destinations import Destinations
 from Groups import Groups
 from Systems import Systems
+from Usage import Usage
 from Exceptions import PapertrailError
 
 
@@ -35,6 +36,7 @@ class Papertrail(object):
     """
     Class for all papertrail objects.
     """
+    IS_LOADED: bool = False
 
     def __init__(self,
                  api_key: str,
@@ -68,7 +70,7 @@ class Papertrail(object):
         self._destinations: Destinations = Destinations(api_key=api_key, from_dict=None, do_load=False)
         self._systems: Systems = Systems(api_key=api_key, from_dict=None, do_load=False)
         self._groups: Groups = Groups(api_key=api_key, from_dict=None, do_load=False)
-
+        self._usage: Usage = Usage(api_key=api_key, from_dict=None, do_load=False)
         # Load this instance:
         if from_dict is not None:
             self.__from_dict__(from_dict)
@@ -77,6 +79,8 @@ class Papertrail(object):
             self._destinations.load()
             self._systems.load()
             self._groups.load()
+            self._usage.load()
+            self.IS_LOADED = True
         return
 
 ####################################
@@ -93,6 +97,8 @@ class Papertrail(object):
             self._destinations.__from_dict__(from_dict['destinations'])
             self._systems.__from_dict__(from_dict['systems'])
             self._groups.__from_dict__(from_dict['groups'])
+            self._usage.__from_dict__(from_dict['usage'])
+            self.IS_LOADED = True
         except KeyError:
             error: str = "Invalid dict provided to __from_dict__()."
             raise PapertrailError(error)
@@ -107,11 +113,61 @@ class Papertrail(object):
             'archives': self._archives.__to_dict__(),
             'destinations': self._destinations.__to_dict__(),
             'groups': self._groups.__to_dict__(),
-            'systems': self._systems.__to_dict__()
+            'systems': self._systems.__to_dict__(),
+            'usage': self._usage.__to_dict__(),
         }
         return return_dict
 
+##################################
+# Properties:
+##################################
+    @property
+    def is_loaded(self) -> bool:
+        """
+        True if this instance has been loaded.
+        :return: Bool.
+        """
+        return self.IS_LOADED
 
+    @property
+    def archives(self) -> Archives:
+        """
+        Archives instance.
+        :return: Archives
+        """
+        return self._archives
+
+    @property
+    def destinations(self) -> Destinations:
+        """
+        Destinations instance.
+        :return: Destinations
+        """
+        return self._destinations
+
+    @property
+    def groups(self) -> Groups:
+        """
+        Groups instance.
+        :return: Groups
+        """
+        return self._groups
+
+    @property
+    def systems(self) -> Systems:
+        """
+        Systems instance.
+        :return: Systems
+        """
+        return self._systems
+
+    @property
+    def usage(self) -> Usage:
+        """
+        Usage instance.
+        :return:
+        """
+        return self._usage
 ########################################################################################################################
 # TEST CODE:
 ########################################################################################################################
