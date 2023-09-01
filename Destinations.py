@@ -232,6 +232,14 @@ class Destinations(object):
         """
         return self._IS_LOADED
 
+    @property
+    def destinations(self) -> tuple[Destination]:
+        """
+        Return a tuple of destinations.
+        :return: Tuple[Destination]
+        """
+        return tuple(self._DESTINATIONS)
+
 
 ########################################################################################################################
 # Test Code:
