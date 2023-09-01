@@ -13,7 +13,6 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-
             Self = TypeVar("Self", bound="Groups")
         except ImportError:
             print("FATAL: Unable to define Self.")
