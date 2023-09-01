@@ -20,7 +20,6 @@ from typing import Optional
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 from Exceptions import DestinationError, ParameterError, InvalidServerResponse
 from datetime import datetime
-import pytz
 
 
 class Destination(object):
@@ -148,9 +147,9 @@ class Destination(object):
             return_dict['last_fetched'] = self._last_fetched.isoformat()
         return return_dict
 
-    ###########################
-    # Methods:
-    ###########################
+###########################
+# Methods:
+###########################
     def reload(self) -> Self:
         """
         Reload this destination from the server.
@@ -249,3 +248,11 @@ class Destination(object):
         :return: Str
         """
         return self._info_link
+
+    @property
+    def last_fetched(self) -> datetime:
+        """
+        Last time this was loaded from the server.
+        :return: Datetime: None if not loaded.
+        """
+        return self._last_fetched
