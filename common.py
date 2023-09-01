@@ -6,7 +6,7 @@ import sys
 if sys.version_info.major != 3 or sys.version_info.minor < 10:
     print("Only python >= 3.10 supported")
     exit(1)
-from typing import Any, NoReturn
+from typing import Any, NoReturn, Optional
 from datetime import datetime
 import pytz
 import requests
@@ -15,7 +15,6 @@ from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTim
 
 BASE_URL: str = 'https://papertrailapp.com/api/v1/'
 USE_WARNINGS: bool = True
-# TODO: Finish USE_WARNINGS
 
 
 def is_timezone_aware(dt: datetime) -> bool:
@@ -80,11 +79,15 @@ def __raise_for_http_error__(request: requests.Response, exception: requests.HTT
     raise UnhandledHTTPError(request.status_code, exception=exception, request=request)
 
 
-def requests_get(url: str, api_key: str) -> list | dict:
+def requests_get(url: str,
+                 api_key: str,
+                 returns_json: bool = True
+                 ) -> Optional[list | dict]:
     """
     Make a requests.get() call, and return the json data.
     :param url: Str: The url to get.
     :param api_key: Str: The api key
+    :param returns_json: Bool: The request returns JSON, default = True.
     :return: List | dict: The response data.
     """
     # Generate headers:
@@ -101,6 +104,9 @@ def requests_get(url: str, api_key: str) -> list | dict:
         request.raise_for_status()
     except requests.HTTPError as e:
         __raise_for_http_error__(request=request, exception=e)
+    # If we're not expecting JSON, return None:
+    if not returns_json:
+        return None
     # Parse the JSON data:
     try:
         response: list | dict = request.json()
@@ -109,12 +115,17 @@ def requests_get(url: str, api_key: str) -> list | dict:
     return response
 
 
-def requests_post(url: str, api_key: str, json_data: Any) -> list | dict:
+def requests_post(url: str,
+                  api_key: str,
+                  json_data: Any,
+                  returns_json: bool = True,
+                  ) -> Optional[list | dict]:
     """
     Make a requests.post() call, and return the json data.
     :param url: Str: The url to post to.
     :param api_key: Str: The API Key.
     :param json_data: Any: The json data to post.
+    :param returns_json: Bool: The request returns JSON.
     :return: A list | dict: The server response.
     """
     # Generate headers:
@@ -134,6 +145,9 @@ def requests_post(url: str, api_key: str, json_data: Any) -> list | dict:
         request.raise_for_status()
     except requests.HTTPError as e:
         __raise_for_http_error__(request=request, exception=e)
+    # If the request doesn't return JSON data, return None.
+    if not returns_json:
+        return None
     # Parse the JSON data:
     try:
         response: list | dict = request.json()
@@ -142,12 +156,17 @@ def requests_post(url: str, api_key: str, json_data: Any) -> list | dict:
     return response
 
 
-def requests_put(url: str, api_key: str, json_data: Any) -> list | dict:
+def requests_put(url: str,
+                 api_key: str,
+                 json_data: Any,
+                 returns_json: bool = True
+                 ) -> Optional[list | dict]:
     """
     Make a requests.put() call, and return the json response data.
     :param url: Str: The url to put to.
     :param api_key: Str: The API Key
     :param json_data: Any: The json data to send.
+    :param returns_json: Bool: The request returns JSON data, default=True.
     :return: A list | dict: The server response data.
     """
     # Generate headers:
@@ -167,6 +186,9 @@ def requests_put(url: str, api_key: str, json_data: Any) -> list | dict:
         __raise_for_http_error__(request=request, exception=e)
     except requests.RequestException as e:
         raise UnhandledRequestsError(url=url, method="PUT", exception=e)
+    # If we're not expecting JSON, return None:
+    if not returns_json:
+        return None
     # Parse the JSON data:
     try:
         response: list | dict = request.json()
@@ -175,11 +197,15 @@ def requests_put(url: str, api_key: str, json_data: Any) -> list | dict:
     return response
 
 
-def requests_del(url: str, api_key: str) -> dict:
+def requests_del(url: str,
+                 api_key: str,
+                 returns_json: bool = True
+                 ) -> Optional[dict]:
     """
     Send a 'delete' request to the given url.
     :param url: Str: The url to send the request to.
-    :param api_key: The API Key.
+    :param api_key: Str: The API Key.
+    :param returns_json: Bool: The request returns JSON data, default = True.
     :return: Dict: JSON Decoded response.
     """
     # Generate headers:
@@ -191,6 +217,9 @@ def requests_del(url: str, api_key: str) -> dict:
         raise RequestReadTimeout(url=url, exception=e)
     except requests.RequestException as e:
         raise UnhandledRequestsError(url=url, method="DELETE", exception=e)
+    # If we're not expecting JSON, return None
+    if not returns_json:
+        return None
     # Parse the JSON data:
     try:
         response: dict = request.json()
