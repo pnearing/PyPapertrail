@@ -17,7 +17,7 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 from typing import Optional
-from common import BASE_URL, __type_error__, convert_to_utc
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 from Exceptions import DestinationError, ParameterError, InvalidServerResponse
 from datetime import datetime
 import pytz
@@ -156,7 +156,14 @@ class Destination(object):
         Reload this destination from the server.
         :return: Destination: This instance.
         """
-        # TODO: Finish
+        # Build url:
+        reload_url = BASE_URL + 'destinations/%i.json' % self._id
+        # Make request:
+        response: dict = requests_get(url=reload_url, api_key=self._api_key)
+        # Parse response data:
+        self.__from_raw_log_destination__(response)
+        # Update last fetched:
+        self._last_fetched = convert_to_utc(datetime.utcnow())
         return self
 
 ###########################
