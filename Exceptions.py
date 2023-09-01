@@ -12,6 +12,22 @@ from requests import HTTPError
 ########################################################################################################################
 # Exceptions:
 ########################################################################################################################
+class ParameterError(Exception):
+    """
+    Exception to throw when a parameter error occurs.
+    """
+    def __init__(self, error_message: str) -> None:
+        """
+        Initialize the ParameterError
+        :param error_message: Str: The error message.
+        """
+        self.error_message: str = error_message
+        return
+
+    def __str__(self) -> str:
+        return self.error_message
+
+
 class PapertrailError(Exception):
     """
     Base Exception for Papertrail objects.
@@ -25,6 +41,9 @@ class PapertrailError(Exception):
         self.error_message: str = error_message
         self.key_word_args: dict = kwargs
         return
+
+    def __str__(self) -> str:
+        return self.error_message
 
 
 class BadRequestError(PapertrailError):
