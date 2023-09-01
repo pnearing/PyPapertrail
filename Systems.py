@@ -383,6 +383,10 @@ class Systems(object):
 
     @property
     def systems(self) -> tuple[System]:
+        """
+        Return a tuple of Systems.
+        :return: Tuple[System]
+        """
         return tuple(self._SYSTEMS)
 
 
