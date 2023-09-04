@@ -6,12 +6,30 @@ import sys
 if sys.version_info.major != 3 or sys.version_info.minor < 10:
     print("Only python >= 3.10 supported")
     exit(1)
-from typing import Any, NoReturn, Optional
+from typing import Any, NoReturn, Optional, TypeVar
 from datetime import datetime
 import pytz
 import requests
 from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
 from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
+
+Archive = TypeVar("Archive", bound="Archive")
+Destination = TypeVar("Destination", bound="Destination")
+Group = TypeVar("Group", bound="Group")
+System = TypeVar("System", bound="System")
+User = TypeVar("User", bound="User")
+
+ARCHIVES: Optional[list[Archive]] = None
+DESTINATIONS: Optional[list[Destination]] = None
+GROUPS: Optional[list[Group]] = None
+SYSTEMS: Optional[list[System]] = None
+USERS: Optional[list[User]] = None
+
+ARCHIVES_LAST_FETCHED: Optional[datetime] = None
+DESTINATIONS_LAST_FETCHED: Optional[datetime] = None
+GROUPS_LAST_FETCHED: Optional[datetime] = None
+SYSTEMS_LAST_FETCHED: Optional[datetime] = None
+USERS_LAST_FETCHED: Optional[datetime] = None
 
 BASE_URL: str = 'https://papertrailapp.com/api/v1/'
 USE_WARNINGS: bool = True
