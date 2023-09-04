@@ -200,7 +200,7 @@ class Destinations(object):
             return self._DESTINATIONS[item]
         raise TypeError("Can only index by int.")
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[Destination]:
         """
         Return an Iterator.
         :return: Iterator.
