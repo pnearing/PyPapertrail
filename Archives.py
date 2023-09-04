@@ -22,16 +22,13 @@ from typing import Optional, Iterator, Any
 from datetime import datetime
 import pytz
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+import common
 from Exceptions import ArchiveError
 from Archive import Archive
 
 
 class Archives(object):
     """Class to hold papertrail archive calls."""
-    _ARCHIVES: list[Archive] = []
-    _IS_LOADED: bool = False
-    _LAST_FETCHED: Optional[datetime] = None
-
     #########################################
     # Initialize:
     #########################################
@@ -71,6 +68,7 @@ class Archives(object):
     #####################################
     # Load / save functions:
     #####################################
+
     def __from_dict__(self, from_dict: dict) -> None:
         """
         Load the archive list from a dict created by __to_dict__().
@@ -78,33 +76,35 @@ class Archives(object):
         :return: None
         """
         try:
-            self._LAST_FETCHED = None
+            common.ARCHIVES_LAST_FETCHED = None
             if from_dict['last_fetched'] is not None:
-                self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-            self._ARCHIVES = []
+                common.ARCHIVES_LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+            common.ARCHIVES = []
             for archive_dict in from_dict['_archives']:
                 archive = Archive(api_key=self._api_key, from_dict=archive_dict)
-                self._ARCHIVES.append(archive)
-            self._IS_LOADED = True
+                common.ARCHIVES.append(archive)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise ArchiveError(error, exception=e)
         return
 
-    def __to_dict__(self) -> dict:
+    @staticmethod
+    def __to_dict__() -> dict:
         """
         Create a json / pickle friendly dict containing all the archives.
         :return: Dict.
         """
         return_dict = {
             'last_fetched': None,
-            '_archives': [],
+            '_archives': None,
         }
-        if self._LAST_FETCHED is not None:
-            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
-        for archive in self._ARCHIVES:
-            archive_dict = archive.__to_dict__()
-            return_dict['_archives'].append(archive_dict)
+        if common.ARCHIVES_LAST_FETCHED is not None:
+            return_dict['last_fetched'] = common.ARCHIVES_LAST_FETCHED.isoformat()
+        if common.ARCHIVES is not None:
+            return_dict['_archives'] = []
+            for archive in common.ARCHIVES:
+                archive_dict = archive.__to_dict__()
+                return_dict['_archives'].append(archive_dict)
         return return_dict
 
     #################################################
@@ -121,13 +121,11 @@ class Archives(object):
         list_url = BASE_URL + 'archives.json'
         response = requests_get(list_url, self._api_key)
         # Return the list as list of Archive objects:
-        self._ARCHIVES = []
-        self._LAST_FETCHED: datetime = pytz.utc.localize(datetime.utcnow())
+        common.ARCHIVES = []
+        common.ARCHIVES_LAST_FETCHED: datetime = pytz.utc.localize(datetime.utcnow())
         for raw_archive in response:
-            archive = Archive(api_key=self._api_key, raw_archive=raw_archive, last_fetched=self._LAST_FETCHED)
-            self._ARCHIVES.append(archive)
-        # Set variables:
-        self._IS_LOADED = True
+            archive = Archive(api_key=self._api_key, raw_archive=raw_archive, last_fetched=common.ARCHIVES_LAST_FETCHED)
+            common.ARCHIVES.append(archive)
         return
 
     def reload(self) -> None:
@@ -140,7 +138,8 @@ class Archives(object):
 ######################################
 # Getters:
 ######################################
-    def get_by_file_name(self, search_file_name: str) -> Archive | None:
+    @staticmethod
+    def get_by_file_name(search_file_name: str) -> Archive | None:
         """
         Return an archive with a matching filename.
         :param search_file_name: Str: The file name to search for.
@@ -150,7 +149,7 @@ class Archives(object):
         if not isinstance(search_file_name, str):
             __type_error__("search_file_name", "str", search_file_name)
         # Search archives:
-        for archive in self._ARCHIVES:
+        for archive in common.ARCHIVES:
             if archive.file_name == search_file_name:
                 return archive
         return None
@@ -167,7 +166,7 @@ class Archives(object):
             __type_error__("search_start_time", "datetime", search_start_time)
         # Search archives:
         search_start_time = convert_to_utc(search_start_time)
-        for archive in self._ARCHIVES:
+        for archive in common.ARCHIVES:
             if archive.start_time == search_start_time:
                 return archive
         return None
@@ -184,7 +183,7 @@ class Archives(object):
             __type_error__("search_stop_time", "datetime", search_end_time)
         # Search archives:
         search_end_time = convert_to_utc(search_end_time)
-        for archive in self._ARCHIVES:
+        for archive in common.ARCHIVES:
             if archive.end_time == search_end_time:
                 return archive
         return None
@@ -200,7 +199,7 @@ class Archives(object):
             __type_error__("search_time", "datetime", search_time)
         # Search archives:
         search_time = convert_to_utc(search_time)
-        for archive in self._ARCHIVES:
+        for archive in common.ARCHIVES:
             if archive.start_time <= search_time <= archive.end_time:
                 return archive
         return None
@@ -223,14 +222,14 @@ class Archives(object):
         if isinstance(item, datetime):
             search_date: datetime = convert_to_utc(item)
             search_date.replace(microsecond=0)
-            for archive in self._ARCHIVES:
+            for archive in common.ARCHIVES:
                 if archive.start_time == search_date:
                     return archive
                 raise IndexError()
         elif isinstance(item, int):
-            return self._ARCHIVES[item]
+            return common.ARCHIVES[item]
         elif isinstance(item, str):
-            for archive in self._ARCHIVES:
+            for archive in common.ARCHIVES:
                 if archive.file_name == item:
                     return archive
             raise IndexError()
@@ -246,7 +245,7 @@ class Archives(object):
                 elif item.stop is not None and not isinstance(item.step, int):
                     raise TypeError(error)
                 # Do slice:
-                return self._ARCHIVES[item]
+                return common.ARCHIVES[item]
             # Slice by datetime object:
             elif isinstance(item.start, datetime):
                 # Type check:
@@ -260,13 +259,13 @@ class Archives(object):
                 return_list: list[Archive] = []
                 slice_start: datetime = convert_to_utc(item.start)
                 if item.stop is None:
-                    for archive in self._ARCHIVES:
+                    for archive in common.ARCHIVES:
                         if archive.start_time >= slice_start:
                             return_list.append(archive)
                     return return_list
                 else:
                     slice_stop = convert_to_utc(item.stop)
-                    for archive in self._ARCHIVES:
+                    for archive in common.ARCHIVES:
                         if slice_start <= archive.start_time < slice_stop:
                             return_list.append(archive)
                     return return_list
@@ -278,14 +277,14 @@ class Archives(object):
         Get an iterator of all the archives.
         :return: Iterator[Archive]
         """
-        return iter(self._ARCHIVES)
+        return iter(common.ARCHIVES)
 
     def __len__(self) -> int:
         """
         Return the number of archives:
         :return: int
         """
-        return len(self._ARCHIVES)
+        return len(common.ARCHIVES)
 
     ##################################
     # Properties:
@@ -296,7 +295,7 @@ class Archives(object):
         Time the archive list was last fetched from papertrail.
         :return: Optional[datetime]: Timezone-aware datetime object in UTC.
         """
-        return self._LAST_FETCHED
+        return common.ARCHIVES_LAST_FETCHED
 
     @property
     def is_loaded(self) -> bool:
@@ -304,7 +303,7 @@ class Archives(object):
         Is the archive list loaded?
         :return: Bool.
         """
-        return self._IS_LOADED
+        return common.ARCHIVES is not None
 
     @property
     def archives(self) -> tuple[Archive]:
@@ -312,7 +311,7 @@ class Archives(object):
         Return a tuple of archives.
         :return: Tuple[Archive]
         """
-        return tuple(self._ARCHIVES)
+        return tuple(common.ARCHIVES)
 
 ########################################################################################################################
 # Test code:
