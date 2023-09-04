@@ -294,9 +294,11 @@ class Archives(object):
         :raises: ArchiveError: If the archive list hasn't been loaded.
         :return: Iterator[Archive]
         """
+        # Null check archives:
         if common.ARCHIVES is None:
             error: str = "Archives not loaded."
             raise ArchiveError(error)
+        # Return iterator:
         return iter(common.ARCHIVES)
 
     def __len__(self) -> int:
@@ -309,6 +311,7 @@ class Archives(object):
         if common.ARCHIVES is None:
             error: str = "Archives not loaded."
             raise ArchiveError(error)
+        # Return len:
         return len(common.ARCHIVES)
 
     ##################################
