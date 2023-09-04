@@ -284,7 +284,7 @@ class Users(object):
         error: str = "Can only index by int, str, or slice of int."
         raise TypeError(error)
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[User]:
         """
         Get an iterator of users
         :return: Iterator
