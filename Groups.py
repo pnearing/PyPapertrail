@@ -153,7 +153,7 @@ class Groups(object):
         # Type Check system_ids elements:
         if systems is not None:
             for i, sys_obj in enumerate(systems):
-                if not isinstance(sys_obj, System) and not isinstance(sys_obj, str) and not isinstance(sys_obj, int):
+                if not isinstance(sys_obj, (System, str, int)):
                     __type_error__("systems[%i]" % i, "System | str | int", systems[i])
 
         # Value check systems for an empty list:
