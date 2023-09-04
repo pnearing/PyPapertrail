@@ -23,6 +23,7 @@ from typing import Optional, Iterator
 from datetime import datetime
 from warnings import warn
 from common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
+import common
 from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
 from User import User
 from Group import Group
@@ -33,10 +34,9 @@ class Users(object):
     """
     Class to store users list.
     """
-    _USERS: list[User] = []
-    _IS_LOADED: bool = False
-    _LAST_FETCHED: Optional[datetime] = None
-
+##########################
+# Initialize:
+##########################
     def __init__(self,
                  api_key: str,
                  from_dict: Optional[dict] = None,
@@ -78,33 +78,35 @@ class Users(object):
         :return: None
         """
         try:
-            self._LAST_FETCHED = None
+            common.USERS_LAST_FETCHED = None
             if from_dict['last_fetched'] is not None:
-                self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-            self._USERS = []
+                common.USERS_LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+            common.USERS = []
             for user_dict in from_dict['_users']:
                 user = User(api_key=self._api_key, from_dict=user_dict)
-                self._USERS.append(user)
-            self._IS_LOADED = True
+                common.USERS.append(user)
         except KeyError:
             error: str = "Invalid dict provided to __from_dict__()"
             raise UsersError(error)
         return
 
-    def __to_dict__(self) -> dict:
+    @staticmethod
+    def __to_dict__() -> dict:
         """
         Return a json / pickle friendly dict.
         :return: Dict
         """
         return_dict: dict = {
             'last_fetched': None,
-            '_users': [],
+            '_users': None,
         }
-        if self._LAST_FETCHED is not None:
-            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
-        for user in self._USERS:
-            user_dict = user.__to_dict__()
-            return_dict['_users'].append(user_dict)
+        if common.USERS_LAST_FETCHED is not None:
+            return_dict['last_fetched'] = common.USERS_LAST_FETCHED.isoformat()
+        if common.USERS is not None:
+            return_dict['_users'] = []
+            for user in common.USERS:
+                user_dict = user.__to_dict__()
+                return_dict['_users'].append(user_dict)
         return return_dict
 
 ##########################
@@ -120,12 +122,11 @@ class Users(object):
         # Make the request:
         response: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response:
-        self._USERS = []
+        common.USERS = []
         for raw_user in response:
             user = User(api_key=self._api_key, raw_user=raw_user)
-            self._USERS.append(user)
-        self._IS_LOADED = True
-        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
+            common.USERS.append(user)
+        common.USERS_LAST_FETCHED = convert_to_utc(datetime.utcnow())
         return
 
     def reload(self) -> None:
@@ -255,48 +256,104 @@ class Users(object):
         delete_url: str = BASE_URL + "users/%i.json" % user_id_to_del
         # Make the request, returns Nothing:
         requests_del(url=delete_url, api_key=self._api_key, returns_json=False)
-        self._USERS.remove(user_to_del)
+        common.USERS.remove(user_to_del)
         return self
+
+############################
+# Getters:
+############################
+    @staticmethod
+    def get_by_id(search_id: int) -> Optional[User]:
+        """
+        Get a user by ID, returns None if not found.
+        :param search_id: Int: The ID of the user.
+        :raises UsersError: If the user list has not been loaded.
+        :return: Optional[User]
+        """
+        # Type checks:
+        if not isinstance(search_id, int):
+            __type_error__("search_id", "int", search_id)
+        # Null check USERS:
+        if common.USERS is None:
+            error: str = "Users has not been loaded."
+            raise UsersError(error)
+        # Search users:
+        for user in common.USERS:
+            if user.id == search_id:
+                return user
+        return None
+
+    @staticmethod
+    def get_by_email(search_email: str) -> Optional[User]:
+        """
+        Get a user by email returns None if not found.
+        :param search_email: Str: The email to search for.
+        :raises UsersError: If the user list has not been loaded.
+        :return: Optional[User]
+        """
+        # Type check:
+        if not isinstance(search_email, str):
+            __type_error__("search_email", "str", search_email)
+        # Null check USERS:
+        if common.USERS is None:
+            error: str = "Users has not been loaded."
+            raise UsersError(error)
+        # Search users:
+        for user in common.USERS:
+            if user.email == search_email:
+                return user
+        return None
 
 ############################
 # Overrides:
 ############################
-    def __getitem__(self, item: int | str | slice) -> User | list[User]:
+    def __getitem__(self, item: int | str) -> User:
+        """
+        Allow indexing by square brackets.
+        :param item: Int | str: The index to select, can be an int for the user ID, a str for the email.
+        :raises UsersError: If the user list hasn't been loaded.
+        :return: User
+        """
+        # Null check USERS:
+        if common.USERS is None:
+            error: str = "Users not loaded."
+            raise UsersError(error)
+        # Select type:
         if isinstance(item, int):
-            for user in self._USERS:
+            for user in common.USERS:
                 if user.id == item:
                     return user
         elif isinstance(item, str):
-            for user in self._USERS:
+            for user in common.USERS:
                 if user.email == item:
                     return user
-        elif isinstance(item, slice):
-            # Type check slice:
-            error: str = "Can only slice users by ints."
-            if not isinstance(item.start, int):
-                raise TypeError(error)
-            elif item.stop is not None and not isinstance(item.stop, int):
-                raise TypeError(error)
-            elif item.step is not None and not isinstance(item.step, int):
-                raise TypeError(error)
-            # Do slice:
-            return self._USERS[item]
         error: str = "Can only index by int, str, or slice of int."
         raise TypeError(error)
 
     def __iter__(self) -> Iterator[User]:
         """
         Get an iterator of users
+        :raises: UsersError: If the user list hasn't been loaded.
         :return: Iterator
         """
-        return iter(self._USERS)
+        # Null check USERS:
+        if common.USERS is None:
+            error: str = "Users not loaded."
+            raise UsersError(error)
+        # return iterator:
+        return iter(common.USERS)
 
     def __len__(self) -> int:
         """
         Len is the number of users.
+        :raises: UsersError: If the user list hasn't been loaded.
         :return: Int
         """
-        return len(self._USERS)
+        # Null check USERS:
+        if common.USERS is None:
+            error: str = "Users not loaded."
+            raise UsersError(error)
+        return len(common.USERS)
 
 ############################
 # Properties:
@@ -307,7 +364,7 @@ class Users(object):
         Is the data loaded?
         :return: Bool
         """
-        return self._IS_LOADED
+        return common.USERS is not None
 
     @property
     def last_fetched(self) -> Optional[datetime]:
@@ -315,7 +372,7 @@ class Users(object):
         Last time this was loaded from papertrail in UTC.
         :return: Datetime
         """
-        return self._LAST_FETCHED
+        return common.USERS_LAST_FETCHED
 
     @property
     def users(self) -> tuple[User]:
@@ -323,7 +380,7 @@ class Users(object):
         Return a tuple of the Users.
         :return: Tuple(User)
         """
-        return tuple(self._USERS)
+        return tuple(common.USERS)
 
 
 ########################################################################################################################
