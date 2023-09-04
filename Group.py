@@ -20,12 +20,10 @@ from typing import Optional, Iterator
 from datetime import datetime
 import pytz
 from warnings import warn
-from common import USE_WARNINGS, BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put, requests_post
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put, requests_post
+import common
 from Exceptions import GroupError, PapertrailWarning, InvalidServerResponse, ParameterError
 from System import System
-from Systems import Systems
-
-_SYSTEMS: Optional[Systems] = None
 
 
 class Group(object):
@@ -46,9 +44,6 @@ class Group(object):
         :param raw_group: Dict: The dict provided by papertrail.
         :param from_dict: Dict: A dict created by __to_dict__().
         """
-        # Pull in _SYSTEMS:
-        global _SYSTEMS
-
         # Type checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
@@ -72,6 +67,7 @@ class Group(object):
         self._last_fetched: Optional[datetime] = None
         if last_fetched is not None:
             self._last_fetched = convert_to_utc(last_fetched)
+
         # Set properties:
         self._name: str = ''
         self._id: int = -1
@@ -81,9 +77,6 @@ class Group(object):
         self._search_link: str = ''
         self._systems: list[System] = []
 
-        # Store _SYSTEMS: 
-        if _SYSTEMS is None:
-            _SYSTEMS = Systems(api_key=api_key, from_dict=None, do_load=False)
         # Load this instance:
         if raw_group is not None:
             self.__from_raw_group__(raw_group)
@@ -100,13 +93,10 @@ class Group(object):
         :param raw_group: Dict: The dict provided by papertrail.
         :return: None
         """
-        # Load up Systems if not loaded:
-        global _SYSTEMS
-        if not _SYSTEMS.is_loaded:
-            if USE_WARNINGS:
-                warning = "Loading systems from Papertrail."
-                warn(warning, PapertrailWarning)
-            _SYSTEMS.load()
+        # Null Check SYSTEMS:
+        if common.SYSTEMS is None:
+            error = "Systems not loaded."
+            raise GroupError(error)
         try:
             self._id = raw_group['id']
             self._name = raw_group['name']
@@ -116,18 +106,17 @@ class Group(object):
             self._search_link = raw_group['_links']['search']['href']
             self._systems = []
             for raw_system in raw_group['systems']:
-                try:
-                    system = _SYSTEMS[raw_system['id']]
-                except IndexError:
-                    warning: str = "IndexError while looking up system, reloading."
-                    warn(warning, PapertrailWarning)
-                    _SYSTEMS.reload()
-                    system = _SYSTEMS[raw_system['id']]
-                self._systems.append(system)
+                system_found: bool = False
+                for system in common.SYSTEMS:
+                    if system.id == raw_system['id']:
+                        self._systems.append(system)
+                        system_found = True
+                if not system_found:
+                    error: str = "System not found."
+                    raise IndexError(error)
         except KeyError as e:
             error: str = "Key not found, perhaps papertrail changed their response."
             raise InvalidServerResponse(error, exception=e)
-        # print("DEBUG: group[%s]=%i" % (self._name, self._id))
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -136,7 +125,10 @@ class Group(object):
         :param from_dict: Dict: The dict provided by __to_dict_().
         :return: None
         """
-        global _SYSTEMS
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise GroupError(error)
         try:
             self._id = from_dict['id']
             self._name = from_dict['name']
@@ -148,8 +140,14 @@ class Group(object):
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
             for sys_id in from_dict['system_ids']:
-                system = _SYSTEMS[sys_id]
-                self._systems.append(system)
+                system_found: bool = False
+                for system in common.SYSTEMS:
+                    if system.id == sys_id:
+                        self._systems.append(system)
+                        system_found = True
+                if not system_found:
+                    error: str = "System not found."
+                    raise IndexError(error)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
@@ -184,37 +182,53 @@ class Group(object):
         Add a given system to this group.
         :param sys_to_add: System | int | str: The System to add if a System object, the system ID to add if an int, or
             the system name if a str.
-        :raises IndexError: If System | int | str not found in Systems.
+        :raises IndexError: If System | int: ID | str: Name not found in Systems.
         :raises GroupError: If the system is already in the group.
         :return: Self.
             The updated group.
         """
-        global _SYSTEMS
+        # global _SYSTEMS
         # Type check:
-        if not isinstance(sys_to_add, System) and not isinstance(sys_to_add, int) and not isinstance(sys_to_add, str):
+        if not isinstance(sys_to_add, (System, int, str)):
             __type_error__("sys_to_add", "System | int| str", sys_to_add)
-        # Warn that we're reloading the systems list.
-        if not _SYSTEMS.is_loaded:
-            if USE_WARNINGS:
-                warning: str = "Reloading systems from papertrail."
-                warn(warning, PapertrailWarning)
-            _SYSTEMS.reload()
-        # Get system_id:
-        system_id: int
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise GroupError(error)
+
+        # Get system_obj:
+        system_obj: Optional[System] = None
         if isinstance(sys_to_add, System):
-            if sys_to_add not in _SYSTEMS:
-                error: str = "System[%i:'%s']Not a valid system." % (sys_to_add.id, sys_to_add.name)
+            if sys_to_add not in common.SYSTEMS:
+                error: str = "System not found."
                 raise IndexError(error)
-            system_id = sys_to_add.id
-        else:
-            sys_to_add = _SYSTEMS[sys_to_add]  # Raises IndexError if not found.
-            system_id = sys_to_add.id
-        # Check if system_id in the group already:
-        if sys_to_add in self._systems:
+            system_obj = sys_to_add
+        elif isinstance(sys_to_add, int):
+            system_found: bool = False
+            for system in common.SYSTEMS:
+                if system.id == sys_to_add:
+                    system_obj = system
+                    system_found = True
+                    break
+            if not system_found:
+                error: str = "System ID: '%i' not found." % sys_to_add
+                raise IndexError(error)
+        else:  # sys_to_add is a str:
+            system_found: bool = False
+            for system in common.SYSTEMS:
+                if system.name == sys_to_add:
+                    system_obj = system
+                    system_found = True
+                    break
+            if not system_found:
+                error = "System Name: '%s' not found." % sys_to_add
+                raise IndexError(error)
+        # Check if system_obj in the group already:
+        if system_obj in self._systems:
             error: str = "System already in group."
             raise GroupError(error)
         # Build url:
-        join_url = BASE_URL + 'systems/%i/join.json' % system_id
+        join_url = BASE_URL + 'systems/%i/join.json' % system_obj.id
         # Build json data:
         json_data: dict = {"group_id": self._id}
         # Make the POST request:
@@ -240,27 +254,47 @@ class Group(object):
         :return: None
         """
         # Type check:
-        if not isinstance(sys_to_del, System) and not isinstance(sys_to_del, int) and not isinstance(sys_to_del, str):
+        if not isinstance(sys_to_del, (System, str, int)):
             __type_error__("sys_to_del", "System | int | str", sys_to_del)
-        # Warn that we're reloading the systems list.
-        if USE_WARNINGS:
-            warning: str = "Reloading systems from papertrail."
-            warn(warning, PapertrailWarning)
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise GroupError(error)
 
-        # Get the system_to_del System 'object' to remove:
+        # Get the system_obj System 'object' to remove:
+        system_obj: Optional[System] = None
         if isinstance(sys_to_del, System):
-            if sys_to_del not in _SYSTEMS:
+            if sys_to_del not in common.SYSTEMS:
                 error: str = "System not in systems."
                 raise IndexError(error)
-        else:
-            sys_to_del = _SYSTEMS[sys_to_del]  # Raises IndexError if not found.
+            system_obj = sys_to_del
+        elif isinstance(sys_to_del, int):
+            system_found: bool = False
+            for system in common.SYSTEMS:
+                if system.id == sys_to_del:
+                    system_obj = system
+                    system_found = True
+                    break
+            if not system_found:
+                error: str = "System ID: '%i' not found." % sys_to_del
+                raise IndexError(error)
+        else:  # sys_to_del is a str:
+            system_found: bool = False
+            for system in common.SYSTEMS:
+                if system.name == sys_to_del:
+                    system_obj = system
+                    system_found = True
+                    break
+            if not system_found:
+                error: str = "System Name: '%s' not found." % sys_to_del
+                raise IndexError(error)
 
         # Check that the system is in the system list.
-        if sys_to_del not in self._systems:
+        if system_obj not in self._systems:
             error: str = "System not in group."
             raise GroupError(error)
         # Build leave url:
-        leave_url: str = BASE_URL + 'systems/%i/leave.json' % sys_to_del.id
+        leave_url: str = BASE_URL + 'systems/%i/leave.json' % system_obj.id
         # Build JSON data:
         json_data: dict = {'group_id': self._id}
         # Make request:
@@ -274,7 +308,7 @@ class Group(object):
             error: str = "Key 'message' not found in server response."
             raise InvalidServerResponse(error, exception=e)
         # Remove the system from group systems:
-        self._systems.remove(sys_to_del)
+        self._systems.remove(system_obj)
         return self
 
 ###############################

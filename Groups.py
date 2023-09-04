@@ -24,10 +24,7 @@ from common import BASE_URL, __type_error__, convert_to_utc, requests_get, reque
 import common
 from Exceptions import GroupError, InvalidServerResponse
 from Group import Group
-from Systems import Systems
 from System import System
-
-_SYSTEMS: Optional[Systems] = None
 
 
 class Groups(object):
@@ -43,8 +40,6 @@ class Groups(object):
             the do_load option is ignored. Default = None
         :param do_load: Bool: Load from Papertrail, True = Load, False = Don't load. Default = True.
         """
-        # Pull in _SYSTEMS:
-        global _SYSTEMS
         # Type checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
@@ -54,9 +49,7 @@ class Groups(object):
             __type_error__("do_load", "bool", do_load)
         # Store api_key:
         self._api_key = api_key
-        # Store a Systems instance:
-        if _SYSTEMS is None:
-            _SYSTEMS = Systems(api_key=api_key, from_dict=None, do_load=False)
+
         # Load the groups:
         if from_dict is not None:
             self.__from_dict__(from_dict)
@@ -161,18 +154,40 @@ class Groups(object):
             error: str = "systems cannot be an empty list."
             raise ValueError(error)
 
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error = "Systems not loaded."
+            raise GroupError(error)
+
         # Build a list of system id's
         sys_ids: list[int] = []
         if systems is not None:
             for unknown_system in systems:
                 if isinstance(unknown_system, System):
-                    if unknown_system not in _SYSTEMS:
-                        error: str = "System not found in systems."
+                    if unknown_system not in common.SYSTEMS:
+                        error: str = "System not found."
                         raise IndexError(error)
                     sys_ids.append(unknown_system.id)
-                else:
-                    system = _SYSTEMS[unknown_system]  # Raises Index Error if not found.
-                    sys_ids.append(system.id)
+                elif isinstance(unknown_system, int):
+                    system_found: bool = False
+                    for system in common.SYSTEMS:
+                        if system.id == unknown_system:
+                            sys_ids.append(system.id)
+                            system_found = True
+                            break
+                    if not system_found:
+                        error: str = "System ID: '%i' not found." % unknown_system
+                        raise IndexError(error)
+                else:  # unknown_system is a str:
+                    system_found: bool = False
+                    for system in common.SYSTEMS:
+                        if system.name == unknown_system:
+                            sys_ids.append(system.id)
+                            system_found = True
+                            break
+                    if not system_found:
+                        error: str = "System Name: '%s' not found." % unknown_system
+                        raise IndexError(error)
 
         # Build url:
         create_url: str = BASE_URL + "groups.json"
@@ -417,32 +432,35 @@ class Groups(object):
 # TEST CODE:
 ########################################################################################################################
 if __name__ == '__main__':
+    from Systems import Systems
     from apiKey import API_KEY
+    test_systems = Systems(api_key=API_KEY)
+    test_groups = Groups(api_key=API_KEY)
+    for test_group in test_groups:
+        print("ID:", test_group.id, "Name:", test_group.name)
 
-    groups = Groups(api_key=API_KEY)
-
-    test_reload: bool = True
+    test_reload: bool = False
     test_create: bool = False
     test_update: bool = False
     test_delete: bool = False
 
     if test_reload:
 
-        print("Init time:", groups.groups[0].last_fetched.isoformat())
-        groups.groups[0].reload()
-        print("reload time:", groups.groups[0].last_fetched.isoformat())
-        pass
+        print("Init time:", test_groups.groups[0].last_fetched.isoformat())
+        test_groups.groups[0].reload()
+        print("reload time:", test_groups.groups[0].last_fetched.isoformat())
+
     if test_create:
         print("Adding TEST group.")
-        new_group = groups.create(name="TEST")
+        new_group = test_groups.create(name="TEST")
         print("New group: ", new_group.name)
 
     if test_update:
         print("Updating TEST group.")
-        groups['TEST'].update(system_wildcard='*prod*')
+        test_groups['TEST'].update(system_wildcard='*prod*')
         print("Updated.")
 
     if test_delete:
         print("Deleting TEST:")
-        groups.delete('TEST')
+        test_groups.delete('TEST')
         print("Group Deleted.")
