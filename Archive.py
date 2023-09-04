@@ -172,39 +172,6 @@ class Archive(object):
         return return_dict
 
 ##################################
-# Overrides:
-##################################
-    def __eq__(self, other: Self | int | str) -> bool:
-        """
-        Equality test, tests start time equality if other == System object, file size if other == Int, and
-            file name if other == Str.
-        :param other: System | int | str: The other object.
-        :return: Bool.
-        """
-        if isinstance(other, Self):
-            return self._start_time == other._start_time
-        elif isinstance(other, int):
-            return self._file_size == other
-        elif isinstance(other, str):
-            return self._file_name == other
-        error: str = "Cannot compare Archive to %s" % str(type(other))
-        raise TypeError(error)
-
-    def __str__(self) -> str:
-        """
-        Refer to this as a str, produce the file name.
-        :return: Str: The file name.
-        """
-        return self._file_name
-
-    def __int__(self) -> int:
-        """
-        Refer to this as an int, produce the file size in bytes.
-        :return: Int: The file size in bytes.
-        """
-        return self._file_size
-
-##################################
 # Methods:
 ##################################
     def download(self,
@@ -328,6 +295,39 @@ class Archive(object):
         return True, download_size, download_path
 
 ##################################
+# Overrides:
+##################################
+    def __eq__(self, other: Self | int | str) -> bool:
+        """
+        Equality test, tests start time equality if other == System object, file size if other == Int, and
+            file name if other == Str.
+        :param other: System | int | str: The other object.
+        :return: Bool.
+        """
+        if isinstance(other, type(self)):
+            return self._start_time == other._start_time
+        elif isinstance(other, int):
+            return self._file_size == other
+        elif isinstance(other, str):
+            return self._file_name == other
+        error: str = "Cannot compare Archive to %s" % str(type(other))
+        raise TypeError(error)
+
+        def __str__(self) -> str:
+            """
+            Refer to this as a str, produce the file name.
+            :return: Str: The file name.
+            """
+            return self._file_name
+
+        def __int__(self) -> int:
+            """
+            Refer to this as an int, produce the file size in bytes.
+            :return: Int: The file size in bytes.
+            """
+            return self._file_size
+
+    ##################################
 # Properties:
 ##################################
     @property
