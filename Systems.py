@@ -333,52 +333,67 @@ class Systems(object):
 ######################################################
 # Overrides:
 ######################################################
-    def __getitem__(self, item: str | int | datetime | slice) -> System | list[System]:
+    def __getitem__(self, item: str | int | datetime) -> System | list[System]:
         """
         Index systems.
-        :param item: Str, int, datetime | slice: The index, if item is a str, index by name, if item is an int index by
-            ID, if item is a datetime, index by date time of the last event, finally if item is a slice, only slicing
-            by ints is supported, and will return a slice as though the systems were a list.
+        :param item: Str | int | datetime: The index, if item is a str, index by name, if item is an int index by
+            ID, if item is a datetime, index by date time of the last event (produces a list).
+        :raises: SystemsError: If the systems list isn't loaded.
         :return: System | list[System]
         """
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise SystemsError(error)
         if isinstance(item, int):
             for system in common.SYSTEMS:
                 if system.id == item:
                     return system
-            raise IndexError("ID: %i not found." % item)
+            error: str = "ID: %i not found." % item
+            raise IndexError(error)
         elif isinstance(item, str):
             for system in common.SYSTEMS:
                 if system.name == item:
                     return system
-            raise IndexError("Name: %s not found." % item)
+            error: str = "Name: %s not found." % item
+            raise IndexError(error)
         elif isinstance(item, datetime):
+            search_time = convert_to_utc(item)
+            results: list[System] = []
             for system in common.SYSTEMS:
-                if system.last_event == item:
-                    return system
-            raise IndexError("datetime not found in last event.")
-        elif isinstance(item, slice):
-            error: str = "Systems can only be sliced by ints."
-            if not isinstance(item.start, int):
-                raise TypeError(error)
-            elif item.stop is not None and not isinstance(item.stop, int):
-                raise TypeError(error)
-            elif item.step is not None and not isinstance(item.step, int):
-                raise TypeError(error)
-            return common.SYSTEMS[item]
-        raise TypeError("Can only index by str, int, and datetime objects.")
+                if system.last_event == search_time:
+                    results.append(system)
+            if len(results) == 0:
+                error: str = "datetime not found in last event."
+                raise IndexError(error)
+            return results
+        error: str = "Can only index by str, int, and datetime objects."
+        raise TypeError(error)
 
     def __iter__(self) -> Iterator[System]:
         """
         Get an iterator of systems:
+        :raises: SystemsError: If the system list isn't loaded.
         :return: Iterator
         """
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise SystemsError(error)
+        # Return Iterator:
         return iter(common.SYSTEMS)
 
     def __len__(self) -> int:
         """
         Return the number of systems.
+        :raises: SystemsError: If the system list isn't loaded.
         :return: Int
         """
+        # Null check Systems:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise SystemsError(error)
+        # Return len:
         return len(common.SYSTEMS)
 
 ###################################################

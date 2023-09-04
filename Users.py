@@ -24,7 +24,7 @@ from datetime import datetime
 from warnings import warn
 from common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
 import common
-from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
+from Exceptions import UsersError, PapertrailWarning, ParameterError
 from User import User
 from Group import Group
 from Groups import Groups
@@ -157,7 +157,7 @@ class Users(object):
             of: Group objects, str [group name], or int[group id].
         :raises TypeError: If an invalid type passed.
         :raises UsersError: If an invalid parameter situation is encountered.
-        :raise IndexError: If an invalid group, group id, or group name is found in the groups parameter.
+        :raise IndexError: If an invalid group, group id, or group name is found in the loaded Groups.
         :return: None
         """
         # Type check:

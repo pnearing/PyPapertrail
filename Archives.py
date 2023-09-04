@@ -232,13 +232,19 @@ class Archives(object):
         """
         Get an archive, use a datetime object to search by date/time. Timezone-aware datetime objects will be converted
          to UTC before indexing. Timezone-unaware datetime objects are assumed to be in UTC. Use an int to index as a
-         list, and a str to search by file_name, use a slice of ints to obtain a slice. Use a slice of datetime objects
-         to slice by dates, note: Slicing by datetime objects with a step parameter are currently not supported.
+         list, and a str to search by file_name. Use a slice of datetime objects to slice by dates, note: Slicing by
+         datetime objects with a step parameter are currently not supported.
         :param item: Datetime | int | str | slice: Index / Slice to search by.
-        :raises: IndexError | TypeError. Index error if item is not found, TypeError if item is not of type datetime,
-                    int, str, or slice of ints / datetime objects.
-        :returns: Archive
+        :raises: IndexError: Index error if item is not found.
+        :raises: TypeError: If item is not of type datetime, int, str, or slice of ints / datetime objects.
+        :raises: ArchivesError: If the archive list hasn't been loaded yet.
+        :returns: Archive | list[Archive]
         """
+        # Null check ARCHIVES:
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
+        # Select TYPE:
         if isinstance(item, datetime):
             search_date: datetime = convert_to_utc(item)
             search_date.replace(microsecond=0)
@@ -254,56 +260,55 @@ class Archives(object):
                     return archive
             raise IndexError()
         elif isinstance(item, slice):
-            error: str = ("When slicing, all properties of the slice must be ints, or the start and stop can be "
-                          "datetime objects with step being None. Also when slicing by datetime, start must be less"
-                          " than the stop. Reverse slicing is not supported with datetime.")
-            # Slice by ints:
-            if isinstance(item.start, int):
-                # Type check:
-                if item.stop is not None and not isinstance(item.stop, int):
-                    raise TypeError(error)
-                elif item.stop is not None and not isinstance(item.step, int):
-                    raise TypeError(error)
-                # Do slice:
-                return common.ARCHIVES[item]
-            # Slice by datetime object:
-            elif isinstance(item.start, datetime):
-                # Type check:
-                if item.stop is not None and not isinstance(item.stop, datetime):
-                    raise TypeError(error)
-                elif item.step is not None:
-                    raise TypeError(error)
-                elif item.start > item.stop:
-                    raise TypeError(error)
-                # Do Slice:
-                return_list: list[Archive] = []
-                slice_start: datetime = convert_to_utc(item.start)
-                if item.stop is None:
-                    for archive in common.ARCHIVES:
-                        if archive.start_time >= slice_start:
-                            return_list.append(archive)
-                    return return_list
-                else:
-                    slice_stop = convert_to_utc(item.stop)
-                    for archive in common.ARCHIVES:
-                        if slice_start <= archive.start_time < slice_stop:
-                            return_list.append(archive)
-                    return return_list
-        error: str = "Can only index by a datetime object, an int, a str, or a slice."
+            error: str = ("When slicing, start must be a datetime object that is less than stop, which also must be a "
+                          "datetime object. Step must be None.")
+            # Type check:
+            if not isinstance(item.start, datetime):
+                raise TypeError(error)
+            elif item.stop is not None and not isinstance(item.stop, datetime):
+                raise TypeError(error)
+            elif item.step is not None:
+                raise TypeError(error)
+            elif item.stop is not None and (item.start > item.stop):
+                raise TypeError(error)
+            # Do Slice:
+            return_list: list[Archive] = []
+            slice_start: datetime = convert_to_utc(item.start)
+            if item.stop is None:
+                for archive in common.ARCHIVES:
+                    if archive.start_time >= slice_start:
+                        return_list.append(archive)
+                return return_list
+            else:
+                slice_stop = convert_to_utc(item.stop)
+                for archive in common.ARCHIVES:
+                    if slice_start <= archive.start_time < slice_stop:
+                        return_list.append(archive)
+                return return_list
+        error: str = "Can only index by a datetime object, an int, a str, or a slice of datetime objects."
         raise TypeError(error)
 
     def __iter__(self) -> Iterator[Archive]:
         """
         Get an iterator of all the archives.
+        :raises: ArchiveError: If the archive list hasn't been loaded.
         :return: Iterator[Archive]
         """
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
         return iter(common.ARCHIVES)
 
     def __len__(self) -> int:
         """
         Return the number of archives:
-        :return: int
+        :raises: ArchiveError: If the archive list hasn't been loaded.
+        :return: Int
         """
+        # Null check archives:
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
         return len(common.ARCHIVES)
 
     ##################################

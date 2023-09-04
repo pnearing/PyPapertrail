@@ -183,13 +183,18 @@ class Destinations(object):
 #########################
 # Overrides:
 #########################
-    def __getitem__(self, item: int | str | slice) -> Destination | list[Destination]:
+    def __getitem__(self, item: int | str) -> Destination:
         """
-        Index _DESTINATIONS as a list.
-        :param item: Int | str | slice: If item is an int, index by ID, if item is a str, index by name, otherwise if
-            item is a slice of ints, return the appropriate slice
-        :return: Destination.
+        Allow indexing with square brackets.
+        :param item: Int | str: If item is an int, index by ID, if item is a str, index by name.
+        :raises: DestinationError: If the destination list hasn't been loaded.
+        :return: Destination
         """
+        # Null check DESTINATIONS:
+        if common.DESTINATIONS is None:
+            error: str = "Destinations not loaded."
+            raise DestinationError(error)
+        # Do the Index by Type:
         if isinstance(item, int):
             for destination in common.DESTINATIONS:
                 if destination.id == item:
@@ -200,29 +205,30 @@ class Destinations(object):
                 if destination.filter == item:
                     return destination
             raise IndexError("Index by str, filter: %s not found." % item)
-        elif isinstance(item, slice):
-            error: str = "Can only slice with ints."
-            if not isinstance(item.start, int):
-                raise TypeError(error)
-            elif item.stop is not None and not isinstance(item.stop, int):
-                raise TypeError(error)
-            elif item.step is not None and not isinstance(item.step, int):
-                raise TypeError(error)
-            return common.DESTINATIONS[item]
-        raise TypeError("Can only index by int.")
+        raise TypeError("Can only index by int or str.")
 
     def __iter__(self) -> Iterator[Destination]:
         """
-        Return an Iterator.
+        Return an Iterator of destinations.
+        :raises: DestinationError: If the destination list hasn't been loaded.
         :return: Iterator.
         """
+        # Null check DESTINATIONS:
+        if common.DESTINATIONS is None:
+            error: str = "Destinations not loaded."
+            raise DestinationError(error)
         return iter(common.DESTINATIONS)
 
     def __len__(self) -> int:
         """
         Return number of destinations.
+        :raises: DestinationError: If the destination list hasn't been loaded yet.
         :return: Int
         """
+        # Null check DESTINATIONS:
+        if common.DESTINATIONS is None:
+            error: str = "Destinations not loaded."
+            raise DestinationError(error)
         return len(common.DESTINATIONS)
 
 ###########################

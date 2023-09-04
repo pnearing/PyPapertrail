@@ -327,13 +327,17 @@ class Groups(object):
     #############################
     # Overrides:
     #############################
-    def __getitem__(self, item: int | str | slice) -> Group | list[Group]:
+    def __getitem__(self, item: int | str) -> Group:
         """
-        Access this as a list / dict with an index.
-        :param item: Int | str | slice: The index, if item is an int, index by ID, if item is a str, index by name,
-            otherwise if index is a slice of type int, returns a list of groups as per the slice.
-        :return: Group | list[Group]
+        Allow indexing with square brackets.
+        :param item: Int | str: The index, if item is an int, index by ID, if item is a str, index by name,
+        :return: Group
         """
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
+        # Do search:
         if isinstance(item, int):
             for group in common.GROUPS:
                 # print("DEBUG", group.id, "==", item)
@@ -347,30 +351,32 @@ class Groups(object):
                     return group
             error: str = "Indexing as string, name '%s' not found." % item
             raise IndexError(error)
-        elif isinstance(item, slice):
-            error: str = "Can only slice Group by int."
-            if not isinstance(item.start, int):
-                raise ValueError(error)
-            elif item.stop is not None and not isinstance(item.stop, int):
-                raise ValueError(error)
-            elif item.step is not None and not isinstance(item.step, int):
-                raise ValueError(error)
-            return common.GROUPS[item]
         error: str = "Can only index by Group, int, str, or slice with type int, not: %s" % str(type(item))
         raise TypeError(error)
 
     def __len__(self) -> int:
         """
         Return the number of groups.
+        :raises: GroupError: If the group list hasn't been loaded.
         :return: Int
         """
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
+        # Return len:
         return len(common.GROUPS)
 
     def __iter__(self) -> Iterator[Group]:
         """
         Return an iterator of the groups.
+        :raises: GroupError: If the group list hasn't been loaded.
         :return: Iterator
         """
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
         return iter(common.GROUPS)
 
     ##############################
