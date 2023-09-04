@@ -23,7 +23,10 @@ import pytz
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
 from Exceptions import GroupError, InvalidServerResponse
 from Group import Group
+from Systems import Systems
 from System import System
+
+_SYSTEMS: Optional[Systems] = None
 
 
 class Groups(object):
@@ -43,6 +46,8 @@ class Groups(object):
             the do_load option is ignored. Default = None
         :param do_load: Bool: Load from Papertrail, True = Load, False = Don't load. Default = True.
         """
+        # Pull in _SYSTEMS:
+        global _SYSTEMS
         # Type checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
@@ -52,6 +57,9 @@ class Groups(object):
             __type_error__("do_load", "bool", do_load)
         # Store api_key:
         self._api_key = api_key
+        # Store a Systems instance:
+        if _SYSTEMS is None:
+            _SYSTEMS: Systems = Systems(api_key=api_key, from_dict=None, do_load=False)
         # Load the groups:
         if from_dict is not None:
             self.__from_dict__(from_dict)
@@ -104,29 +112,38 @@ class Groups(object):
     def load(self) -> Self:
         """
         Load from papertrail.
-        :return: Self.
+        :return: Groups: The loaded groups.
         """
         # Build url and make request:
         list_url = BASE_URL + "groups.json"
         raw_groups: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail:
         self._LAST_FETCHED = pytz.utc.localize(datetime.utcnow())
+        self._GROUPS = []
         for raw_group in raw_groups:
             group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=self._LAST_FETCHED)
             self._GROUPS.append(group)
         self._IS_LOADED = True
         return self
 
+    def reload(self) -> Self:
+        """
+        Reload the data.
+        :return: Groups: The updated groups.
+        """
+        return self.load()
+
     def create(self,
                name: str,
                system_wildcard: Optional[str] = None,
-               system_ids: Optional[list[int]] = None,
+               systems: Optional[list[System | str | int]] = None,
                ) -> Group:
         """
         Create a new group.
         :param name: Str: The Name of the new group.
         :param system_wildcard: Optional[str]: The system wildcard.
-        :param system_ids: Optional[list[int]]: A list of system id's to add to the group.
+        :param systems: Optional[list[System | str | int]]: A list of systems to add to the group, Either a System
+            object, an int for the system ID, or a str for the system name.
         :return: Group: The newly created Group object.
         """
         # Type Checks:
@@ -134,19 +151,32 @@ class Groups(object):
             __type_error__("name", "str", name)
         elif system_wildcard is not None and not isinstance(system_wildcard, str):
             __type_error__("system_wildcard", "str", system_wildcard)
-        elif system_ids is not None and not isinstance(system_ids, list):
-            __type_error__("system_ids", "list[int]", system_ids)
+        elif systems is not None and not isinstance(systems, list):
+            __type_error__("systems", "list[System | str | int]", systems)
 
         # Type Check system_ids elements:
-        if system_ids is not None:
-            for i, sys_id in enumerate(system_ids):
-                if not isinstance(sys_id, int):
-                    __type_error__("system_ids[%i]" % i, "int", system_ids[i])
+        if systems is not None:
+            for i, sys_obj in enumerate(systems):
+                if not isinstance(sys_obj, System) and not isinstance(sys_obj, str) and not isinstance(sys_obj, int):
+                    __type_error__("systems[%i]" % i, "System | str | int", systems[i])
 
-        # Value check system id's for an empty list:
-        if system_ids is not None and len(system_ids) == 0:
-            error: str = "system_ids cannot be an empty list."
+        # Value check systems for an empty list:
+        if systems is not None and len(systems) == 0:
+            error: str = "systems cannot be an empty list."
             raise ValueError(error)
+
+        # Build a list of system id's
+        sys_ids: list[int] = []
+        if systems is not None:
+            for unknown_system in systems:
+                if isinstance(unknown_system, System):
+                    if unknown_system not in _SYSTEMS:
+                        error: str = "System not found in systems."
+                        raise IndexError(error)
+                    sys_ids.append(unknown_system.id)
+                else:
+                    system = _SYSTEMS[unknown_system]  # Raises Index Error if not found.
+                    sys_ids.append(system.id)
 
         # Build url:
         create_url: str = BASE_URL + "groups.json"
@@ -154,8 +184,8 @@ class Groups(object):
         json_data = {'group': {'name': name}}
         if system_wildcard is not None:
             json_data['group']['system_wildcard'] = system_wildcard
-        if system_ids is not None:
-            json_data['group']['system_ids'] = system_ids
+        if systems is not None:
+            json_data['group']['system_ids'] = sys_ids
         # Make the request:
         raw_group: dict = requests_post(create_url, self._api_key, json_data)
         # Parse the response from papertrail:
@@ -290,10 +320,11 @@ class Groups(object):
         """
         if isinstance(item, int):
             for group in self._GROUPS:
+                # print("DEBUG", group.id, "==", item)
                 if group.id == item:
                     return group
-                error: str = "Indexing as int, id %i not found." % item
-                raise IndexError(error)
+            error: str = "Indexing as int, id %i not found." % item
+            raise IndexError(error)
         elif isinstance(item, str):
             for group in self._GROUPS:
                 if group.name == item:
@@ -319,7 +350,7 @@ class Groups(object):
         """
         return len(self._GROUPS)
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[Group]:
         """
         Return an iterator of the groups.
         :return: Iterator
