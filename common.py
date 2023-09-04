@@ -16,18 +16,21 @@ from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTim
 Archive = TypeVar("Archive", bound="Archive")
 Destination = TypeVar("Destination", bound="Destination")
 Group = TypeVar("Group", bound="Group")
+SavedSearch = TypeVar("SavedSearch", bound="SavedSearch")
 System = TypeVar("System", bound="System")
 User = TypeVar("User", bound="User")
 
 ARCHIVES: Optional[list[Archive]] = None
 DESTINATIONS: Optional[list[Destination]] = None
 GROUPS: Optional[list[Group]] = None
+SEARCHES: Optional[list[SavedSearch]] = None
 SYSTEMS: Optional[list[System]] = None
 USERS: Optional[list[User]] = None
 
 ARCHIVES_LAST_FETCHED: Optional[datetime] = None
 DESTINATIONS_LAST_FETCHED: Optional[datetime] = None
 GROUPS_LAST_FETCHED: Optional[datetime] = None
+SEARCHES_LAST_FETCHED: Optional[datetime] = None
 SYSTEMS_LAST_FETCHED: Optional[datetime] = None
 USERS_LAST_FETCHED: Optional[datetime] = None
 
