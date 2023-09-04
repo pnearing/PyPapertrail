@@ -148,13 +148,18 @@ class Archives(object):
         # type check:
         if not isinstance(search_file_name, str):
             __type_error__("search_file_name", "str", search_file_name)
+        # Null check ARCHIVES:
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
         # Search archives:
         for archive in common.ARCHIVES:
             if archive.file_name == search_file_name:
                 return archive
         return None
 
-    def get_by_start_time(self, search_start_time: datetime) -> Archive | None:
+    @staticmethod
+    def get_by_start_time(search_start_time: datetime) -> Archive | None:
         """
         Return an archive matching a given start_time, given time will be converted to UTC if timezone aware or assumed
             to be un UTC if timezone naive.
@@ -164,6 +169,10 @@ class Archives(object):
         # type check:
         if not isinstance(search_start_time, datetime):
             __type_error__("search_start_time", "datetime", search_start_time)
+        # Null check ARCHIVES:
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
         # Search archives:
         search_start_time = convert_to_utc(search_start_time)
         for archive in common.ARCHIVES:
@@ -171,7 +180,8 @@ class Archives(object):
                 return archive
         return None
 
-    def get_by_end_time(self, search_end_time: datetime) -> Archive | None:
+    @staticmethod
+    def get_by_end_time(search_end_time: datetime) -> Archive | None:
         """
         Get an archive matching a given stop time. Given time will be converted to UTC if timezone aware or assumed to
             be UTC if timezone naive.
@@ -181,6 +191,10 @@ class Archives(object):
         # Type check:
         if not isinstance(search_end_time, datetime):
             __type_error__("search_stop_time", "datetime", search_end_time)
+        # Null check ARCHIVES:
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
         # Search archives:
         search_end_time = convert_to_utc(search_end_time)
         for archive in common.ARCHIVES:
@@ -188,15 +202,21 @@ class Archives(object):
                 return archive
         return None
 
-    def get_by_time(self, search_time: datetime) -> Archive | None:
+    @staticmethod
+    def get_by_time(search_time: datetime) -> Optional[Archive]:
         """
         Get an archive that contains a given datetime object, matches start_time <= search_time <= end_time.
         :param search_time: Datetime object: The datetime to search for.
-        :return: Archive | None
+        :raises ArchiveError: If archives have not been loaded.
+        :return: Optional[Archive]
         """
         # type check:
         if not isinstance(search_time, datetime):
             __type_error__("search_time", "datetime", search_time)
+        # Null check ARCHIVES:
+        if common.ARCHIVES is None:
+            error: str = "Archives not loaded."
+            raise ArchiveError(error)
         # Search archives:
         search_time = convert_to_utc(search_time)
         for archive in common.ARCHIVES:
