@@ -48,6 +48,7 @@ class Group(object):
         """
         # Pull in _SYSTEMS:
         global _SYSTEMS
+
         # Type checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
@@ -126,7 +127,7 @@ class Group(object):
         except KeyError as e:
             error: str = "Key not found, perhaps papertrail changed their response."
             raise InvalidServerResponse(error, exception=e)
-        print("DEBUG: group[%s]=%i" % (self._name, self._id))
+        # print("DEBUG: group[%s]=%i" % (self._name, self._id))
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -135,6 +136,7 @@ class Group(object):
         :param from_dict: Dict: The dict provided by __to_dict_().
         :return: None
         """
+        global _SYSTEMS
         try:
             self._id = from_dict['id']
             self._name = from_dict['name']
@@ -187,6 +189,7 @@ class Group(object):
         :return: Self.
             The updated group.
         """
+        global _SYSTEMS
         # Type check:
         if not isinstance(sys_to_add, System) and not isinstance(sys_to_add, int) and not isinstance(sys_to_add, str):
             __type_error__("sys_to_add", "System | int| str", sys_to_add)
