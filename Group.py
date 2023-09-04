@@ -16,7 +16,7 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
+from typing import Optional, Iterator
 from datetime import datetime
 import pytz
 from warnings import warn
@@ -24,6 +24,8 @@ from common import USE_WARNINGS, BASE_URL, __type_error__, convert_to_utc, reque
 from Exceptions import GroupError, PapertrailWarning, InvalidServerResponse, ParameterError
 from System import System
 from Systems import Systems
+
+_SYSTEMS: Optional[Systems] = None
 
 
 class Group(object):
@@ -44,6 +46,8 @@ class Group(object):
         :param raw_group: Dict: The dict provided by papertrail.
         :param from_dict: Dict: A dict created by __to_dict__().
         """
+        # Pull in _SYSTEMS:
+        global _SYSTEMS
         # Type checks:
         if not isinstance(api_key, str):
             __type_error__("api_key", "str", api_key)
@@ -74,15 +78,11 @@ class Group(object):
         self._self_link: str = ''
         self._html_link: str = ''
         self._search_link: str = ''
-        self._group_systems: list[System] = []
+        self._systems: list[System] = []
 
-        # Load up systems if not already loaded.
-        self._systems = Systems(api_key=api_key, from_dict=None, do_load=False)
-        if not self._systems.is_loaded:
-            if USE_WARNINGS:
-                warning: str = "Loading Systems list from papertrail."
-                warn(warning, PapertrailWarning)
-            self._systems.load()
+        # Store _SYSTEMS: 
+        if _SYSTEMS is None:
+            _SYSTEMS = Systems(api_key=api_key, from_dict=None, do_load=False)
         # Load this instance:
         if raw_group is not None:
             self.__from_raw_group__(raw_group)
@@ -99,6 +99,13 @@ class Group(object):
         :param raw_group: Dict: The dict provided by papertrail.
         :return: None
         """
+        # Load up Systems if not loaded:
+        global _SYSTEMS
+        if not _SYSTEMS.is_loaded:
+            if USE_WARNINGS:
+                warning = "Loading systems from Papertrail."
+                warn(warning, PapertrailWarning)
+            _SYSTEMS.load()
         try:
             self._id = raw_group['id']
             self._name = raw_group['name']
@@ -106,14 +113,20 @@ class Group(object):
             self._self_link = raw_group['_links']['self']['href']
             self._html_link = raw_group['_links']['html']['href']
             self._search_link = raw_group['_links']['search']['href']
-            self._group_systems = []
+            self._systems = []
             for raw_system in raw_group['systems']:
-                sys_id = raw_system['id']
-                system = self._systems[sys_id]
-                self._group_systems.append(system)
+                try:
+                    system = _SYSTEMS[raw_system['id']]
+                except IndexError:
+                    warning: str = "IndexError while looking up system, reloading."
+                    warn(warning, PapertrailWarning)
+                    _SYSTEMS.reload()
+                    system = _SYSTEMS[raw_system['id']]
+                self._systems.append(system)
         except KeyError as e:
             error: str = "Key not found, perhaps papertrail changed their response."
             raise InvalidServerResponse(error, exception=e)
+        print("DEBUG: group[%s]=%i" % (self._name, self._id))
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -133,8 +146,8 @@ class Group(object):
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
             for sys_id in from_dict['system_ids']:
-                system = self._systems[sys_id]
-                self._group_systems.append(system)
+                system = _SYSTEMS[sys_id]
+                self._systems.append(system)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
@@ -157,7 +170,7 @@ class Group(object):
         }
         if self._last_fetched is not None:
             return_dict['last_fetched'] = self._last_fetched.isoformat()
-        for system in self._group_systems:
+        for system in self._systems:
             return_dict['system_ids'].append(system.id)
         return return_dict
 
@@ -178,23 +191,23 @@ class Group(object):
         if not isinstance(sys_to_add, System) and not isinstance(sys_to_add, int) and not isinstance(sys_to_add, str):
             __type_error__("sys_to_add", "System | int| str", sys_to_add)
         # Warn that we're reloading the systems list.
-        if not self._systems.is_loaded:
+        if not _SYSTEMS.is_loaded:
             if USE_WARNINGS:
                 warning: str = "Reloading systems from papertrail."
                 warn(warning, PapertrailWarning)
-            self._systems.reload()
+            _SYSTEMS.reload()
         # Get system_id:
         system_id: int
         if isinstance(sys_to_add, System):
-            if sys_to_add not in self._systems:
+            if sys_to_add not in _SYSTEMS:
                 error: str = "System[%i:'%s']Not a valid system." % (sys_to_add.id, sys_to_add.name)
                 raise IndexError(error)
             system_id = sys_to_add.id
         else:
-            sys_to_add = self._systems[sys_to_add]  # Raises IndexError if not found.
+            sys_to_add = _SYSTEMS[sys_to_add]  # Raises IndexError if not found.
             system_id = sys_to_add.id
         # Check if system_id in the group already:
-        if sys_to_add in self._group_systems:
+        if sys_to_add in self._systems:
             error: str = "System already in group."
             raise GroupError(error)
         # Build url:
@@ -233,14 +246,14 @@ class Group(object):
 
         # Get the system_to_del System 'object' to remove:
         if isinstance(sys_to_del, System):
-            if sys_to_del not in self._systems:
+            if sys_to_del not in _SYSTEMS:
                 error: str = "System not in systems."
                 raise IndexError(error)
         else:
-            sys_to_del = self._systems[sys_to_del]  # Raises IndexError if not found.
+            sys_to_del = _SYSTEMS[sys_to_del]  # Raises IndexError if not found.
 
         # Check that the system is in the system list.
-        if sys_to_del not in self._group_systems:
+        if sys_to_del not in self._systems:
             error: str = "System not in group."
             raise GroupError(error)
         # Build leave url:
@@ -258,7 +271,7 @@ class Group(object):
             error: str = "Key 'message' not found in server response."
             raise InvalidServerResponse(error, exception=e)
         # Remove the system from group systems:
-        self._group_systems.remove(sys_to_del)
+        self._systems.remove(sys_to_del)
         return self
 
 ###############################
@@ -327,14 +340,14 @@ class Group(object):
         :param other: Group | str | int: The object to compare with.
         :return: Bool
         """
-        if isinstance(other, Self):
+        if isinstance(other, type(self)):
             return self._id == other._id
         elif isinstance(other, str):
             return self._name == other
         elif isinstance(other, int):
             return self._id == other
-        error: str = "Cannot compare Group with %s" % str(type(other))
-        raise GroupError(error)
+        error: str = "Cannot compare Group with type %s" % str(type(other))
+        raise TypeError(error)
 
     def __str__(self) -> str:
         """
@@ -349,6 +362,13 @@ class Group(object):
         :return:
         """
         return self._id
+
+    def __iter__(self) -> Iterator:
+        """
+        Getting an iterator gives you an iterator over the systems in the group.
+        :return: Iterator
+        """
+        return iter(self._systems)
 
 ###############################
 # Properties:
@@ -410,5 +430,9 @@ class Group(object):
         return self._last_fetched
 
     @property
-    def systems(self) -> list[System]:
-        return self._group_systems
+    def systems(self) -> tuple[System]:
+        """
+        Return a tuple of the systems in this group.
+        :return: Tuple[System]
+        """
+        return tuple(self._systems)
