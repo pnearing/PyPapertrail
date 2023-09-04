@@ -21,6 +21,7 @@ from typing import Optional, Iterator
 from datetime import datetime
 import pytz
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+import common
 from Exceptions import GroupError, InvalidServerResponse
 from Group import Group
 from Systems import Systems
@@ -31,10 +32,6 @@ _SYSTEMS: Optional[Systems] = None
 
 class Groups(object):
     """Class to represent all the groups."""
-    _GROUPS: list[Group] = []
-    _IS_LOADED: bool = False
-    _LAST_FETCHED: Optional[datetime] = None
-
     ###################################
     # Initialize:
     ###################################
@@ -59,7 +56,7 @@ class Groups(object):
         self._api_key = api_key
         # Store a Systems instance:
         if _SYSTEMS is None:
-            _SYSTEMS: Systems = Systems(api_key=api_key, from_dict=None, do_load=False)
+            _SYSTEMS = Systems(api_key=api_key, from_dict=None, do_load=False)
         # Load the groups:
         if from_dict is not None:
             self.__from_dict__(from_dict)
@@ -77,20 +74,20 @@ class Groups(object):
         :return: Dict.
         """
         try:
-            self._LAST_FETCHED = None
+            common.GROUPS_LAST_FETCHED = None
             if from_dict['last_fetched'] is not None:
-                self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-            self._GROUPS = []
+                common.GROUPS_LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+            common.GROUPS = []
             for group_dict in from_dict['_groups']:
                 group = Group(api_key=self._api_key, from_dict=group_dict)
-                self._GROUPS.append(group)
-            self._IS_LOADED = True
+                common.GROUPS.append(group)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
         return
 
-    def __to_dict__(self) -> dict:
+    @staticmethod
+    def __to_dict__() -> dict:
         """
         Store this list of groups as a json / pickle friendly dict.
         :return: Dict
@@ -99,9 +96,9 @@ class Groups(object):
             'last_fetched': None,
             '_groups': [],
         }
-        if self._LAST_FETCHED is not None:
-            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
-        for group in self._GROUPS:
+        if common.GROUPS_LAST_FETCHED is not None:
+            return_dict['last_fetched'] = common.GROUPS_LAST_FETCHED.isoformat()
+        for group in common.GROUPS:
             group_dict = group.__to_dict__()
             return_dict['_groups'].append(group_dict)
         return return_dict
@@ -118,12 +115,11 @@ class Groups(object):
         list_url = BASE_URL + "groups.json"
         raw_groups: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail:
-        self._LAST_FETCHED = pytz.utc.localize(datetime.utcnow())
-        self._GROUPS = []
+        common.GROUPS = []
+        common.GROUPS_LAST_FETCHED = pytz.utc.localize(datetime.utcnow())
         for raw_group in raw_groups:
-            group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=self._LAST_FETCHED)
-            self._GROUPS.append(group)
-        self._IS_LOADED = True
+            group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=common.GROUPS_LAST_FETCHED)
+            common.GROUPS.append(group)
         return self
 
     def reload(self) -> Self:
@@ -191,7 +187,7 @@ class Groups(object):
         # Parse the response from papertrail:
         last_fetched = convert_to_utc(datetime.utcnow())
         group = Group(api_key=self._api_key, raw_group=raw_group, last_fetched=last_fetched)
-        self._GROUPS.append(group)
+        common.GROUPS.append(group)
         return group
 
     def delete(self, group_idx: Group | int | str) -> None:
@@ -209,14 +205,14 @@ class Groups(object):
         if isinstance(group_idx, Group):
             group_to_delete = group_idx
         elif isinstance(group_idx, str):
-            for group in self._GROUPS:
+            for group in common.GROUPS:
                 if group.name == group_idx:
                     group_to_delete = group
             if group_to_delete is None:
                 error: str = "IndexError: group name: %s not found." % group_idx
                 raise GroupError(error)
         elif isinstance(group_idx, int):
-            for group in self._GROUPS:
+            for group in common.GROUPS:
                 if group.id == group_idx:
                     group_to_delete = group
             if group_to_delete is None:
@@ -234,13 +230,14 @@ class Groups(object):
             error: str = "Unexpected server response, KeyError."
             raise InvalidServerResponse(error)
         # Remove the group from the group list:
-        self._GROUPS.remove(group_to_delete)
+        common.GROUPS.remove(group_to_delete)
         return
 
-        ###############################
-        # Getters:
-        ###############################
-    def get_by_id(self, search_id: int) -> Optional[Group]:
+###############################
+# Getters:
+###############################
+    @staticmethod
+    def get_by_id(search_id: int) -> Optional[Group]:
         """
         Get a Group by ID.
         :param search_id: Int: The id number of the group.
@@ -249,13 +246,18 @@ class Groups(object):
         # Type check:
         if not isinstance(search_id, int):
             __type_error__("search_id", "int", search_id)
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
         # Search groups:
-        for group in self._GROUPS:
+        for group in common.GROUPS:
             if group.id == search_id:
                 return group
         return None
 
-    def get_by_name(self, search_name: str) -> Optional[Group]:
+    @staticmethod
+    def get_by_name(search_name: str) -> Optional[Group]:
         """
         Get a Group by name.
         :param search_name: Str: The name of the group.
@@ -264,13 +266,18 @@ class Groups(object):
         # Type check:
         if not isinstance(search_name, str):
             __type_error__("search_name", "str", search_name)
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
         # Search groups:
-        for group in self._GROUPS:
+        for group in common.GROUPS:
             if group.name == search_name:
                 return group
         return None
 
-    def get_by_system(self, search_sys: System) -> Optional[list[Group]]:
+    @staticmethod
+    def get_by_system(search_sys: System) -> Optional[list[Group]]:
         """
         Get a list of groups that include this system.
         :param search_sys: System: The system to search for.
@@ -279,9 +286,13 @@ class Groups(object):
         # Type check:
         if not isinstance(search_sys, System):
             __type_error__("search_sys", "System", search_sys)
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
         # Search groups:
         return_list: list[Group] = []
-        for group in self._GROUPS:
+        for group in common.GROUPS:
             for system in group.systems:
                 if system == search_sys:
                     return_list.append(group)
@@ -290,7 +301,8 @@ class Groups(object):
             return None
         return return_list
 
-    def find_in_name(self, search_str: str) -> Optional[list[Group]]:
+    @staticmethod
+    def find_in_name(search_str: str) -> Optional[list[Group]]:
         """
         Search names for a substring, and return a list of groups that match.
         :param search_str: Str: The substring to search for.
@@ -299,9 +311,13 @@ class Groups(object):
         # Type check:
         if not isinstance(search_str, str):
             __type_error__("search_str", "str", search_str)
+        # Null check GROUPS:
+        if common.GROUPS is None:
+            error: str = "Groups not loaded."
+            raise GroupError(error)
         # Search groups
         return_list: list[Group] = []
-        for group in self._GROUPS:
+        for group in common.GROUPS:
             if group.name.find(search_str) != -1:
                 return_list.append(group)
         if len(return_list) == 0:
@@ -319,14 +335,14 @@ class Groups(object):
         :return: Group | list[Group]
         """
         if isinstance(item, int):
-            for group in self._GROUPS:
+            for group in common.GROUPS:
                 # print("DEBUG", group.id, "==", item)
                 if group.id == item:
                     return group
             error: str = "Indexing as int, id %i not found." % item
             raise IndexError(error)
         elif isinstance(item, str):
-            for group in self._GROUPS:
+            for group in common.GROUPS:
                 if group.name == item:
                     return group
             error: str = "Indexing as string, name '%s' not found." % item
@@ -339,7 +355,7 @@ class Groups(object):
                 raise ValueError(error)
             elif item.step is not None and not isinstance(item.step, int):
                 raise ValueError(error)
-            return self._GROUPS[item]
+            return common.GROUPS[item]
         error: str = "Can only index by Group, int, str, or slice with type int, not: %s" % str(type(item))
         raise TypeError(error)
 
@@ -348,14 +364,14 @@ class Groups(object):
         Return the number of groups.
         :return: Int
         """
-        return len(self._GROUPS)
+        return len(common.GROUPS)
 
     def __iter__(self) -> Iterator[Group]:
         """
         Return an iterator of the groups.
         :return: Iterator
         """
-        return iter(self._GROUPS)
+        return iter(common.GROUPS)
 
     ##############################
     # Properties:
@@ -366,7 +382,7 @@ class Groups(object):
         Return if this has been loaded somehow.
         :return: Bool.
         """
-        return self._IS_LOADED
+        return common.GROUPS is not None
 
     @property
     def last_fetched(self) -> datetime:
@@ -374,7 +390,7 @@ class Groups(object):
         The date / time this was last retrieved from papertrail, time in UTC.
         :return: Datetime object.
         """
-        return self._LAST_FETCHED
+        return common.GROUPS_LAST_FETCHED
 
     @property
     def groups(self) -> tuple[Group]:
@@ -382,7 +398,7 @@ class Groups(object):
         Return a tuple of groups.
         :return: Tuple[Group]
         """
-        return tuple(self._GROUPS)
+        return tuple(common.GROUPS)
 
 
 ########################################################################################################################
