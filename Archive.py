@@ -313,21 +313,51 @@ class Archive(object):
         error: str = "Cannot compare Archive to %s" % str(type(other))
         raise TypeError(error)
 
-        def __str__(self) -> str:
-            """
-            Refer to this as a str, produce the file name.
-            :return: Str: The file name.
-            """
-            return self._file_name
+    def __str__(self) -> str:
+        """
+        Refer to this as a str, produce the file name.
+        :return: Str: The file name.
+        """
+        return self._file_name
 
-        def __int__(self) -> int:
-            """
-            Refer to this as an int, produce the file size in bytes.
-            :return: Int: The file size in bytes.
-            """
-            return self._file_size
+    def __int__(self) -> int:
+        """
+        Refer to this as an int, produce the file size in bytes.
+        :return: Int: The file size in bytes.
+        """
+        return self._file_size
 
-    ##################################
+    def __gt__(self, other: Self | datetime) -> bool:
+        """
+        Compare if this is greater than 'other', which is either an Archive object or a datetime object.
+        :param other: Archive | datetime: other can be either an Archive object that compares start_times, or a
+            datetime which is converted to UTC then compared to start_time.
+        :return: Bool
+        """
+        if isinstance(other, type(self)):
+            return self._start_time > other.start_time
+        elif isinstance(other, datetime):
+            compare_time: datetime = convert_to_utc(other)
+            return self._start_time > compare_time
+        error: str = "Can only compare to other Archive objects or datetime objects."
+        raise TypeError(error)
+
+    def __lt__(self, other: Self | datetime) -> bool:
+        """
+        Compare if this is less than 'other', which is either an Archive or a datetime object.
+        :param other: Archive | datetime: other can be either an Archive object that compares start_times, or a
+            datetime object which is converted to UTC then compared to start_time.
+        :return: Bool
+        """
+        if isinstance(other, type(self)):
+            return self._start_time < other.start_time
+        elif isinstance(other, datetime):
+            compare_time: datetime = convert_to_utc(other)
+            return self._start_time < compare_time
+        error: str = "Can only compare to other Archive objects or datetime objects."
+        raise TypeError(error)
+
+##################################
 # Properties:
 ##################################
     @property
