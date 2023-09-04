@@ -175,7 +175,7 @@ class Destination(object):
         :param other: Destination | int | str: The object to compare to.
         :return: Bool.
         """
-        if isinstance(other, Self):
+        if isinstance(other, type(self)):
             return self._id == other._id
         elif isinstance(other, int):
             return self._syslog_port == other
