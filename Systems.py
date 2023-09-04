@@ -354,7 +354,7 @@ class Systems(object):
             return self._SYSTEMS[item]
         raise TypeError("Can only index by str, int, and datetime objects.")
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[System]:
         """
         Get an iterator of systems:
         :return: Iterator
