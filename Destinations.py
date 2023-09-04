@@ -19,6 +19,7 @@ except ImportError:
 from typing import Optional, Iterator
 from datetime import datetime
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+import common
 from Exceptions import DestinationError
 from Destination import Destination
 
@@ -27,10 +28,6 @@ class Destinations(object):
     """
     Class to store a list of log destinations. Handles loading from papertrail.
     """
-    _DESTINATIONS: list[Destination] = []
-    _IS_LOADED: bool = False
-    _LAST_FETCHED: Optional[datetime] = None
-
 ##########################################
 # Initialize:
 ##########################################
@@ -71,20 +68,20 @@ class Destinations(object):
         :return: None
         """
         try:
-            self._LAST_FETCHED = None
+            common.DESTINATIONS_LAST_FETCHED = None
             if from_dict['last_fetched'] is not None:
-                self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-            self._DESTINATIONS = []
+                common.DESTINATIONS_LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
+            common.DESTINATIONS = []
             for destination_dict in from_dict['_destinations']:
                 destination = Destination(self._api_key, from_dict=destination_dict)
-                self._DESTINATIONS.append(destination)
-                self._IS_LOADED = True
+                common.DESTINATIONS.append(destination)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise DestinationError(error, exception=e)
         return
 
-    def __to_dict__(self) -> dict:
+    @staticmethod
+    def __to_dict__() -> dict:
         """
         Create a JSON / Pickle friendly dict of this Class.
         :return: Dict.
@@ -93,9 +90,9 @@ class Destinations(object):
             'last_fetched': None,
             '_destinations': [],
         }
-        if self._LAST_FETCHED is not None:
-            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
-        for destination in self._DESTINATIONS:
+        if common.DESTINATIONS_LAST_FETCHED is not None:
+            return_dict['last_fetched'] = common.DESTINATIONS_LAST_FETCHED.isoformat()
+        for destination in common.DESTINATIONS:
             destination_dict = destination.__to_dict__()
             return_dict['_destinations'].append(destination_dict)
         return return_dict
@@ -112,19 +109,19 @@ class Destinations(object):
         list_url = BASE_URL + 'destinations.json'
         raw_log_destinations: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Parse the response from papertrail.
-        self._DESTINATIONS = []
-        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
+        common.DESTINATIONS = []
+        common.DESTINATIONS_LAST_FETCHED = convert_to_utc(datetime.utcnow())
         for raw_destination in raw_log_destinations:
             destination = Destination(self._api_key, raw_destination=raw_destination,
-                                      last_fetched=self._LAST_FETCHED)
-            self._DESTINATIONS.append(destination)
-        self._IS_LOADED = True
+                                      last_fetched=common.DESTINATIONS_LAST_FETCHED)
+            common.DESTINATIONS.append(destination)
         return
 
 #########################
 # Getters:
 #########################
-    def get_by_id(self, search_id: int) -> Optional[Destination]:
+    @staticmethod
+    def get_by_id(search_id: int) -> Optional[Destination]:
         """
         Get a destination by id.
         :param search_id: Int: the ID to search for.
@@ -133,13 +130,18 @@ class Destinations(object):
         # Type check:
         if not isinstance(search_id, int):
             __type_error__("search_id", "int", search_id)
+        # Null check DESTINATIONS:
+        if common.DESTINATIONS is None:
+            error: str = "Destinations not loaded."
+            raise DestinationError(error)
         # Search destinations:
-        for destination in self._DESTINATIONS:
+        for destination in common.DESTINATIONS:
             if destination.id == search_id:
                 return destination
         return None
 
-    def get_by_port(self, search_port: int) -> Optional[Destination]:
+    @staticmethod
+    def get_by_port(search_port: int) -> Optional[Destination]:
         """
         Get a destination by port number.
         :param search_port: Int: The port number to search for.
@@ -148,13 +150,18 @@ class Destinations(object):
         # Type check:
         if not isinstance(search_port, int):
             __type_error__("search_port", "int", search_port)
+        # Null check DESTINATIONS:
+        if common.DESTINATIONS is None:
+            error: str = "Destinations not loaded."
+            raise DestinationError(error)
         # search destinations:
-        for destination in self._DESTINATIONS:
+        for destination in common.DESTINATIONS:
             if destination.syslog_port == search_port:
                 return destination
         return None
 
-    def get_by_filter(self, search_filter: str) -> Optional[Destination]:
+    @staticmethod
+    def get_by_filter(search_filter: str) -> Optional[Destination]:
         """
         Get a destination by filter.
         :param search_filter: Str: The filter to search for.
@@ -163,8 +170,12 @@ class Destinations(object):
         # Type check:
         if not isinstance(search_filter, str):
             __type_error__("search_filter", "str", search_filter)
+        # Null check DESTINATIONS:
+        if common.DESTINATIONS is None:
+            error: str = "Destinations not loaded."
+            raise DestinationError(error)
         # Search destinations:
-        for destination in self._DESTINATIONS:
+        for destination in common.DESTINATIONS:
             if destination.filter == search_filter:
                 return destination
         return None
@@ -180,12 +191,12 @@ class Destinations(object):
         :return: Destination.
         """
         if isinstance(item, int):
-            for destination in self._DESTINATIONS:
+            for destination in common.DESTINATIONS:
                 if destination.id == item:
                     return destination
             raise IndexError("Index by int, ID: %i not found." % item)
         elif isinstance(item, str):
-            for destination in self._DESTINATIONS:
+            for destination in common.DESTINATIONS:
                 if destination.filter == item:
                     return destination
             raise IndexError("Index by str, filter: %s not found." % item)
@@ -197,7 +208,7 @@ class Destinations(object):
                 raise TypeError(error)
             elif item.step is not None and not isinstance(item.step, int):
                 raise TypeError(error)
-            return self._DESTINATIONS[item]
+            return common.DESTINATIONS[item]
         raise TypeError("Can only index by int.")
 
     def __iter__(self) -> Iterator[Destination]:
@@ -205,14 +216,14 @@ class Destinations(object):
         Return an Iterator.
         :return: Iterator.
         """
-        return iter(self._DESTINATIONS)
+        return iter(common.DESTINATIONS)
 
     def __len__(self) -> int:
         """
         Return number of destinations.
         :return: Int
         """
-        return len(self._DESTINATIONS)
+        return len(common.DESTINATIONS)
 
 ###########################
 # Properties:
@@ -223,7 +234,7 @@ class Destinations(object):
         The last time this list was fetched.
         :return: Optional[datetime]
         """
-        return self._LAST_FETCHED
+        return common.DESTINATIONS_LAST_FETCHED
 
     @property
     def is_loaded(self) -> bool:
@@ -231,7 +242,7 @@ class Destinations(object):
         Has the list been loaded?
         :return: Bool
         """
-        return self._IS_LOADED
+        return common.DESTINATIONS is not None
 
     @property
     def destinations(self) -> tuple[Destination]:
@@ -239,7 +250,7 @@ class Destinations(object):
         Return a tuple of destinations.
         :return: Tuple[Destination]
         """
-        return tuple(self._DESTINATIONS)
+        return tuple(common.DESTINATIONS)
 
 
 ########################################################################################################################
@@ -250,3 +261,5 @@ if __name__ == '__main__':
     from apiKey import API_KEY
     print("Loading destinations...")
     destinations = Destinations(API_KEY, do_load=True)
+    for _destination in destinations:
+        print(_destination.id, ":", _destination.syslog_port)
