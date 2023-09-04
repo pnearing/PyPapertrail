@@ -178,7 +178,7 @@ class SavedSearches(object):
                     warn(warning, PapertrailWarning)
                 _GROUPS.load()
             # Set group_id:
-            group_id: int = -1
+            group_id: int
             if isinstance(group, Group):
                 if group not in _GROUPS:
                     error: str = "Group not found in groups."
@@ -243,6 +243,52 @@ class SavedSearches(object):
         results: list[SavedSearch] = []
         for search in common.SEARCHES:
             if search.query == query:
+                results.append(search)
+        if len(results) == 0:
+            return None
+        return results
+
+    @staticmethod
+    def find_in_name(search_name: str) -> Optional[list[SavedSearch]]:
+        """
+        Find in names, run name.find() and if a result, returns it, None if not found.
+        :param search_name: Str: The search string to find in names.
+        :return: Optional[list[SavedSearch]]
+        """
+        # Type check:
+        if not isinstance(search_name, str):
+            __type_error__("search_name", "str", search_name)
+        # Null check SEARCHES:
+        if common.SEARCHES is None:
+            error: str = "Searches not loaded."
+            raise SavedSearchError(error)
+        # Do search:
+        results: list[SavedSearch] = []
+        for search in common.SEARCHES:
+            if search.name.find(search_name) > -1:
+                results.append(search)
+        if len(results) == 0:
+            return None
+        return results
+
+    @staticmethod
+    def find_in_query(search_query: str) -> Optional[list[SavedSearch]]:
+        """
+        Find in query string, runs query.find() and if a result returns it, None if not found.
+        :param search_query: Str: The search string to find in the query.
+        :return: Optional[list[SavedSearch]]
+        """
+        # type check:
+        if not isinstance(search_query, str):
+            __type_error__("search_query", "str", search_query)
+        # Null check SEARCHES:
+        if common.SEARCHES is None:
+            error: str = "Searches not loaded."
+            raise SavedSearchError(error)
+        # Do Search:
+        results: list[SavedSearch] = []
+        for search in common.SEARCHES:
+            if search.query.find(search_query) > -1:
                 results.append(search)
         if len(results) == 0:
             return None
