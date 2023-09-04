@@ -261,7 +261,7 @@ class System(object):
             a str for the system name.
         :return: Bool: True if ids are equal.
         """
-        if isinstance(other, Self):
+        if isinstance(other, type(self)):
             return self._id == other._id
         elif isinstance(other, int):
             return self._id == other
