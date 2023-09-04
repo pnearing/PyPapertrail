@@ -257,9 +257,9 @@ class Groups(object):
         return None
 
     @staticmethod
-    def get_by_name(search_name: str) -> Optional[Group]:
+    def get_by_name(search_name: str) -> Optional[list[Group]]:
         """
-        Get a Group by name.
+        Get a list of Groups by name, returns None if not found.
         :param search_name: Str: The name of the group.
         :return: Group | None
         """
@@ -271,10 +271,13 @@ class Groups(object):
             error: str = "Groups not loaded."
             raise GroupError(error)
         # Search groups:
+        results: list[Group] = []
         for group in common.GROUPS:
             if group.name == search_name:
-                return group
-        return None
+                results.append(group)
+        if len(results) == 0:
+            return None
+        return results
 
     @staticmethod
     def get_by_system(search_sys: System) -> Optional[list[Group]]:
@@ -327,7 +330,7 @@ class Groups(object):
     #############################
     # Overrides:
     #############################
-    def __getitem__(self, item: int | str) -> Group:
+    def __getitem__(self, item: int | str) -> Group | list[Group]:
         """
         Allow indexing with square brackets.
         :param item: Int | str: The index, if item is an int, index by ID, if item is a str, index by name,
@@ -346,11 +349,14 @@ class Groups(object):
             error: str = "Indexing as int, id %i not found." % item
             raise IndexError(error)
         elif isinstance(item, str):
+            results: list[Group] = []
             for group in common.GROUPS:
                 if group.name == item:
-                    return group
-            error: str = "Indexing as string, name '%s' not found." % item
-            raise IndexError(error)
+                    results.append(group)
+            if len(results) == 0:
+                error: str = "Indexing as string, name '%s' not found." % item
+                raise IndexError(error)
+            return results
         error: str = "Can only index by Group, int, str, or slice with type int, not: %s" % str(type(item))
         raise TypeError(error)
 
@@ -421,10 +427,10 @@ if __name__ == '__main__':
     test_delete: bool = False
 
     if test_reload:
-        s = slice(0, None, None)
-        print("Init time:", groups[s][0].last_fetched.isoformat())
-        groups[s][0].reload()
-        print("reload time:", groups[s][0].last_fetched.isoformat())
+
+        print("Init time:", groups.groups[0].last_fetched.isoformat())
+        groups.groups[0].reload()
+        print("reload time:", groups.groups[0].last_fetched.isoformat())
         pass
     if test_create:
         print("Adding TEST group.")
