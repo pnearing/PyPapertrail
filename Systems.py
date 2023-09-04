@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import sys
+
 if sys.version_info.major != 3 or sys.version_info.minor < 10:
     print("Only python >= 3.10 supported")
     exit(1)
@@ -20,6 +21,7 @@ except ImportError:
 from typing import Optional, Iterator
 from datetime import datetime
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+import common
 from Exceptions import SystemsError, InvalidServerResponse, ParameterError
 from Destinations import Destination
 from System import System
@@ -27,10 +29,6 @@ from System import System
 
 class Systems(object):
     """Class to store the systems as a list."""
-    _SYSTEMS: list[System] = []
-    _IS_LOADED: bool = False
-    _LAST_FETCHED: Optional[datetime] = None
-
     ###############################
     # Initialize:
     ###############################
@@ -65,7 +63,8 @@ class Systems(object):
     ##############################################
     # Loading / saving functions:
     ##############################################
-    def __to_dict__(self) -> dict:
+    @staticmethod
+    def __to_dict__() -> dict:
         """
         Create a json / pickle friendly dict.
         :return: Dict.
@@ -74,9 +73,9 @@ class Systems(object):
             'last_fetched': None,
             '_systems': [],
         }
-        if self._LAST_FETCHED is not None:
-            return_dict['last_fetched'] = self._LAST_FETCHED.isoformat()
-        for system in self._SYSTEMS:
+        if common.SYSTEMS_LAST_FETCHED is not None:
+            return_dict['last_fetched'] = common.SYSTEMS_LAST_FETCHED.isoformat()
+        for system in common.SYSTEMS:
             return_dict['_systems'].append(system.__to_dict__())
         return return_dict
 
@@ -87,14 +86,13 @@ class Systems(object):
         :return: None
         """
         try:
-            self._LAST_FETCHED = None
+            common.SYSTEMS_LAST_FETCHED = None
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
-            self._SYSTEMS = []
+            common.SYSTEMS = []
             for system_dict in from_dict['_systems']:
                 system = System(self._api_key, from_dict=system_dict)
-                self._SYSTEMS.append(system)
-            self._IS_LOADED = True
+                common.SYSTEMS.append(system)
         except KeyError as e:
             error: str = "Invalid dict passed to __from_dict__."
             SystemsError(error, exception=e)
@@ -112,12 +110,12 @@ class Systems(object):
         list_url = BASE_URL + 'systems.json'
         system_list: list[dict] = requests_get(url=list_url, api_key=self._api_key)
         # Set last fetched time to NOW.
-        self._LAST_FETCHED = convert_to_utc(datetime.utcnow())
+        common.SYSTEMS_LAST_FETCHED = convert_to_utc(datetime.utcnow())
         # Create SYSTEMS list:
+        common.SYSTEMS = []
         for raw_system in system_list:
-            system = System(api_key=self._api_key, last_fetched=self._LAST_FETCHED, raw_system=raw_system)
-            self._SYSTEMS.append(system)
-        self._IS_LOADED = True
+            system = System(api_key=self._api_key, last_fetched=common.SYSTEMS_LAST_FETCHED, raw_system=raw_system)
+            common.SYSTEMS.append(system)
         return
 
     def reload(self) -> None:
@@ -227,7 +225,7 @@ class Systems(object):
         # Convert the raw system to a system object and store:
         utc_now = convert_to_utc(datetime.utcnow())
         system = System(api_key=self._api_key, last_fetched=utc_now, raw_system=raw_system)
-        self._SYSTEMS.append(system)
+        common.SYSTEMS.append(system)
         return system
 
     def remove(self, index: System | int | str) -> None:
@@ -243,7 +241,7 @@ class Systems(object):
         # Determine system to remove:
         sys_to_remove: Optional[System] = None
         if isinstance(index, System):
-            if sys_to_remove not in self._SYSTEMS:
+            if sys_to_remove not in common.SYSTEMS:
                 error: str = "System not found in system list."
                 raise IndexError(error)
             sys_to_remove = index
@@ -263,13 +261,14 @@ class Systems(object):
             error: str = "Unexpected server response, KeyError."
             raise InvalidServerResponse(error)
         # Remove from _SYSTEMS:
-        self._SYSTEMS.remove(sys_to_remove)
+        common.SYSTEMS.remove(sys_to_remove)
         return
 
 ##################################
 # Getters:
 ##################################
-    def get_by_id(self, search_id: int) -> System | None:
+    @staticmethod
+    def get_by_id(search_id: int) -> System | None:
         """
         Get a system by ID.
         :param search_id: Int: The system ID to search for.
@@ -278,13 +277,18 @@ class Systems(object):
         # Type check:
         if not isinstance(search_id, int):
             __type_error__("search_id", "int", search_id)
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise SystemsError(error)
         # Search systems:
-        for system in self._SYSTEMS:
+        for system in common.SYSTEMS:
             if system.id == search_id:
                 return system
         return None
 
-    def get_by_name(self, search_name: str) -> System | None:
+    @staticmethod
+    def get_by_name(search_name: str) -> System | None:
         """
         Get a system by name.
         :param search_name: Str: The name to search for
@@ -293,13 +297,18 @@ class Systems(object):
         # type check:
         if not isinstance(search_name, str):
             __type_error__("search_name", "str", search_name)
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise SystemsError(error)
         # Search systems:
-        for system in self._SYSTEMS:
+        for system in common.SYSTEMS:
             if system.name == search_name:
                 return system
         return None
 
-    def find_in_name(self, search_str: str) -> list[System] | None:
+    @staticmethod
+    def find_in_name(search_str: str) -> list[System] | None:
         """
         Search names for a substring and return a list of matching systems.
         :param search_str: Str: The substring to search for.
@@ -308,9 +317,13 @@ class Systems(object):
         # type check:
         if not isinstance(search_str, str):
             __type_error__("search_str", "str", search_str)
+        # Null check SYSTEMS:
+        if common.SYSTEMS is None:
+            error: str = "Systems not loaded."
+            raise SystemsError(error)
         # Search systems:
         return_list: list[System] = []
-        for system in self._SYSTEMS:
+        for system in common.SYSTEMS:
             if system.name.find(search_str) != -1:
                 return_list.append(system)
         if len(return_list) == 0:
@@ -325,21 +338,21 @@ class Systems(object):
         Index systems.
         :param item: Str, int, datetime | slice: The index, if item is a str, index by name, if item is an int index by
             ID, if item is a datetime, index by date time of the last event, finally if item is a slice, only slicing
-            by ints is supported, and will return a slice as though the systems were a list..
+            by ints is supported, and will return a slice as though the systems were a list.
         :return: System | list[System]
         """
         if isinstance(item, int):
-            for system in self._SYSTEMS:
+            for system in common.SYSTEMS:
                 if system.id == item:
                     return system
             raise IndexError("ID: %i not found." % item)
         elif isinstance(item, str):
-            for system in self._SYSTEMS:
+            for system in common.SYSTEMS:
                 if system.name == item:
                     return system
             raise IndexError("Name: %s not found." % item)
         elif isinstance(item, datetime):
-            for system in self._SYSTEMS:
+            for system in common.SYSTEMS:
                 if system.last_event == item:
                     return system
             raise IndexError("datetime not found in last event.")
@@ -351,7 +364,7 @@ class Systems(object):
                 raise TypeError(error)
             elif item.step is not None and not isinstance(item.step, int):
                 raise TypeError(error)
-            return self._SYSTEMS[item]
+            return common.SYSTEMS[item]
         raise TypeError("Can only index by str, int, and datetime objects.")
 
     def __iter__(self) -> Iterator[System]:
@@ -359,14 +372,14 @@ class Systems(object):
         Get an iterator of systems:
         :return: Iterator
         """
-        return iter(self._SYSTEMS)
+        return iter(common.SYSTEMS)
 
     def __len__(self) -> int:
         """
         Return the number of systems.
         :return: Int
         """
-        return len(self._SYSTEMS)
+        return len(common.SYSTEMS)
 
 ###################################################
 # Properties:
@@ -377,7 +390,7 @@ class Systems(object):
         When the systems were last fetched from papertrail.
         :return: Optional[datetime]
         """
-        return self._LAST_FETCHED
+        return common.SYSTEMS_LAST_FETCHED
 
     @property
     def is_loaded(self) -> bool:
@@ -385,7 +398,7 @@ class Systems(object):
         Has the systems list been loaded?
         :return: Bool
         """
-        return self._IS_LOADED
+        return common.SYSTEMS is not None
 
     @property
     def systems(self) -> tuple[System]:
@@ -393,7 +406,7 @@ class Systems(object):
         Return a tuple of Systems.
         :return: Tuple[System]
         """
-        return tuple(self._SYSTEMS)
+        return tuple(common.SYSTEMS)
 
 
 ########################################################################################################################
