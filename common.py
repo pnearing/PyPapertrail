@@ -3,9 +3,6 @@
 Common variables / functions for papertrail api.
 """
 import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(1)
 from typing import Any, NoReturn, Optional, TypeVar
 from datetime import datetime
 import pytz
@@ -37,6 +34,17 @@ USERS_LAST_FETCHED: Optional[datetime] = None
 BASE_URL: str = 'https://papertrailapp.com/api/v1/'
 USE_WARNINGS: bool = True
 SYSTEM_WARNING_MADE: bool = False
+
+
+def __version_check__() -> Optional[NoReturn]:
+    """
+    Check the python version and exit gracefully if wrong version.
+    :return: Optional[NoReturn]
+    """
+    if sys.version_info.major != 3 or sys.version_info.minor < 10:
+        print("Only python >= 3.10 supported")
+        exit(1)
+    return
 
 
 def is_timezone_aware(dt: datetime) -> bool:
