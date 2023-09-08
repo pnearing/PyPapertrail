@@ -234,6 +234,20 @@ class QueryError(PapertrailError):
         return
 
 
+class EventError(PapertrailError):
+    """
+    Exception to throw if an error happens during Event processing.
+    """
+    def __init__(self, error_message: str, **kwargs) -> None:
+        """
+        Initialize an event error.
+        :param error_message: Str: Message explaining the error.
+        :param kwargs: Any additional key word arguments.
+        """
+        PapertrailError.__init__(self, error_message, **kwargs)
+        return
+
+
 class InvalidServerResponse(PapertrailError):
     """
     Exception to throw when the server sends invalid JSON.

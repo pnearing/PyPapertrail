@@ -36,6 +36,7 @@ USERS_LAST_FETCHED: Optional[datetime] = None
 
 BASE_URL: str = 'https://papertrailapp.com/api/v1/'
 USE_WARNINGS: bool = True
+SYSTEM_WARNING_MADE: bool = False
 
 
 def is_timezone_aware(dt: datetime) -> bool:
