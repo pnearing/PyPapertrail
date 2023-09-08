@@ -2,10 +2,15 @@
 """
     File: Event.py
 """
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+from typing import Optional
+from datetime import datetime
+from warnings import warn
+from common import __type_error__, convert_to_utc
+import common
+from Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
+from System import System
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -15,19 +20,10 @@ except ImportError:
     except (ModuleNotFoundError, ImportError):
         try:
             from typing import TypeVar
-            Self = TypeVar("Self", bound="Event")
+            Self = TypeVar("Self", bound="Groups")
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
-from datetime import datetime
-from warnings import warn
-from common import __type_error__, convert_to_utc
-import common
-from Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
-from System import System
-
-SYSTEMS_WARNING_MADE: bool = False
 
 
 class Event(object):

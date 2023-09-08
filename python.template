@@ -2,10 +2,9 @@
 """
     File:
 """
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+import common
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self

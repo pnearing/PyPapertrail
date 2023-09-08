@@ -2,10 +2,14 @@
 """
     File: SavedSearch.py
 """
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+from typing import Optional
+from datetime import datetime
+from common import __type_error__, requests_get, requests_put, convert_to_utc
+import common
+from Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
+from Group import Group
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -19,12 +23,6 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
-from datetime import datetime
-from common import __type_error__, requests_get, requests_put, convert_to_utc
-import common
-from Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
-from Group import Group
 
 
 class SavedSearch(object):

@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+"""
+    File: Archive.py
+"""
+from typing import Optional, Callable, Any
+import os
+import requests
+from datetime import datetime
+import pytz
+from common import __type_error__, convert_to_utc, __raise_for_http_error__
+import common
+from Exceptions import ArchiveError, RequestReadTimeout, ParameterError
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -16,13 +25,6 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional, Callable, Any
-import os
-import requests
-from datetime import datetime
-import pytz
-from common import __type_error__, convert_to_utc, __raise_for_http_error__
-from Exceptions import ArchiveError, RequestReadTimeout, ParameterError
 
 
 class Archive(object):

@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Papertrail Exceptions and Warnings."""
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(1)
+"""
+    File: Exceptions.py
+    Papertrail Exceptions and Warnings.
+"""
 import requests
 from requests.models import CaseInsensitiveDict
 from requests import HTTPError
+import common
+# Version check:
+common.__version_check__()
 
 
 ########################################################################################################################

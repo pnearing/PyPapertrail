@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+"""
+    File: Destination.py
+"""
+from typing import Optional
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+import common
+from Exceptions import DestinationError, ParameterError, InvalidServerResponse
+from datetime import datetime
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -16,10 +22,6 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get
-from Exceptions import DestinationError, ParameterError, InvalidServerResponse
-from datetime import datetime
 
 
 class Destination(object):

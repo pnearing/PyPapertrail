@@ -2,10 +2,15 @@
 """
     File: User.py
 """
-import sys
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+from typing import Optional
+from warnings import warn
+from common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
+import common
+from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
+from Groups import Groups
+from Group import Group
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -19,12 +24,6 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
-from warnings import warn
-from common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
-from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
-from Groups import Groups
-from Group import Group
 
 
 class User(object):

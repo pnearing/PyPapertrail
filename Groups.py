@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
-import sys
-
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+"""
+    File: Groups.py
+"""
+from typing import Optional, Iterator
+from datetime import datetime
+import pytz
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+import common
+from Exceptions import GroupError, InvalidServerResponse
+from Group import Group
+from System import System
+# Version Check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -17,14 +25,6 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional, Iterator
-from datetime import datetime
-import pytz
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
-import common
-from Exceptions import GroupError, InvalidServerResponse
-from Group import Group
-from System import System
 
 
 class Groups(object):
