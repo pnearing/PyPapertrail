@@ -54,7 +54,7 @@ class Event(object):
         # Initialize the properties:
         self._id: int = -1
         self._source_ip: str = ''
-        self._program: str = ''
+        self._program: Optional[str] = None
         self._message: str = ''
         self._received_at: datetime
         self._generated_at: datetime
@@ -175,9 +175,9 @@ class Event(object):
         return self._source_ip
 
     @property
-    def program(self) -> str:
+    def program(self) -> Optional[str]:
         """
-        Program
+        Program, can be None if not defined by papertrail.
         :return: Str
         """
         return self._program
