@@ -134,12 +134,13 @@ class Event(object):
         :return: None
         """
         try:
-            self._id = raw_event['id']
+            self._id = int(raw_event['id'])
             self._source_ip = raw_event['source_ip']
             self._program = raw_event['program']
             self._message = raw_event['message']
             self._received_at = datetime.fromisoformat(raw_event['received_at'])
             self._generated_at = datetime.fromisoformat(raw_event['generated_at'])
+            self._display_received_at = raw_event['display_received_at']
             self._source_id = raw_event['source_id']
             self._source_name = raw_event['source_name']
             self._host_name = raw_event['hostname']
