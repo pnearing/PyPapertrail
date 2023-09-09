@@ -7,8 +7,6 @@ import requests
 from requests.models import CaseInsensitiveDict
 from requests import HTTPError
 import common
-# Version check:
-common.__version_check__()
 
 
 ########################################################################################################################
