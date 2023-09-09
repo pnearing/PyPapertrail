@@ -84,7 +84,7 @@ class NotFoundError(PapertrailError):
         :param kwargs: Any additional key word arguments.
         """
         message = "404: Not Found: url=%s" % url
-        PapertrailError(message, **kwargs)
+        PapertrailError.__init__(self, message, **kwargs)
         return
 
 
