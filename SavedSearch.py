@@ -114,7 +114,7 @@ class SavedSearch(object):
             self._last_fetched = None
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise SavedSearchError(error, exception=e)
         return
@@ -146,14 +146,6 @@ class SavedSearch(object):
         :param raw_search: Dict: The dict to load from.
         :return: None
         """
-        # Load groups if needed:
-        # if not _GROUPS.is_loaded:
-        #     # print("DEBUG: Here")
-        #     if USE_WARNINGS:
-        #         warning = "Loading groups from Papertrail."
-        #         warn(warning, PapertrailWarning)
-        #     _GROUPS.load()
-        # Null check GROUPS:
         if common.GROUPS is None:
             error: str = "Groups not loaded."
             raise SavedSearchError(error)
@@ -162,7 +154,6 @@ class SavedSearch(object):
             self._id = raw_search['id']
             self._query = raw_search['query']
             self._group = None
-            # group_id = raw_search['group']['id']
             for group in common.GROUPS:
                 if group.id == raw_search['group']['id']:
                     self._group = group
@@ -170,15 +161,6 @@ class SavedSearch(object):
             if self._group is None:
                 error: str = "Group ID: '%i' not found." % raw_search['group']['id']
                 raise IndexError(error)
-            # try:
-            #     self._group = _GROUPS[group_id]
-            # except IndexError:
-            #     if USE_WARNINGS:
-            #         warning: str = "Unknown group, reloading groups."
-            #         warn(warning, PapertrailWarning)
-            #         # print("DEBUG:", raw_search)
-            #     _GROUPS.load()
-            #     self._group = _GROUPS[group_id]
             self._self_link = raw_search['_links']['self']
             self._search_link = raw_search['_links']['search']
             self._html_link = raw_search['_links']['html']
