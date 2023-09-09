@@ -102,7 +102,7 @@ class Event(object):
                     if system.id == self._source_id:
                         self._system = system
                         break
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict provided to from_dict."
             raise EventError(error, exception=e)
 
@@ -151,7 +151,7 @@ class Event(object):
                     if system.id == self._source_id:
                         self._system = system
                         break
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "KeyError while processing event."
             raise InvalidServerResponse(error, exeption=e)
         return

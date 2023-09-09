@@ -27,7 +27,7 @@ except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
 
-# Store a groups instance:
+# Store a 'groups' instance:
 _GROUPS: Optional[Groups] = None
 
 
@@ -83,7 +83,7 @@ class SavedSearches(object):
             for search_dict in from_dict['_searches']:
                 search = SavedSearch(api_key=self._api_key, from_dict=search_dict)
                 common.SEARCHES.append(search)
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise SavedSearchError(error, exception=e)
         return

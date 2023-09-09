@@ -83,7 +83,7 @@ class Archives(object):
             for archive_dict in from_dict['_archives']:
                 archive = Archive(api_key=self._api_key, from_dict=archive_dict)
                 common.ARCHIVES.append(archive)
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise ArchiveError(error, exception=e)
         return
@@ -122,7 +122,7 @@ class Archives(object):
         response = requests_get(list_url, self._api_key)
         # Return the list as list of Archive objects:
         common.ARCHIVES = []
-        common.ARCHIVES_LAST_FETCHED: datetime = pytz.utc.localize(datetime.utcnow())
+        common.ARCHIVES_LAST_FETCHED = convert_to_utc(datetime.utcnow())
         for raw_archive in response:
             archive = Archive(api_key=self._api_key, raw_archive=raw_archive, last_fetched=common.ARCHIVES_LAST_FETCHED)
             common.ARCHIVES.append(archive)

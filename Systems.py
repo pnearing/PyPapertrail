@@ -92,7 +92,7 @@ class Systems(object):
             for system_dict in from_dict['_systems']:
                 system = System(self._api_key, from_dict=system_dict)
                 common.SYSTEMS.append(system)
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__."
             SystemsError(error, exception=e)
         return

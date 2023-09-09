@@ -71,8 +71,8 @@ class Archive(object):
         if last_fetched is not None:
             self._last_fetched = convert_to_utc(last_fetched)
         # Define properties:
-        self._start_time: datetime = datetime(year=1970, month=1, day=1)
-        self._end_time: datetime = datetime(year=1970, month=1, day=1)
+        self._start_time: datetime = convert_to_utc(datetime(year=1970, month=1, day=1))
+        self._end_time: datetime = convert_to_utc(datetime(year=1970, month=1, day=1))
         self._formatted_start_time: str = ''
         self._formatted_duration: str = ''
         self._file_name: str = ''
@@ -81,20 +81,12 @@ class Archive(object):
         self._duration: int = -1
         self._is_downloaded: bool = False
         self._download_path: Optional[str] = None
-
+        self._downloading: bool = False
         # Load archive properties:
-        if raw_archive is None and from_dict is None:
-            error: str = "Either raw_archive or from_dict must be defined, but not both."
-            raise ParameterError(error)
-        elif raw_archive is not None and from_dict is not None:
-            error: str = "Either raw_archive or from_dict must be defined, but not both."
-            raise ParameterError(error)
+        if from_dict is not None:
+            self.__from_dict__(from_dict)
         elif raw_archive is not None:
             self.__from_raw_archive__(raw_archive)
-        else:
-            self.__from_dict__(from_dict)
-        # Store downloading properties:
-        self._downloading: bool = False
         return
 
 #########################################
@@ -126,8 +118,9 @@ class Archive(object):
             # Set downloaded and download path, assume not downloaded.
             self._is_downloaded = False
             self._download_path = None
-        except KeyError as e:
-            error: str = "KeyError while extracting data from raw_archive. Maybe papertrail changed their response."
+        except (KeyError, ValueError) as e:
+            error: str = ("KeyError or ValueError while extracting data from raw_archive. Maybe papertrail changed "
+                          "their response.")
             raise ArchiveError(error, exception=e)
         return
 
@@ -149,7 +142,7 @@ class Archive(object):
             self._duration = from_dict['duration']
             self._is_downloaded = from_dict['is_downloaded']
             self._download_path = from_dict['download_path']
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise ArchiveError(error, exception=e)
         return

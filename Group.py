@@ -149,7 +149,7 @@ class Group(object):
                 if not system_found:
                     error: str = "System not found."
                     raise IndexError(error)
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
         return

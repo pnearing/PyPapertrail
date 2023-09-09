@@ -82,7 +82,7 @@ class Usage(object):
             self._LAST_FETCHED = None
             if from_dict['last_fetched'] is not None:
                 self._LAST_FETCHED = datetime.fromisoformat(from_dict['last_fetched'])
-        except KeyError:
+        except (KeyError, ValueError):
             error: str = "Invalid dict passed to __from_dict__"
             raise UsageError(error)
         return

@@ -74,7 +74,7 @@ class Groups(object):
             for group_dict in from_dict['_groups']:
                 group = Group(api_key=self._api_key, from_dict=group_dict)
                 common.GROUPS.append(group)
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise GroupError(error, exception=e)
         return

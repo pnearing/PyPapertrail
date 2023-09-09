@@ -83,7 +83,7 @@ class Users(object):
             for user_dict in from_dict['_users']:
                 user = User(api_key=self._api_key, from_dict=user_dict)
                 common.USERS.append(user)
-        except KeyError:
+        except (KeyError, ValueError):
             error: str = "Invalid dict provided to __from_dict__()"
             raise UsersError(error)
         return

@@ -126,7 +126,7 @@ class Destination(object):
             self._last_fetched = None
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__()"
             raise DestinationError(error, exception=e)
         return

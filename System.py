@@ -117,7 +117,7 @@ class System(object):
             self._syslog_host_name = raw_system['syslog']['hostname']
             self._syslog_port = raw_system['syslog']['port']
             self._last_fetched = convert_to_utc(datetime.utcnow())
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "KeyError: %s. Maybe papertrail changed their response." % str(e)
             raise InvalidServerResponse(error, exception=e)
         return
@@ -145,7 +145,7 @@ class System(object):
             self._last_fetched = None
             if from_dict['last_fetched'] is not None:
                 self._last_fetched = datetime.fromisoformat(from_dict['last_fetched'])
-        except KeyError as e:
+        except (KeyError, ValueError) as e:
             error: str = "Invalid dict passed to __from_dict__"
             raise SystemsError(error, exception=e)
         return
