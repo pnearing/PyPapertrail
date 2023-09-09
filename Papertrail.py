@@ -2,11 +2,17 @@
 """
     File: Papertrail.py
 """
-import sys
-
-if sys.version_info.major != 3 or sys.version_info.minor < 10:
-    print("Only python >= 3.10 supported")
-    exit(128)
+from typing import Optional
+import common
+from common import __type_error__
+from Archives import Archives
+from Destinations import Destinations
+from Groups import Groups
+from Systems import Systems
+from Usage import Usage
+from Exceptions import PapertrailError
+# Version check:
+common.__version_check__()
 # Define Self:
 try:
     from typing import Self
@@ -21,15 +27,6 @@ except ImportError:
         except ImportError:
             print("FATAL: Unable to define Self.")
             exit(129)
-from typing import Optional
-import common
-from common import __type_error__
-from Archives import Archives
-from Destinations import Destinations
-from Groups import Groups
-from Systems import Systems
-from Usage import Usage
-from Exceptions import PapertrailError
 
 
 class Papertrail(object):
@@ -71,6 +68,7 @@ class Papertrail(object):
         self._systems: Systems = Systems(api_key=api_key, from_dict=None, do_load=False)
         self._groups: Groups = Groups(api_key=api_key, from_dict=None, do_load=False)
         self._usage: Usage = Usage(api_key=api_key, from_dict=None, do_load=False)
+
         # Load this instance:
         if from_dict is not None:
             self.__from_dict__(from_dict)
