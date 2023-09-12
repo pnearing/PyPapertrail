@@ -1,0 +1,210 @@
+\hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations}{}\doxysection{Py\+Papertrail.\+Destinations.\+Destinations Class Reference}
+\label{classPyPapertrail_1_1Destinations_1_1Destinations}\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+
+
+Inheritance diagram for Py\+Papertrail.\+Destinations.\+Destinations\+:
+% FIG 0
+
+
+Collaboration diagram for Py\+Papertrail.\+Destinations.\+Destinations\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a2be13e041a2c870f44e5409be7928b71}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, bool do\+\_\+load=True)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a47a2aadea300364afe43b764f735673b}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\begin{DoxyCompactList}\small\item\em To / From dict\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a8499c112f65bd04547e3ba9655ddb952}{load}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a068f1fc284fd7fa953829d98b773e82b}{\+\_\+\+\_\+getitem\+\_\+\+\_\+}} (self, int$\vert$str item)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+Iterator\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_ac0d497fe5843918428f7021fcc03a83b}{\+\_\+\+\_\+iter\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_adaa320d5cdf3f81c5dd18babdadfec04}{\+\_\+\+\_\+len\+\_\+\+\_\+}} (self)
+\item 
+Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_affb157d0d1a14c074801953f82297cd4}{last\+\_\+fetched}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_aa4d537b620849fc387105673b52661d8}{is\+\_\+loaded}} (self)
+\item 
+tuple\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a91ad59561946098ebbed7d69974d4460}{destinations}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+dict \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a228d2d42285416c99d865d0ab2bb4ac1}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} ()
+\item 
+Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_ae84bd7c19e9f5968996e399aa76a5661}{get\+\_\+by\+\_\+id}} (int search\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Getters\+: \end{DoxyCompactList}\item 
+Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a949f6c8bde066fc9d4b46b06085e454c}{get\+\_\+by\+\_\+port}} (int search\+\_\+port)
+\item 
+Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destinations_1_1Destinations_a1cad88f5e5badc63f4798f11e363dbbb}{get\+\_\+by\+\_\+filter}} (str search\+\_\+filter)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store a list of log destinations. Handles loading from papertrail.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a2be13e041a2c870f44e5409be7928b71}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a2be13e041a2c870f44e5409be7928b71}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Py\+Papertrail.\+Destinations.\+Destinations.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{bool }]{do\+\_\+load = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize the log destinations, optionally loading from papertrail.
+:param api_key: Str: API key.
+:param from_dict: Optional[dict]: Load from a dict created by __to_dict__(). NOTE: if from_dict is not None,
+                    then the parameter do_load is ignored.
+:param do_load: Bool: True = load from papertrail on initialize.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a47a2aadea300364afe43b764f735673b}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a47a2aadea300364afe43b764f735673b}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Destinations.\+Destinations.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+
+
+To / From dict\+: 
+
+\begin{DoxyVerb}Load from a dict created by __to_dict__().
+:param from_dict: Dict: The dict to load from.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a068f1fc284fd7fa953829d98b773e82b}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a068f1fc284fd7fa953829d98b773e82b}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!\_\_getitem\_\_@{\_\_getitem\_\_}}
+\index{\_\_getitem\_\_@{\_\_getitem\_\_}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{\_\_getitem\_\_()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}} Py\+Papertrail.\+Destinations.\+Destinations.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{int $\vert$ str}]{item }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Allow indexing with square brackets.
+:param item: Int | str: If item is an int, index by ID, if item is a str, index by name.
+:raises: DestinationError: If the destination list hasn't been loaded.
+:return: Destination
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_ac0d497fe5843918428f7021fcc03a83b}\label{classPyPapertrail_1_1Destinations_1_1Destinations_ac0d497fe5843918428f7021fcc03a83b}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!\_\_iter\_\_@{\_\_iter\_\_}}
+\index{\_\_iter\_\_@{\_\_iter\_\_}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{\_\_iter\_\_()}{\_\_iter\_\_()}}
+{\footnotesize\ttfamily  Iterator\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} Py\+Papertrail.\+Destinations.\+Destinations.\+\_\+\+\_\+iter\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return an Iterator of destinations.
+:raises: DestinationError: If the destination list hasn't been loaded.
+:return: Iterator.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_adaa320d5cdf3f81c5dd18babdadfec04}\label{classPyPapertrail_1_1Destinations_1_1Destinations_adaa320d5cdf3f81c5dd18babdadfec04}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!\_\_len\_\_@{\_\_len\_\_}}
+\index{\_\_len\_\_@{\_\_len\_\_}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{\_\_len\_\_()}{\_\_len\_\_()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Destinations.\+Destinations.\+\_\+\+\_\+len\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return number of destinations.
+:raises: DestinationError: If the destination list hasn't been loaded yet.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a228d2d42285416c99d865d0ab2bb4ac1}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a228d2d42285416c99d865d0ab2bb4ac1}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Py\+Papertrail.\+Destinations.\+Destinations.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Create a JSON / Pickle friendly dict of this Class.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a91ad59561946098ebbed7d69974d4460}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a91ad59561946098ebbed7d69974d4460}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!destinations@{destinations}}
+\index{destinations@{destinations}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{destinations()}{destinations()}}
+{\footnotesize\ttfamily  tuple\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} Py\+Papertrail.\+Destinations.\+Destinations.\+destinations (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return a tuple of destinations.
+:return: Tuple[Destination]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a1cad88f5e5badc63f4798f11e363dbbb}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a1cad88f5e5badc63f4798f11e363dbbb}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!get\_by\_filter@{get\_by\_filter}}
+\index{get\_by\_filter@{get\_by\_filter}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{get\_by\_filter()}{get\_by\_filter()}}
+{\footnotesize\ttfamily  Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} Py\+Papertrail.\+Destinations.\+Destinations.\+get\+\_\+by\+\_\+filter (\begin{DoxyParamCaption}\item[{str}]{search\+\_\+filter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get a destination by filter.
+:param search_filter: Str: The filter to search for.
+:return: Destination | None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_ae84bd7c19e9f5968996e399aa76a5661}\label{classPyPapertrail_1_1Destinations_1_1Destinations_ae84bd7c19e9f5968996e399aa76a5661}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!get\_by\_id@{get\_by\_id}}
+\index{get\_by\_id@{get\_by\_id}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{get\_by\_id()}{get\_by\_id()}}
+{\footnotesize\ttfamily  Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} Py\+Papertrail.\+Destinations.\+Destinations.\+get\+\_\+by\+\_\+id (\begin{DoxyParamCaption}\item[{int}]{search\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Getters\+: 
+
+\begin{DoxyVerb}Get a destination by id.
+:param search_id: Int: the ID to search for.
+:return: Destination | None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a949f6c8bde066fc9d4b46b06085e454c}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a949f6c8bde066fc9d4b46b06085e454c}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!get\_by\_port@{get\_by\_port}}
+\index{get\_by\_port@{get\_by\_port}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{get\_by\_port()}{get\_by\_port()}}
+{\footnotesize\ttfamily  Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} Py\+Papertrail.\+Destinations.\+Destinations.\+get\+\_\+by\+\_\+port (\begin{DoxyParamCaption}\item[{int}]{search\+\_\+port }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get a destination by port number.
+:param search_port: Int: The port number to search for.
+:return: Destination | None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_aa4d537b620849fc387105673b52661d8}\label{classPyPapertrail_1_1Destinations_1_1Destinations_aa4d537b620849fc387105673b52661d8}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!is\_loaded@{is\_loaded}}
+\index{is\_loaded@{is\_loaded}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{is\_loaded()}{is\_loaded()}}
+{\footnotesize\ttfamily  bool Py\+Papertrail.\+Destinations.\+Destinations.\+is\+\_\+loaded (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Has the list been loaded?
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_affb157d0d1a14c074801953f82297cd4}\label{classPyPapertrail_1_1Destinations_1_1Destinations_affb157d0d1a14c074801953f82297cd4}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  Optional\mbox{[}datetime\mbox{]} Py\+Papertrail.\+Destinations.\+Destinations.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}The last time this list was fetched.
+:return: Optional[datetime]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destinations_1_1Destinations_a8499c112f65bd04547e3ba9655ddb952}\label{classPyPapertrail_1_1Destinations_1_1Destinations_a8499c112f65bd04547e3ba9655ddb952}} 
+\index{PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}!load@{load}}
+\index{load@{load}!PyPapertrail.Destinations.Destinations@{PyPapertrail.Destinations.Destinations}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Destinations.\+Destinations.\+load (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Load destinations from papertrail.
+:return: None
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Py\+Papertrail/Destinations.\+py\end{DoxyCompactItemize}

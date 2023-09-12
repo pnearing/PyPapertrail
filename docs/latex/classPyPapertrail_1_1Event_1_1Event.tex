@@ -1,0 +1,216 @@
+\hypertarget{classPyPapertrail_1_1Event_1_1Event}{}\doxysection{Py\+Papertrail.\+Event.\+Event Class Reference}
+\label{classPyPapertrail_1_1Event_1_1Event}\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+
+
+Inheritance diagram for Py\+Papertrail.\+Event.\+Event\+:
+% FIG 0
+
+
+Collaboration diagram for Py\+Papertrail.\+Event.\+Event\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a6faa55eb7c0147d3533a12444fe57ab5}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, Optional\mbox{[}dict\mbox{]} raw\+\_\+event=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a6c7c3eae180674e756359ca916a28a70}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a291c5924a8c89c92b74960feb6b585a5}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_acbee6eaf22cdb3c7d8726490bf209bfd}{\+\_\+\+\_\+from\+\_\+raw\+\_\+event\+\_\+\+\_\+}} (self, dict raw\+\_\+event)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a958a9cb892c1b3c78b42205e8e75717e}{id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a8ea7a2d1d89f57f003e793513e190556}{source\+\_\+ip}} (self)
+\item 
+Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a12938d62855a8ed51aa6010889270b43}{program}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_ae34144e90ff37f38e3fa35d45cc2182c}{message}} (self)
+\item 
+datetime \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_ac20485dca05aa51f51d45344aafc24e4}{received\+\_\+at}} (self)
+\item 
+datetime \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_af95f1c057df04ece56f52d521a483f1b}{generated\+\_\+at}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_acfd9801da4feeb5aae7e55fdda0f0d51}{display\+\_\+received\+\_\+at}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_af5142d0514fbeb40c7de5c7626f00d4a}{source\+\_\+id}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a578c731045318cdcff84d8bdff6d7402}{source\+\_\+name}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_aeb1aef34a5939668638048092d145df9}{host\+\_\+name}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_ab8366d53de626e9972afbc10ce19262a}{severity}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Event_1_1Event_a42227ceadaa3df27bfc3e709c481709f}{facility}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store an event.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a6faa55eb7c0147d3533a12444fe57ab5}\label{classPyPapertrail_1_1Event_1_1Event_a6faa55eb7c0147d3533a12444fe57ab5}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Event.\+Event.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+event = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize an Event object:
+:param raw_event: Optional[dict]: The dict provided by Papertrail.
+:param from_dict: Optional[dict]: A dict provided by __to_dict__().
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a6c7c3eae180674e756359ca916a28a70}\label{classPyPapertrail_1_1Event_1_1Event_a6c7c3eae180674e756359ca916a28a70}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Event.\+Event.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load this instance from a dict provided by __to_dict__().
+:param from_dict: Dict: The dict provided by __to_dict__().
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_acbee6eaf22cdb3c7d8726490bf209bfd}\label{classPyPapertrail_1_1Event_1_1Event_acbee6eaf22cdb3c7d8726490bf209bfd}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!\_\_from\_raw\_event\_\_@{\_\_from\_raw\_event\_\_}}
+\index{\_\_from\_raw\_event\_\_@{\_\_from\_raw\_event\_\_}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_event\_\_()}{\_\_from\_raw\_event\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Event.\+Event.\+\_\+\+\_\+from\+\_\+raw\+\_\+event\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{raw\+\_\+event }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load from an event dict provided by Papertrail.
+:param raw_event: Dict: The dict provided by papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a291c5924a8c89c92b74960feb6b585a5}\label{classPyPapertrail_1_1Event_1_1Event_a291c5924a8c89c92b74960feb6b585a5}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Py\+Papertrail.\+Event.\+Event.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a json / Pickle friendly dict.
+:return: Dict
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_acfd9801da4feeb5aae7e55fdda0f0d51}\label{classPyPapertrail_1_1Event_1_1Event_acfd9801da4feeb5aae7e55fdda0f0d51}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!display\_received\_at@{display\_received\_at}}
+\index{display\_received\_at@{display\_received\_at}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{display\_received\_at()}{display\_received\_at()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+display\+\_\+received\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Display received at time.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a42227ceadaa3df27bfc3e709c481709f}\label{classPyPapertrail_1_1Event_1_1Event_a42227ceadaa3df27bfc3e709c481709f}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!facility@{facility}}
+\index{facility@{facility}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{facility()}{facility()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+facility (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The logging facility.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_af95f1c057df04ece56f52d521a483f1b}\label{classPyPapertrail_1_1Event_1_1Event_af95f1c057df04ece56f52d521a483f1b}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!generated\_at@{generated\_at}}
+\index{generated\_at@{generated\_at}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{generated\_at()}{generated\_at()}}
+{\footnotesize\ttfamily  datetime Py\+Papertrail.\+Event.\+Event.\+generated\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Datetime object for when this was generated.
+:return: Datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_aeb1aef34a5939668638048092d145df9}\label{classPyPapertrail_1_1Event_1_1Event_aeb1aef34a5939668638048092d145df9}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!host\_name@{host\_name}}
+\index{host\_name@{host\_name}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{host\_name()}{host\_name()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+host\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The source host name generating this event.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a958a9cb892c1b3c78b42205e8e75717e}\label{classPyPapertrail_1_1Event_1_1Event_a958a9cb892c1b3c78b42205e8e75717e}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!id@{id}}
+\index{id@{id}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Event.\+Event.\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Event ID.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_ae34144e90ff37f38e3fa35d45cc2182c}\label{classPyPapertrail_1_1Event_1_1Event_ae34144e90ff37f38e3fa35d45cc2182c}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!message@{message}}
+\index{message@{message}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{message()}{message()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+message (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Message
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a12938d62855a8ed51aa6010889270b43}\label{classPyPapertrail_1_1Event_1_1Event_a12938d62855a8ed51aa6010889270b43}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!program@{program}}
+\index{program@{program}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{program()}{program()}}
+{\footnotesize\ttfamily  Optional\mbox{[}str\mbox{]} Py\+Papertrail.\+Event.\+Event.\+program (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Program, can be None if not defined by papertrail.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_ac20485dca05aa51f51d45344aafc24e4}\label{classPyPapertrail_1_1Event_1_1Event_ac20485dca05aa51f51d45344aafc24e4}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!received\_at@{received\_at}}
+\index{received\_at@{received\_at}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{received\_at()}{received\_at()}}
+{\footnotesize\ttfamily  datetime Py\+Papertrail.\+Event.\+Event.\+received\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Datetime object for when this was received.
+:return: Datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_ab8366d53de626e9972afbc10ce19262a}\label{classPyPapertrail_1_1Event_1_1Event_ab8366d53de626e9972afbc10ce19262a}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!severity@{severity}}
+\index{severity@{severity}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{severity()}{severity()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+severity (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The severity of the event.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_af5142d0514fbeb40c7de5c7626f00d4a}\label{classPyPapertrail_1_1Event_1_1Event_af5142d0514fbeb40c7de5c7626f00d4a}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!source\_id@{source\_id}}
+\index{source\_id@{source\_id}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{source\_id()}{source\_id()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Event.\+Event.\+source\+\_\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The source system ID of this event
+:return: Int.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a8ea7a2d1d89f57f003e793513e190556}\label{classPyPapertrail_1_1Event_1_1Event_a8ea7a2d1d89f57f003e793513e190556}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!source\_ip@{source\_ip}}
+\index{source\_ip@{source\_ip}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{source\_ip()}{source\_ip()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+source\+\_\+ip (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Source IP address.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Event_1_1Event_a578c731045318cdcff84d8bdff6d7402}\label{classPyPapertrail_1_1Event_1_1Event_a578c731045318cdcff84d8bdff6d7402}} 
+\index{PyPapertrail.Event.Event@{PyPapertrail.Event.Event}!source\_name@{source\_name}}
+\index{source\_name@{source\_name}!PyPapertrail.Event.Event@{PyPapertrail.Event.Event}}
+\doxysubsubsection{\texorpdfstring{source\_name()}{source\_name()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Event.\+Event.\+source\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The name of the source system.
+:return: Str.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Py\+Papertrail/Event.\+py\end{DoxyCompactItemize}

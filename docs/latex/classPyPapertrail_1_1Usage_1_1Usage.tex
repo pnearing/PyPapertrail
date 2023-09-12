@@ -1,0 +1,178 @@
+\hypertarget{classPyPapertrail_1_1Usage_1_1Usage}{}\doxysection{Py\+Papertrail.\+Usage.\+Usage Class Reference}
+\label{classPyPapertrail_1_1Usage_1_1Usage}\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+
+
+Inheritance diagram for Py\+Papertrail.\+Usage.\+Usage\+:
+% FIG 0
+
+
+Collaboration diagram for Py\+Papertrail.\+Usage.\+Usage\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_ada9e5e002d889b3d415528ac65520b3a}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, bool do\+\_\+load=True)
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_a54b67174348a19613ba18c9108338b82}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\begin{DoxyCompactList}\small\item\em To / From Dict\+: \end{DoxyCompactList}\item 
+dict \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_acbb5aa9a25151290dda2238974dadfc5}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_a57e18920139fd652c678a80ea8b705f7}{load}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_a5856581437d9bb6a5914978b7f5d0bae}{reload}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_ab13cc1f193a0c0d8e4ed53fb81cf93e9}{data\+\_\+used}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_a2afc923576b84ea212ddd468fefb0280}{data\+\_\+used\+\_\+percent}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_af820a902a5c65260757e4e347c9cfe62}{plan\+\_\+limit}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_a6366d88786208c147d5d079c4a242bf1}{hard\+\_\+limit}} (self)
+\item 
+bool \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_a054096cc4a8243a4cae998f3017836da}{is\+\_\+loaded}} (self)
+\item 
+Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Usage_1_1Usage_aa6e0cf38e88e330e6c932d9fa3ea7b13}{last\+\_\+fetched}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_aded203a55eece8c54d7c41e20ee411e2}\label{classPyPapertrail_1_1Usage_1_1Usage_aded203a55eece8c54d7c41e20ee411e2}} 
+{\bfseries int}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a167a8e239d06cc14da20c3391d3e2555}\label{classPyPapertrail_1_1Usage_1_1Usage_a167a8e239d06cc14da20c3391d3e2555}} 
+{\bfseries float}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a800d0daca16ca2a3b1334a5d6c07cb42}\label{classPyPapertrail_1_1Usage_1_1Usage_a800d0daca16ca2a3b1334a5d6c07cb42}} 
+{\bfseries bool}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store usage data.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_ada9e5e002d889b3d415528ac65520b3a}\label{classPyPapertrail_1_1Usage_1_1Usage_ada9e5e002d889b3d415528ac65520b3a}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Usage.\+Usage.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{bool }]{do\+\_\+load = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialize a usage object.
+:param api_key: Str: The api key.
+:param from_dict: Optional[dict]: The dict provided by __to_dict__(), NOTE: if from dict is defined, do_load
+    is ignored.
+:param do_load: Bool: Load from papertrail.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a54b67174348a19613ba18c9108338b82}\label{classPyPapertrail_1_1Usage_1_1Usage_a54b67174348a19613ba18c9108338b82}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Usage.\+Usage.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+
+
+To / From Dict\+: 
+
+\begin{DoxyVerb}Load from a dict created by __to_dict__()
+:param from_dict: Dict: The dict to load from.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_acbb5aa9a25151290dda2238974dadfc5}\label{classPyPapertrail_1_1Usage_1_1Usage_acbb5aa9a25151290dda2238974dadfc5}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Py\+Papertrail.\+Usage.\+Usage.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a json / pickle friendly dict.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_ab13cc1f193a0c0d8e4ed53fb81cf93e9}\label{classPyPapertrail_1_1Usage_1_1Usage_ab13cc1f193a0c0d8e4ed53fb81cf93e9}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!data\_used@{data\_used}}
+\index{data\_used@{data\_used}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{data\_used()}{data\_used()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Usage.\+Usage.\+data\+\_\+used (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Data used in bytes.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a2afc923576b84ea212ddd468fefb0280}\label{classPyPapertrail_1_1Usage_1_1Usage_a2afc923576b84ea212ddd468fefb0280}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!data\_used\_percent@{data\_used\_percent}}
+\index{data\_used\_percent@{data\_used\_percent}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{data\_used\_percent()}{data\_used\_percent()}}
+{\footnotesize\ttfamily  float Py\+Papertrail.\+Usage.\+Usage.\+data\+\_\+used\+\_\+percent (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Data used percentage.
+:return: Float
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a6366d88786208c147d5d079c4a242bf1}\label{classPyPapertrail_1_1Usage_1_1Usage_a6366d88786208c147d5d079c4a242bf1}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!hard\_limit@{hard\_limit}}
+\index{hard\_limit@{hard\_limit}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{hard\_limit()}{hard\_limit()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Usage.\+Usage.\+hard\+\_\+limit (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Hard limit in bytes.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a054096cc4a8243a4cae998f3017836da}\label{classPyPapertrail_1_1Usage_1_1Usage_a054096cc4a8243a4cae998f3017836da}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!is\_loaded@{is\_loaded}}
+\index{is\_loaded@{is\_loaded}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{is\_loaded()}{is\_loaded()}}
+{\footnotesize\ttfamily  bool Py\+Papertrail.\+Usage.\+Usage.\+is\+\_\+loaded (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}If the usage has been loaded.
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_aa6e0cf38e88e330e6c932d9fa3ea7b13}\label{classPyPapertrail_1_1Usage_1_1Usage_aa6e0cf38e88e330e6c932d9fa3ea7b13}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  Optional\mbox{[}datetime\mbox{]} Py\+Papertrail.\+Usage.\+Usage.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Last datetime this was last loaded from Papertrail in UTC.
+:return: Optional[datetime]: None if not loaded.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a57e18920139fd652c678a80ea8b705f7}\label{classPyPapertrail_1_1Usage_1_1Usage_a57e18920139fd652c678a80ea8b705f7}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!load@{load}}
+\index{load@{load}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Usage.\+Usage.\+load (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Load from papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_af820a902a5c65260757e4e347c9cfe62}\label{classPyPapertrail_1_1Usage_1_1Usage_af820a902a5c65260757e4e347c9cfe62}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!plan\_limit@{plan\_limit}}
+\index{plan\_limit@{plan\_limit}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{plan\_limit()}{plan\_limit()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Usage.\+Usage.\+plan\+\_\+limit (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Data plan limit in bytes.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Usage_1_1Usage_a5856581437d9bb6a5914978b7f5d0bae}\label{classPyPapertrail_1_1Usage_1_1Usage_a5856581437d9bb6a5914978b7f5d0bae}} 
+\index{PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}!reload@{reload}}
+\index{reload@{reload}!PyPapertrail.Usage.Usage@{PyPapertrail.Usage.Usage}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Usage.\+Usage.\+reload (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Reload from Papertrail.
+:return: None
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Py\+Papertrail/Usage.\+py\end{DoxyCompactItemize}

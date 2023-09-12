@@ -1,0 +1,24 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyPapertrail"
+version = "1.0"
+authors = [
+	{ name="Peter Nearing", email="me@peternearing.ca" }
+]
+description = "A python3 API to the Papertrail http api."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://peternearing.ca/pypapertrail"
+"Bug Tracker" = "https://github.com/pnearing/PyPapertrail/issues"

@@ -1,0 +1,281 @@
+\hypertarget{classPyPapertrail_1_1Systems_1_1Systems}{}\doxysection{Py\+Papertrail.\+Systems.\+Systems Class Reference}
+\label{classPyPapertrail_1_1Systems_1_1Systems}\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+
+
+Inheritance diagram for Py\+Papertrail.\+Systems.\+Systems\+:
+% FIG 0
+
+
+Collaboration diagram for Py\+Papertrail.\+Systems.\+Systems\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a50da8b552a1f9b22d4d3cdb79541e341}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, bool do\+\_\+load=True)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a6606f0b27b189e8ac9fe4ae8106a4b7e}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a539f39809f40e6704eb00b8186f6e4f8}{load}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a250b75347ca297459a278925367e3d40}{reload}} (self)
+\item 
+\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}} \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_ae7c0be3d207053defe97146ecd94860f}{register}} (self, str name, Optional\mbox{[}str\mbox{]} host\+\_\+name=None, Optional\mbox{[}str\mbox{]} ip\+\_\+address=None, Optional\mbox{[}int\mbox{]} destination\+\_\+port=None, Optional\mbox{[}int\mbox{]} destination\+\_\+id=None, Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} destination=None, Optional\mbox{[}str\mbox{]} description=None, Optional\mbox{[}bool\mbox{]} auto\+\_\+delete=None)
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a9d243b060f908e79832288b299177989}{remove}} (self, \mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}$\vert$int$\vert$str index)
+\item 
+\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}$\vert$list\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a738a7871616e6d08fb75952de32c0679}{\+\_\+\+\_\+getitem\+\_\+\+\_\+}} (self, str$\vert$int$\vert$datetime item)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+Iterator\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a59edd4d89110f028ca120cd599f6f845}{\+\_\+\+\_\+iter\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_aef26402dca0ab72f2015a0563a5ad8f4}{\+\_\+\+\_\+len\+\_\+\+\_\+}} (self)
+\item 
+Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a0feba01ca1ba227490f6dd77a957fdf7}{last\+\_\+fetched}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_aef0cdd798eaa4bb63812f036b8cf9f10}{is\+\_\+loaded}} (self)
+\item 
+tuple\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a82a4c5c1a406e5f63a9e26887eb83b71}{systems}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+dict \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_ac7f07fb9c28fdd918eb36da418e25ab6}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} ()
+\begin{DoxyCompactList}\small\item\em Loading / saving functions\+: \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}$\vert$None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a2779c5aeb233991f4f817e11cd9ee90c}{get\+\_\+by\+\_\+id}} (int search\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Getters\+: \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}$\vert$None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_acb9eafef6ffda0c4fc541650c4ad19c1}{get\+\_\+by\+\_\+name}} (str search\+\_\+name)
+\item 
+list\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]}$\vert$None \mbox{\hyperlink{classPyPapertrail_1_1Systems_1_1Systems_a70b9e38631ff4b519b273611fb373863}{find\+\_\+in\+\_\+name}} (str search\+\_\+str)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a76ea40ff38836d631e91bd02dd3e8396}\label{classPyPapertrail_1_1Systems_1_1Systems_a76ea40ff38836d631e91bd02dd3e8396}} 
+string {\bfseries del\+\_\+url} = BASE\+\_\+\+URL + \char`\"{}systems/\%i.\+json\char`\"{} \% sys\+\_\+to\+\_\+remove.\+id
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_acf5fc3adefbf901422dd8a737b482f5d}\label{classPyPapertrail_1_1Systems_1_1Systems_acf5fc3adefbf901422dd8a737b482f5d}} 
+{\bfseries dict}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_ac4875e538a8fcaadeac47b2a361f73ff}\label{classPyPapertrail_1_1Systems_1_1Systems_ac4875e538a8fcaadeac47b2a361f73ff}} 
+{\bfseries url}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a1416690533a3f6282930a1944ff47845}\label{classPyPapertrail_1_1Systems_1_1Systems_a1416690533a3f6282930a1944ff47845}} 
+{\bfseries del\+\_\+url}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a4459feb23ad66599912e157847a17c09}\label{classPyPapertrail_1_1Systems_1_1Systems_a4459feb23ad66599912e157847a17c09}} 
+{\bfseries api\+\_\+key}
+\item 
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a434ce8d852eb5ca57d64fc071f30b5e0}\label{classPyPapertrail_1_1Systems_1_1Systems_a434ce8d852eb5ca57d64fc071f30b5e0}} 
+{\bfseries str}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store the systems as a list.\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a50da8b552a1f9b22d4d3cdb79541e341}\label{classPyPapertrail_1_1Systems_1_1Systems_a50da8b552a1f9b22d4d3cdb79541e341}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Systems.\+Systems.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{bool }]{do\+\_\+load = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize the systems list.
+:param api_key: Str: The api key.
+:param from_dict: Dict: The dict to load from created by __to_dict__(), Note if not None do_load is ignored.
+:param do_load: Bool: True, make request from papertrail, False do not.
+:raises: SystemsError: On request error, or if invalid JSON is returned.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a6606f0b27b189e8ac9fe4ae8106a4b7e}\label{classPyPapertrail_1_1Systems_1_1Systems_a6606f0b27b189e8ac9fe4ae8106a4b7e}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Systems.\+Systems.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load from dict created by __to_dict__()
+:param from_dict: The dict
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a738a7871616e6d08fb75952de32c0679}\label{classPyPapertrail_1_1Systems_1_1Systems_a738a7871616e6d08fb75952de32c0679}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!\_\_getitem\_\_@{\_\_getitem\_\_}}
+\index{\_\_getitem\_\_@{\_\_getitem\_\_}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{\_\_getitem\_\_()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}} $\vert$ list\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} Py\+Papertrail.\+Systems.\+Systems.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str $\vert$ int $\vert$ datetime}]{item }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Index systems.
+:param item: Str | int | datetime: The index, if item is a str, index by name, if item is an int index by
+    ID, if item is a datetime, index by date time of the last event (produces a list).
+:raises: SystemsError: If the systems list isn't loaded.
+:return: System | list[System]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a59edd4d89110f028ca120cd599f6f845}\label{classPyPapertrail_1_1Systems_1_1Systems_a59edd4d89110f028ca120cd599f6f845}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!\_\_iter\_\_@{\_\_iter\_\_}}
+\index{\_\_iter\_\_@{\_\_iter\_\_}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{\_\_iter\_\_()}{\_\_iter\_\_()}}
+{\footnotesize\ttfamily  Iterator\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} Py\+Papertrail.\+Systems.\+Systems.\+\_\+\+\_\+iter\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get an iterator of systems:
+:raises: SystemsError: If the system list isn't loaded.
+:return: Iterator
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_aef26402dca0ab72f2015a0563a5ad8f4}\label{classPyPapertrail_1_1Systems_1_1Systems_aef26402dca0ab72f2015a0563a5ad8f4}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!\_\_len\_\_@{\_\_len\_\_}}
+\index{\_\_len\_\_@{\_\_len\_\_}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{\_\_len\_\_()}{\_\_len\_\_()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Systems.\+Systems.\+\_\+\+\_\+len\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return the number of systems.
+:raises: SystemsError: If the system list isn't loaded.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_ac7f07fb9c28fdd918eb36da418e25ab6}\label{classPyPapertrail_1_1Systems_1_1Systems_ac7f07fb9c28fdd918eb36da418e25ab6}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Py\+Papertrail.\+Systems.\+Systems.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Loading / saving functions\+: 
+
+\begin{DoxyVerb}Create a json / pickle friendly dict.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a70b9e38631ff4b519b273611fb373863}\label{classPyPapertrail_1_1Systems_1_1Systems_a70b9e38631ff4b519b273611fb373863}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!find\_in\_name@{find\_in\_name}}
+\index{find\_in\_name@{find\_in\_name}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{find\_in\_name()}{find\_in\_name()}}
+{\footnotesize\ttfamily  list\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} $\vert$ None Py\+Papertrail.\+Systems.\+Systems.\+find\+\_\+in\+\_\+name (\begin{DoxyParamCaption}\item[{str}]{search\+\_\+str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Search names for a substring and return a list of matching systems.
+:param search_str: Str: The substring to search for.
+:return: list[System] | None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a2779c5aeb233991f4f817e11cd9ee90c}\label{classPyPapertrail_1_1Systems_1_1Systems_a2779c5aeb233991f4f817e11cd9ee90c}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!get\_by\_id@{get\_by\_id}}
+\index{get\_by\_id@{get\_by\_id}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{get\_by\_id()}{get\_by\_id()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}} $\vert$ None Py\+Papertrail.\+Systems.\+Systems.\+get\+\_\+by\+\_\+id (\begin{DoxyParamCaption}\item[{int}]{search\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Getters\+: 
+
+\begin{DoxyVerb}Get a system by ID.
+:param search_id: Int: The system ID to search for.
+:return: System | None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_acb9eafef6ffda0c4fc541650c4ad19c1}\label{classPyPapertrail_1_1Systems_1_1Systems_acb9eafef6ffda0c4fc541650c4ad19c1}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!get\_by\_name@{get\_by\_name}}
+\index{get\_by\_name@{get\_by\_name}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{get\_by\_name()}{get\_by\_name()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}} $\vert$ None Py\+Papertrail.\+Systems.\+Systems.\+get\+\_\+by\+\_\+name (\begin{DoxyParamCaption}\item[{str}]{search\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get a system by name.
+:param search_name: Str: The name to search for
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_aef0cdd798eaa4bb63812f036b8cf9f10}\label{classPyPapertrail_1_1Systems_1_1Systems_aef0cdd798eaa4bb63812f036b8cf9f10}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!is\_loaded@{is\_loaded}}
+\index{is\_loaded@{is\_loaded}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{is\_loaded()}{is\_loaded()}}
+{\footnotesize\ttfamily  bool Py\+Papertrail.\+Systems.\+Systems.\+is\+\_\+loaded (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Has the systems list been loaded?
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a0feba01ca1ba227490f6dd77a957fdf7}\label{classPyPapertrail_1_1Systems_1_1Systems_a0feba01ca1ba227490f6dd77a957fdf7}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  Optional\mbox{[}datetime\mbox{]} Py\+Papertrail.\+Systems.\+Systems.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}When the systems were last fetched from papertrail.
+:return: Optional[datetime]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a539f39809f40e6704eb00b8186f6e4f8}\label{classPyPapertrail_1_1Systems_1_1Systems_a539f39809f40e6704eb00b8186f6e4f8}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!load@{load}}
+\index{load@{load}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Systems.\+Systems.\+load (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Load the systems list from papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_ae7c0be3d207053defe97146ecd94860f}\label{classPyPapertrail_1_1Systems_1_1Systems_ae7c0be3d207053defe97146ecd94860f}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!register@{register}}
+\index{register@{register}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{register()}{register()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}} Py\+Papertrail.\+Systems.\+Systems.\+register (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{name,  }\item[{Optional\mbox{[}str\mbox{]} }]{host\+\_\+name = {\ttfamily None},  }\item[{Optional\mbox{[}str\mbox{]} }]{ip\+\_\+address = {\ttfamily None},  }\item[{Optional\mbox{[}int\mbox{]} }]{destination\+\_\+port = {\ttfamily None},  }\item[{Optional\mbox{[}int\mbox{]} }]{destination\+\_\+id = {\ttfamily None},  }\item[{Optional\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination}{Destination}}\mbox{]} }]{destination = {\ttfamily None},  }\item[{Optional\mbox{[}str\mbox{]} }]{description = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{auto\+\_\+delete = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Register a new system with papertrail.
+:param name: Str: Papertrail name.
+:param host_name: Optional[str]: Filter events to only those from this syslog host name.
+:param ip_address: Optional[str]: The Ip address of the system, it should be a static public ip.
+:param destination_port: Optional[int]: Syslog target port. If set to port 519, ip_address must be specified.
+:param destination_id: Optional[int]: Syslog destination papertrail ID.
+:param destination: Optional[Destination]: A Destination object produced by this library.
+:param description: Optional[str]: The description of this system.
+:param auto_delete: Optional[bool]: Auto delete system if idle.
+:raises: SystemsError: When an error occurs.
+:raises: TypeError / ValueError: if invalid types or invalid values are passed.
+:return: Tuple[bool, str]: The first element is a bool indicating success (True), or failure (False), The second
+    element will be the message "OK" if the first element is true, and an error message indicating what went
+    wrong.
+:NOTE: One of the parameters: 'destination_port', 'destination_id', 'destination', must be defined. If more
+    than one is defined, then they are preferred in this order: 'destination', 'destination_id',
+    'destination_port'.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a250b75347ca297459a278925367e3d40}\label{classPyPapertrail_1_1Systems_1_1Systems_a250b75347ca297459a278925367e3d40}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!reload@{reload}}
+\index{reload@{reload}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Systems.\+Systems.\+reload (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Reload the systems list.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a9d243b060f908e79832288b299177989}\label{classPyPapertrail_1_1Systems_1_1Systems_a9d243b060f908e79832288b299177989}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!remove@{remove}}
+\index{remove@{remove}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Systems.\+Systems.\+remove (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}} $\vert$ int $\vert$ str}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Remove a system from papertrail.
+:param index: System | int | str: The system to remove, if System, if int, it's index to remove, if str it's
+    the system name that is used to look up which system to remove.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Systems_1_1Systems_a82a4c5c1a406e5f63a9e26887eb83b71}\label{classPyPapertrail_1_1Systems_1_1Systems_a82a4c5c1a406e5f63a9e26887eb83b71}} 
+\index{PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}!systems@{systems}}
+\index{systems@{systems}!PyPapertrail.Systems.Systems@{PyPapertrail.Systems.Systems}}
+\doxysubsubsection{\texorpdfstring{systems()}{systems()}}
+{\footnotesize\ttfamily  tuple\mbox{[}\mbox{\hyperlink{classPyPapertrail_1_1System_1_1System}{System}}\mbox{]} Py\+Papertrail.\+Systems.\+Systems.\+systems (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return a tuple of Systems.
+:return: Tuple[System]
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Py\+Papertrail/Systems.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,223 @@
+\hypertarget{classPyPapertrail_1_1Destination_1_1Destination}{}\doxysection{Py\+Papertrail.\+Destination.\+Destination Class Reference}
+\label{classPyPapertrail_1_1Destination_1_1Destination}\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+
+
+Inheritance diagram for Py\+Papertrail.\+Destination.\+Destination\+:
+% FIG 0
+
+
+Collaboration diagram for Py\+Papertrail.\+Destination.\+Destination\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a0bc78c29664dddc52b3acd97d493018e}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} raw\+\_\+destination=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a79495f63b4ade19ada183304d414c412}{last\+\_\+fetched}}=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a18b0b7ea14ae90cd3a251dcd15dd9ad7}{\+\_\+\+\_\+from\+\_\+raw\+\_\+log\+\_\+destination\+\_\+\+\_\+}} (self, raw\+\_\+destination)
+\begin{DoxyCompactList}\small\item\em Load / Save functions\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a7f1a3a30e8c5f6474c77fb7d56ebb0d0}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_abe715dbf1b75730bdfbf8bf2d21e0ad6}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+Self \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_aa5c62d82e265e2ced2697576230a37df}{reload}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_af03117d1941daf46b04d390dd4491373}{\+\_\+\+\_\+eq\+\_\+\+\_\+}} (self, Self$\vert$int$\vert$str other)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_ae69c419303a45fde26a685f534027475}{\+\_\+\+\_\+str\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a21fd574c4ac9c57fef0f4fe42e43fbbe}{\+\_\+\+\_\+int\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a75d076081c843be4c34f9ca8ae4d191f}{id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a729726f9e54f1f6a2142df9439eaca25}{filter}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a3b349b7d64f010af66606656fdd7f810}{syslog\+\_\+host\+\_\+name}} (self)
+\item 
+int \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a9d827de0a8a58854242890fc24ebca23}{syslog\+\_\+port}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a007a9a41bc90d981cce2ecf7b4f8c5c9}{description}} (self)
+\item 
+str \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a0daf188fbe4c911e27da55cf46231bd9}{info\+\_\+link}} (self)
+\item 
+datetime \mbox{\hyperlink{classPyPapertrail_1_1Destination_1_1Destination_a79495f63b4ade19ada183304d414c412}{last\+\_\+fetched}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class storing a single log destination.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a0bc78c29664dddc52b3acd97d493018e}\label{classPyPapertrail_1_1Destination_1_1Destination_a0bc78c29664dddc52b3acd97d493018e}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+destination = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{Optional\mbox{[}datetime\mbox{]} }]{last\+\_\+fetched = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize a single destination.
+:param api_key: Str: Api key for papertrail.
+:param raw_destination: Dict: The raw response dict from papertrail.
+    Note: If using raw_destination, last_fetched must be defined.
+:param from_dict: Dict: The dict created by __to_dict__().
+:param last_fetched: Datetime object: The date and time this was last fetched from the server.
+:return: None
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_af03117d1941daf46b04d390dd4491373}\label{classPyPapertrail_1_1Destination_1_1Destination_af03117d1941daf46b04d390dd4491373}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_eq\_\_@{\_\_eq\_\_}}
+\index{\_\_eq\_\_@{\_\_eq\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_eq\_\_()}{\_\_eq\_\_()}}
+{\footnotesize\ttfamily  bool Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+eq\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Self $\vert$ int $\vert$ str}]{other }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Equality check, of other is Destination object, it compares id, if other is an int, it compares syslog port,
+otherwise if other is a str it compares syslog host name.
+:param other: Destination | int | str: The object to compare to.
+:return: Bool.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a7f1a3a30e8c5f6474c77fb7d56ebb0d0}\label{classPyPapertrail_1_1Destination_1_1Destination_a7f1a3a30e8c5f6474c77fb7d56ebb0d0}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load from a dict provided by __to_dict__().
+:param from_dict: Dict: The dict to load from.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a18b0b7ea14ae90cd3a251dcd15dd9ad7}\label{classPyPapertrail_1_1Destination_1_1Destination_a18b0b7ea14ae90cd3a251dcd15dd9ad7}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_from\_raw\_log\_destination\_\_@{\_\_from\_raw\_log\_destination\_\_}}
+\index{\_\_from\_raw\_log\_destination\_\_@{\_\_from\_raw\_log\_destination\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_log\_destination\_\_()}{\_\_from\_raw\_log\_destination\_\_()}}
+{\footnotesize\ttfamily  None Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+from\+\_\+raw\+\_\+log\+\_\+destination\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{raw\+\_\+destination }\end{DoxyParamCaption})}
+
+
+
+Load / Save functions\+: 
+
+\begin{DoxyVerb}Load from raw destination response from papertrail.
+:param raw_destination: Dict: dict received from papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a21fd574c4ac9c57fef0f4fe42e43fbbe}\label{classPyPapertrail_1_1Destination_1_1Destination_a21fd574c4ac9c57fef0f4fe42e43fbbe}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_int\_\_@{\_\_int\_\_}}
+\index{\_\_int\_\_@{\_\_int\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_int\_\_()}{\_\_int\_\_()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+int\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Referring as an int returns the syslog port.
+:return: Int: The syslog port.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_ae69c419303a45fde26a685f534027475}\label{classPyPapertrail_1_1Destination_1_1Destination_ae69c419303a45fde26a685f534027475}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_str\_\_@{\_\_str\_\_}}
+\index{\_\_str\_\_@{\_\_str\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_str\_\_()}{\_\_str\_\_()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+str\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Referring as a string returns the syslog host name.
+:return: Str: The syslog host name.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_abe715dbf1b75730bdfbf8bf2d21e0ad6}\label{classPyPapertrail_1_1Destination_1_1Destination_abe715dbf1b75730bdfbf8bf2d21e0ad6}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Py\+Papertrail.\+Destination.\+Destination.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a JSON / Pickle friendly dict of this instance.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a007a9a41bc90d981cce2ecf7b4f8c5c9}\label{classPyPapertrail_1_1Destination_1_1Destination_a007a9a41bc90d981cce2ecf7b4f8c5c9}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!description@{description}}
+\index{description@{description}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{description()}{description()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Destination.\+Destination.\+description (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Destination description.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a729726f9e54f1f6a2142df9439eaca25}\label{classPyPapertrail_1_1Destination_1_1Destination_a729726f9e54f1f6a2142df9439eaca25}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!filter@{filter}}
+\index{filter@{filter}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{filter()}{filter()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Destination.\+Destination.\+filter (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Filters for this destination.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a75d076081c843be4c34f9ca8ae4d191f}\label{classPyPapertrail_1_1Destination_1_1Destination_a75d076081c843be4c34f9ca8ae4d191f}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!id@{id}}
+\index{id@{id}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Destination.\+Destination.\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Papertrail ID
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a0daf188fbe4c911e27da55cf46231bd9}\label{classPyPapertrail_1_1Destination_1_1Destination_a0daf188fbe4c911e27da55cf46231bd9}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!info\_link@{info\_link}}
+\index{info\_link@{info\_link}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{info\_link()}{info\_link()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Destination.\+Destination.\+info\+\_\+link (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Link to json info.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a79495f63b4ade19ada183304d414c412}\label{classPyPapertrail_1_1Destination_1_1Destination_a79495f63b4ade19ada183304d414c412}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  datetime Py\+Papertrail.\+Destination.\+Destination.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Last time this was loaded from the server.
+:return: Datetime: None if not loaded.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_aa5c62d82e265e2ced2697576230a37df}\label{classPyPapertrail_1_1Destination_1_1Destination_aa5c62d82e265e2ced2697576230a37df}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!reload@{reload}}
+\index{reload@{reload}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily  Self Py\+Papertrail.\+Destination.\+Destination.\+reload (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Reload this destination from the server.
+:return: Destination: This instance.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a3b349b7d64f010af66606656fdd7f810}\label{classPyPapertrail_1_1Destination_1_1Destination_a3b349b7d64f010af66606656fdd7f810}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!syslog\_host\_name@{syslog\_host\_name}}
+\index{syslog\_host\_name@{syslog\_host\_name}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{syslog\_host\_name()}{syslog\_host\_name()}}
+{\footnotesize\ttfamily  str Py\+Papertrail.\+Destination.\+Destination.\+syslog\+\_\+host\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Syslog target host name
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classPyPapertrail_1_1Destination_1_1Destination_a9d827de0a8a58854242890fc24ebca23}\label{classPyPapertrail_1_1Destination_1_1Destination_a9d827de0a8a58854242890fc24ebca23}} 
+\index{PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}!syslog\_port@{syslog\_port}}
+\index{syslog\_port@{syslog\_port}!PyPapertrail.Destination.Destination@{PyPapertrail.Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{syslog\_port()}{syslog\_port()}}
+{\footnotesize\ttfamily  int Py\+Papertrail.\+Destination.\+Destination.\+syslog\+\_\+port (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Syslog target port.
+:return: Int
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Py\+Papertrail/Destination.\+py\end{DoxyCompactItemize}
