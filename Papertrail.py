@@ -18,6 +18,7 @@ from Results import Results
 from System import System
 from Group import Group
 from Event import Event
+from RateLimits import RateLimits
 # Version check:
 common.__version_check__()
 # Define Self:
@@ -74,6 +75,7 @@ class Papertrail(object):
         self._systems: Systems = Systems(api_key=api_key, from_dict=None, do_load=False)
         self._groups: Groups = Groups(api_key=api_key, from_dict=None, do_load=False)
         self._usage: Usage = Usage(api_key=api_key, from_dict=None, do_load=False)
+        self._rate_limits: RateLimits = RateLimits()
 
         # Load this instance:
         if from_dict is not None:
@@ -289,9 +291,17 @@ class Papertrail(object):
     def usage(self) -> Usage:
         """
         Usage instance.
-        :return:
+        :return: Usage
         """
         return self._usage
+
+    @property
+    def rate_limits(self) -> RateLimits:
+        """
+        Rate Limits Instance.
+        :return: RateLimits
+        """
+        return self._rate_limits
 
 
 ########################################################################################################################
@@ -303,7 +313,7 @@ if __name__ == '__main__':
     papertrail.systems.load()
     papertrail.groups.load()
     results = papertrail.search(query="ssh AND error")
-    for event in results._events:
+    for event in results.events:
         print(event.message)
 
     exit(0)
