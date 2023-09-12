@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['ratelimiterror_190',['RateLimitError',['../classExceptions_1_1RateLimitError.html',1,'Exceptions']]],
-  ['ratelimits_191',['RateLimits',['../classRateLimits_1_1RateLimits.html',1,'RateLimits']]],
-  ['requestreadtimeout_192',['RequestReadTimeout',['../classExceptions_1_1RequestReadTimeout.html',1,'Exceptions']]],
-  ['results_193',['Results',['../classResults_1_1Results.html',1,'Results']]]
+  ['ratelimiterror_199',['RateLimitError',['../classPyPapertrail_1_1Exceptions_1_1RateLimitError.html',1,'PyPapertrail::Exceptions']]],
+  ['ratelimits_200',['RateLimits',['../classPyPapertrail_1_1RateLimits_1_1RateLimits.html',1,'PyPapertrail::RateLimits']]],
+  ['requestreadtimeout_201',['RequestReadTimeout',['../classPyPapertrail_1_1Exceptions_1_1RequestReadTimeout.html',1,'PyPapertrail::Exceptions']]],
+  ['results_202',['Results',['../classPyPapertrail_1_1Results_1_1Results.html',1,'PyPapertrail::Results']]]
 ];

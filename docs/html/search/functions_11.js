@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['update_344',['update',['../classGroup_1_1Group.html#af712609b65b44a1311f3d2da326209ce',1,'Group.Group.update()'],['../classSavedSearch_1_1SavedSearch.html#a3c9f03f5b5c62bb7c0333285851ffede',1,'SavedSearch.SavedSearch.update()'],['../classSystem_1_1System.html#a87dd6ab55deeda06dbb009a21adb3c22',1,'System.System.update()'],['../classUser_1_1User.html#a13e5dd2e5de0b0fe56f0bf254ffa0f15',1,'User.User.update()']]],
-  ['usage_345',['usage',['../classPapertrail_1_1Papertrail.html#ac33ad08da7d3917d6de741de71ba8f1e',1,'Papertrail::Papertrail']]],
-  ['users_346',['users',['../classUsers_1_1Users.html#abe92335d08a16fbf432e137ca418a95b',1,'Users::Users']]]
+  ['update_353',['update',['../classPyPapertrail_1_1Group_1_1Group.html#ae61549eb1f15d172b718f2a5c89664ce',1,'PyPapertrail.Group.Group.update()'],['../classPyPapertrail_1_1SavedSearch_1_1SavedSearch.html#a4227d007d95b1981891cd87845057174',1,'PyPapertrail.SavedSearch.SavedSearch.update()'],['../classPyPapertrail_1_1System_1_1System.html#abfaccb87a40215475f5db7bb1b9cf2bd',1,'PyPapertrail.System.System.update()'],['../classPyPapertrail_1_1User_1_1User.html#a98cd3b27d778754ce0e027695d2d7783',1,'PyPapertrail.User.User.update()']]],
+  ['usage_354',['usage',['../classPyPapertrail_1_1Papertrail_1_1Papertrail.html#afa36230415860c2f356aa9674f6da610',1,'PyPapertrail::Papertrail::Papertrail']]],
+  ['users_355',['users',['../classPyPapertrail_1_1Users_1_1Users.html#ae14c0e66cb8a60c25051f519ef2fe6b7',1,'PyPapertrail::Users::Users']]]
 ];

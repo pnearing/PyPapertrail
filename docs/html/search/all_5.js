@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['email_46',['email',['../classUser_1_1User.html#aafdf9899f94b8013d711f0fcf8b7dcb0',1,'User::User']]],
-  ['end_5ftime_47',['end_time',['../classArchive_1_1Archive.html#a0ea85136d143edc90ef7b1782d123f90',1,'Archive::Archive']]],
-  ['event_48',['Event',['../namespaceEvent.html',1,'Event'],['../classEvent_1_1Event.html',1,'Event.Event']]],
-  ['eventerror_49',['EventError',['../classExceptions_1_1EventError.html',1,'Exceptions']]],
-  ['events_50',['events',['../classResults_1_1Results.html#a29f5db034d43c09f1cdf1234b5d13494',1,'Results::Results']]],
-  ['exceptions_51',['Exceptions',['../namespaceExceptions.html',1,'']]]
+  ['email_43',['email',['../classPyPapertrail_1_1User_1_1User.html#a34b676df995475598708ec9efbead218',1,'PyPapertrail::User::User']]],
+  ['end_5ftime_44',['end_time',['../classPyPapertrail_1_1Archive_1_1Archive.html#a06c1c03449158a502625429d6bada2eb',1,'PyPapertrail::Archive::Archive']]],
+  ['event_45',['Event',['../classPyPapertrail_1_1Event_1_1Event.html',1,'PyPapertrail::Event']]],
+  ['eventerror_46',['EventError',['../classPyPapertrail_1_1Exceptions_1_1EventError.html',1,'PyPapertrail::Exceptions']]],
+  ['events_47',['events',['../classPyPapertrail_1_1Results_1_1Results.html#aea2a09e9330b5e2c1a026fd1a7a425ff',1,'PyPapertrail::Results::Results']]]
 ];

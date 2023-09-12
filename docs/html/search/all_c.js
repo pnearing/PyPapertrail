@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['max_5fid_98',['max_id',['../classResults_1_1Results.html#aa4daeb4cc8b3efe3f2b9addba1dce74c',1,'Results::Results']]],
-  ['max_5ftime_5fat_99',['max_time_at',['../classResults_1_1Results.html#aeb13b1620b19a5316149252446926cb9',1,'Results::Results']]],
-  ['message_100',['message',['../classEvent_1_1Event.html#aa03c17629e73e41019b1b1163a39bfa3',1,'Event::Event']]],
-  ['methodnotallowederror_101',['MethodNotAllowedError',['../classExceptions_1_1MethodNotAllowedError.html',1,'Exceptions']]],
-  ['min_5fid_102',['min_id',['../classResults_1_1Results.html#a91364c80afeae4dd67273974b38cdbbb',1,'Results::Results']]],
-  ['min_5ftime_5fit_103',['min_time_it',['../classResults_1_1Results.html#a1d3e05d32dac35f4175580eed105aa89',1,'Results::Results']]]
+  ['max_5fid_92',['max_id',['../classPyPapertrail_1_1Results_1_1Results.html#ac9df16cd1d6a4426e843764fedfee81b',1,'PyPapertrail::Results::Results']]],
+  ['max_5ftime_5fat_93',['max_time_at',['../classPyPapertrail_1_1Results_1_1Results.html#a0379402b83ad612dd56a97f9fce0fed3',1,'PyPapertrail::Results::Results']]],
+  ['message_94',['message',['../classPyPapertrail_1_1Event_1_1Event.html#ae34144e90ff37f38e3fa35d45cc2182c',1,'PyPapertrail::Event::Event']]],
+  ['methodnotallowederror_95',['MethodNotAllowedError',['../classPyPapertrail_1_1Exceptions_1_1MethodNotAllowedError.html',1,'PyPapertrail::Exceptions']]],
+  ['min_5fid_96',['min_id',['../classPyPapertrail_1_1Results_1_1Results.html#a81775f31939f3f3dd5bb4d731fb80455',1,'PyPapertrail::Results::Results']]],
+  ['min_5ftime_5fit_97',['min_time_it',['../classPyPapertrail_1_1Results_1_1Results.html#a485f91638d4aa861ca141c506548316d',1,'PyPapertrail::Results::Results']]]
 ];

@@ -1,15 +1,13 @@
 var searchData=
 [
-  ['unhandledhttperror_157',['UnhandledHTTPError',['../classExceptions_1_1UnhandledHTTPError.html',1,'Exceptions']]],
-  ['unhandledrequestserror_158',['UnhandledRequestsError',['../classExceptions_1_1UnhandledRequestsError.html',1,'Exceptions']]],
-  ['update_159',['update',['../classGroup_1_1Group.html#af712609b65b44a1311f3d2da326209ce',1,'Group.Group.update()'],['../classSavedSearch_1_1SavedSearch.html#a3c9f03f5b5c62bb7c0333285851ffede',1,'SavedSearch.SavedSearch.update()'],['../classSystem_1_1System.html#a87dd6ab55deeda06dbb009a21adb3c22',1,'System.System.update()'],['../classUser_1_1User.html#a13e5dd2e5de0b0fe56f0bf254ffa0f15',1,'User.User.update()']]],
-  ['usage_160',['Usage',['../namespaceUsage.html',1,'']]],
-  ['usage_161',['usage',['../classPapertrail_1_1Papertrail.html#ac33ad08da7d3917d6de741de71ba8f1e',1,'Papertrail::Papertrail']]],
-  ['usage_162',['Usage',['../classUsage_1_1Usage.html',1,'Usage']]],
-  ['usageerror_163',['UsageError',['../classExceptions_1_1UsageError.html',1,'Exceptions']]],
-  ['user_164',['User',['../namespaceUser.html',1,'User'],['../classUser_1_1User.html',1,'User.User']]],
-  ['users_165',['Users',['../namespaceUsers.html',1,'']]],
-  ['users_166',['users',['../classUsers_1_1Users.html#abe92335d08a16fbf432e137ca418a95b',1,'Users::Users']]],
-  ['users_167',['Users',['../classUsers_1_1Users.html',1,'Users']]],
-  ['userserror_168',['UsersError',['../classExceptions_1_1UsersError.html',1,'Exceptions']]]
+  ['unhandledhttperror_168',['UnhandledHTTPError',['../classPyPapertrail_1_1Exceptions_1_1UnhandledHTTPError.html',1,'PyPapertrail::Exceptions']]],
+  ['unhandledrequestserror_169',['UnhandledRequestsError',['../classPyPapertrail_1_1Exceptions_1_1UnhandledRequestsError.html',1,'PyPapertrail::Exceptions']]],
+  ['update_170',['update',['../classPyPapertrail_1_1Group_1_1Group.html#ae61549eb1f15d172b718f2a5c89664ce',1,'PyPapertrail.Group.Group.update()'],['../classPyPapertrail_1_1SavedSearch_1_1SavedSearch.html#a4227d007d95b1981891cd87845057174',1,'PyPapertrail.SavedSearch.SavedSearch.update()'],['../classPyPapertrail_1_1System_1_1System.html#abfaccb87a40215475f5db7bb1b9cf2bd',1,'PyPapertrail.System.System.update()'],['../classPyPapertrail_1_1User_1_1User.html#a98cd3b27d778754ce0e027695d2d7783',1,'PyPapertrail.User.User.update()']]],
+  ['usage_171',['Usage',['../classPyPapertrail_1_1Usage_1_1Usage.html',1,'PyPapertrail::Usage']]],
+  ['usage_172',['usage',['../classPyPapertrail_1_1Papertrail_1_1Papertrail.html#afa36230415860c2f356aa9674f6da610',1,'PyPapertrail::Papertrail::Papertrail']]],
+  ['usageerror_173',['UsageError',['../classPyPapertrail_1_1Exceptions_1_1UsageError.html',1,'PyPapertrail::Exceptions']]],
+  ['user_174',['User',['../classPyPapertrail_1_1User_1_1User.html',1,'PyPapertrail::User']]],
+  ['users_175',['Users',['../classPyPapertrail_1_1Users_1_1Users.html',1,'PyPapertrail::Users']]],
+  ['users_176',['users',['../classPyPapertrail_1_1Users_1_1Users.html#ae14c0e66cb8a60c25051f519ef2fe6b7',1,'PyPapertrail::Users::Users']]],
+  ['userserror_177',['UsersError',['../classPyPapertrail_1_1Exceptions_1_1UsersError.html',1,'PyPapertrail::Exceptions']]]
 ];

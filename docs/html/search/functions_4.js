@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['email_261',['email',['../classUser_1_1User.html#aafdf9899f94b8013d711f0fcf8b7dcb0',1,'User::User']]],
-  ['end_5ftime_262',['end_time',['../classArchive_1_1Archive.html#a0ea85136d143edc90ef7b1782d123f90',1,'Archive::Archive']]],
-  ['events_263',['events',['../classResults_1_1Results.html#a29f5db034d43c09f1cdf1234b5d13494',1,'Results::Results']]]
+  ['email_270',['email',['../classPyPapertrail_1_1User_1_1User.html#a34b676df995475598708ec9efbead218',1,'PyPapertrail::User::User']]],
+  ['end_5ftime_271',['end_time',['../classPyPapertrail_1_1Archive_1_1Archive.html#a06c1c03449158a502625429d6bada2eb',1,'PyPapertrail::Archive::Archive']]],
+  ['events_272',['events',['../classPyPapertrail_1_1Results_1_1Results.html#aea2a09e9330b5e2c1a026fd1a7a425ff',1,'PyPapertrail::Results::Results']]]
 ];

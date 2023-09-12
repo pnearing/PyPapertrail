@@ -6,5 +6,5 @@ digraph "Graphical Class Hierarchy"
   rankdir="LR";
   Node40 [label="Warning",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node40 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node0 [label="Exceptions.PapertrailWarning",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classExceptions_1_1PapertrailWarning.html",tooltip=" "];
+  Node0 [label="PyPapertrail.Exceptions.\lPapertrailWarning",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPyPapertrail_1_1Exceptions_1_1PapertrailWarning.html",tooltip=" "];
 }
