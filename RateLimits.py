@@ -3,46 +3,52 @@
     File: RateLimits.py
 """
 from typing import Optional
-from requests.models import CaseInsensitiveDict
-from common import __type_error__
-import common
-# Version check:
-common.__version_check__()
-# # Define Self:
-# try:
-#     from typing import Self
-# except ImportError:
-#     try:
-#         from typing_extensions import Self
-#     except (ModuleNotFoundError, ImportError):
-#         try:
-#             from typing import TypeVar
-#             Self = TypeVar("Self", bound="RateLimits")
-#         except ImportError:
-#             print("FATAL: Unable to define Self.")
-#             exit(129)
 
 limit: Optional[int] = None
 remaining: Optional[int] = None
 reset: Optional[int] = None
 
 
-def parse_limit_header(headers: CaseInsensitiveDict[str]) -> None:
-    """
-    Parse the rate limit headers.
-    :param headers: Dict: The headers.
-    :raises IndexError | ValueError: If an invalid dict is passed.
-    :return: None
-    """
-    # Pull in vars:
-    global limit, remaining, reset
-    # Type check:
-    if not isinstance(headers, dict):
-        __type_error__("headers", "dict", headers)
-    limit = int(headers['X-Rate-Limit-Limit'])
-    remaining = int(headers['X-Rate-Limit-Remaining'])
-    reset = int(headers['X-Rate-Limit-Reset'])
-    return
+class RateLimits(object):
+    """Class to hold rate limit properties."""
+#######################
+# Initialize:
+#######################
+    def __init__(self) -> None:
+        """
+        Initialize rate limits.
+        """
+        return
+
+######################
+# Properties:
+######################
+    @property
+    def limit(self) -> Optional[int]:
+        """
+        The total number of requests allowed during the rate limit window, currently 25.
+        :return: Optional[int]
+        """
+        global limit
+        return limit
+
+    @property
+    def remaining(self) -> Optional[int]:
+        """
+         The number of requests not yet used within the current rate limit window.
+        :return: Optional[int]
+        """
+        global remaining
+        return remaining
+
+    @property
+    def reset(self) -> Optional[int]:
+        """
+        The duration (in seconds) remaining until the rate limit window resets, currently 5 seconds.
+        :return: Optional[int]
+        """
+        global reset
+        return reset
 
 
 ########################################################################################################################
