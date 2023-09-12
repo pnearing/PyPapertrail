@@ -39,7 +39,7 @@ SYSTEM_WARNING_MADE: bool = False
 
 def __version_check__() -> Optional[NoReturn]:
     """
-    Check the python version and exit gracefully if wrong version.
+    Check the python version and exit gracefully if we're running the wrong version.
     :return: Optional[NoReturn]
     """
     if sys.version_info.major != 3 or sys.version_info.minor < 10:

@@ -64,7 +64,7 @@ class Results(object):
         self._reached_record_limit: Optional[bool] = None
         self._reached_end: Optional[bool] = None
         self._sawmill:  Optional[bool] = None
-        self._events: tuple[Event] = ()
+        self._events: tuple[Event]
 
         # Load this instance:
         if from_dict is not None:
@@ -104,7 +104,6 @@ class Results(object):
         except (KeyError, ValueError) as e:
             error: str = "KeyError or ValueError while decoding Papertrail response dict."
             raise InvalidServerResponse(error, exception=e)
-
         return
 
     def __from_dict__(self, from_dict: dict) -> None:
@@ -134,7 +133,7 @@ class Results(object):
             self._events = tuple(events)
         except (KeyError, ValueError) as e:
             error: str = "Bad dict passed to __from_dict__."
-            raise QueryError(error)
+            raise QueryError(error, exception=e)
         return
 
     def __to_dict__(self) -> dict:
@@ -247,10 +246,10 @@ class Results(object):
         return self._events
 
 
-########################################################################################################################
-# TEST CODE:
-########################################################################################################################
-if __name__ == '__main__':
-    from apiKey import API_KEY
-
-    exit(0)
+# ########################################################################################################################
+# # TEST CODE:
+# ########################################################################################################################
+# if __name__ == '__main__':
+#     from apiKey import API_KEY
+#
+#     exit(0)

@@ -322,5 +322,3 @@ class PapertrailWarning(Warning):
     Warning to raise when runtime warnings occur.
     """
     pass
-
-

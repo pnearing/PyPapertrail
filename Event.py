@@ -5,7 +5,7 @@
 from typing import Optional
 from datetime import datetime
 from warnings import warn
-from common import __type_error__, convert_to_utc
+from common import __type_error__
 import common
 from Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
 from System import System
@@ -256,10 +256,10 @@ class Event(object):
         return self._facility
 
 
-########################################################################################################################
-# TEST CODE:
-########################################################################################################################
-if __name__ == '__main__':
-    from apiKey import API_KEY
-
-    exit(0)
+# ########################################################################################################################
+# # TEST CODE:
+# ########################################################################################################################
+# if __name__ == '__main__':
+#     from apiKey import API_KEY
+#
+#     exit(0)

@@ -4,7 +4,6 @@
 """
 from typing import Optional, Iterator, Any
 from datetime import datetime
-import pytz
 from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 import common
 from Exceptions import ArchiveError

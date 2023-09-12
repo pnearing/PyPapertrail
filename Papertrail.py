@@ -166,7 +166,7 @@ class Papertrail(object):
         # Type check:
         if query is not None and not isinstance(query, str):
             __type_error__("query", "Optional[str]", query)
-        if system is not None and not isinstance(system,(Group, int, str)):
+        if system is not None and not isinstance(system, (Group, int, str)):
             __type_error__("system", "Optional[System | str | int]", system)
         if group is not None and not isinstance(group, (Group, int, str)):
             __type_error__("group", "Optional[Group | str | int", group)
@@ -204,7 +204,7 @@ class Papertrail(object):
                 search_params['system_id'] = system.id
             else:
                 if self._systems.is_loaded:
-                    search_params['system_id'] = self._systems[system].id  # Raises IndexError if system not found.
+                    search_params['system_id'] = self._systems[system].id  # Raises IndexError if the system not found.
                 else:  # Assume the input is correct:
                     search_params['system_id'] = system
         if group is not None:
@@ -218,8 +218,8 @@ class Papertrail(object):
                 search_params['group_id'] = group.id
             else:
                 if self._groups.is_loaded:
-                    search_params['group_id'] = self._groups[group].id  # Raises IndexError if group not found.
-                else:  # Assume the input is correct, but can only be an int..
+                    search_params['group_id'] = self._groups[group].id  # Raises IndexError if the group not found.
+                else:  # Assume the input is correct, but can only be an int.
                     if isinstance(group, int):
                         search_params['group_id'] = group
                     else:
