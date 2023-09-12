@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    File: QueryResults.py
+    File: Results.py
 """
 from typing import Optional
 from datetime import datetime
@@ -25,7 +25,7 @@ except ImportError:
             exit(129)
 
 
-class SearchResults(object):
+class Results(object):
     """
     Class to store search results.
     """
@@ -64,7 +64,7 @@ class SearchResults(object):
         self._reached_record_limit: Optional[bool] = None
         self._reached_end: Optional[bool] = None
         self._sawmill:  Optional[bool] = None
-        self._events: list[Event] = []
+        self._events: tuple[Event] = ()
 
         # Load this instance:
         if from_dict is not None:
@@ -96,10 +96,11 @@ class SearchResults(object):
                 self._reached_end = raw_results['reached_end']
             if 'sawmill' in raw_results.keys():
                 self._sawmill = raw_results['sawmill']
-            self._events = []
+            events = []
             for raw_event in raw_results['events']:
                 event = Event(raw_event=raw_event)
-                self._events.append(event)
+                events.append(event)
+            self._events = tuple(events)
         except (KeyError, ValueError) as e:
             error: str = "KeyError or ValueError while decoding Papertrail response dict."
             raise InvalidServerResponse(error, exception=e)
@@ -126,6 +127,11 @@ class SearchResults(object):
             self._reached_record_limit = from_dict['record_limit']
             self._reached_end = from_dict['end']
             self._sawmill = from_dict['sawmill']
+            events = []
+            for event_dict in from_dict['event']:
+                event = Event(from_dict=event_dict)
+                events.append(event)
+            self._events = tuple(events)
         except (KeyError, ValueError) as e:
             error: str = "Bad dict passed to __from_dict__."
             raise QueryError(error)
@@ -156,6 +162,89 @@ class SearchResults(object):
             event_dict = event.__to_dict__()
             return_dict['events'].append(event_dict)
         return return_dict
+
+################################
+# Properties:
+################################
+    @property
+    def min_id(self) -> int:
+        """
+        Minimum ID.
+        :return: Int
+        """
+        return self._min_id
+
+    @property
+    def max_id(self) -> int:
+        """
+        Maximum ID.
+        :return: Int
+        """
+        return self._max_id
+
+    @property
+    def reached_beginning(self) -> Optional[bool]:
+        """
+        Search reached beginning.
+        :return: Optional[bool]
+        """
+        return self._reached_beginning
+
+    @property
+    def min_time_it(self) -> Optional[datetime]:
+        """
+        Min date time.
+        :return: Optional[datetime]
+        """
+        return self._min_time_at
+
+    @property
+    def max_time_at(self) -> Optional[datetime]:
+        """
+        Max date time.
+        :return: Optional[datetime]
+        """
+        return self._max_time_at
+
+    @property
+    def reached_time_limit(self) -> Optional[bool]:
+        """
+        Search reached time limit.
+        :return: Optional[bool]
+        """
+        return self._reached_time_limit
+
+    @property
+    def reached_record_limit(self) -> Optional[bool]:
+        """
+        Search reached the record limit.
+        :return: Optional[bool]
+        """
+        return self._reached_record_limit
+
+    @property
+    def reached_end(self) -> Optional[bool]:
+        """
+        The search reached the end.
+        :return: Optional[bool]
+        """
+        return self._reached_end
+
+    @property
+    def sawmill(self) -> Optional[bool]:
+        """
+        Sawmill??
+        :return: Optional[bool]
+        """
+        return self._sawmill
+
+    @property
+    def events(self) -> tuple[Event]:
+        """
+        The list of events.
+        :return: Tuple[Event]
+        """
+        return self._events
 
 
 ########################################################################################################################
