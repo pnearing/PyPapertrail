@@ -3,14 +3,21 @@
     File: Papertrail.py
 """
 from typing import Optional
+from urllib.parse import urlencode
+from datetime import datetime
+from warnings import warn
 import common
-from common import __type_error__
+from common import BASE_URL, __type_error__, convert_to_utc, requests_get
 from Archives import Archives
 from Destinations import Destinations
 from Groups import Groups
 from Systems import Systems
 from Usage import Usage
-from Exceptions import PapertrailError
+from Exceptions import PapertrailError, ParameterError, PapertrailWarning
+from Results import Results
+from System import System
+from Group import Group
+from Event import Event
 # Version check:
 common.__version_check__()
 # Define Self:
@@ -33,8 +40,6 @@ class Papertrail(object):
     """
     Class for all papertrail objects.
     """
-    IS_LOADED: bool = False
-
     def __init__(self,
                  api_key: str,
                  from_dict: Optional[dict] = None,
@@ -61,7 +66,8 @@ class Papertrail(object):
             __type_error__("use_warnings", "bool", use_warnings)
         # Store use_warnings:
         common.USE_WARNINGS = use_warnings
-
+        # Store api key:
+        self._api_key = api_key
         # Define Papertrail objects:
         self._archives: Archives = Archives(api_key=api_key, from_dict=None, do_load=False)
         self._destinations: Destinations = Destinations(api_key=api_key, from_dict=None, do_load=False)
@@ -117,16 +123,136 @@ class Papertrail(object):
         return return_dict
 
 ##################################
+# Methods:
+##################################
+    def search(self,
+               query: Optional[str] = None,
+               system: Optional[System | str | int] = None,
+               group: Optional[Group | str | int] = None,
+               min_id: Optional[Event | int] = None,
+               max_id: Optional[Event | int] = None,
+               min_time: Optional[datetime] = None,
+               max_time: Optional[datetime] = None,
+               limit: Optional[int] = None,
+               ) -> Results:
+        """
+        Search the logs:
+        :param query: Optional[str]: The search query.
+        :param system: Optional[System | str | int]: Limit search to this System object, system id if an int, system
+            name if a str.
+        :param group: Optional[Group | str | int]: Limit search to this Group object, group id if an int, or group
+            name if a str.
+        :param min_id: Optional[int | Event]: Min Event ID, or event, can't be combined with min_time.
+        :param max_id: Optional[int | Event]: Max Event ID, or event, can't be combined with max_time.
+        :param min_time: Optional[datetime]: The Min datetime object can't be combined with min_id.
+        :param max_time: Optional[datetime]: The Max datetime can't be combined with max_id.
+        :param limit: Optional[int]: Number of events to return.
+        :raises TypeError: If an invalid type is passed.
+        :raises ParameterError: If an invalid parameter combination is passed.
+        :raises IndexError: If an invalid System id, name, or System object, an invalid Group id, name, Group object
+            is passed.
+        :return: Results object.
+        """
+        # Warn if needed:
+        if common.USE_WARNINGS and not self._systems.is_loaded:
+            warning: str = "Systems not loaded. Can't verify systems."
+            warn(warning, PapertrailWarning)
+        if common.USE_WARNINGS and not self._groups.is_loaded:
+            warning: str = "Groups not loaded. Can't verify group."
+            warn(warning, PapertrailWarning)
+
+        # Type check:
+        if query is not None and not isinstance(query, str):
+            __type_error__("query", "Optional[str]", query)
+        if system is not None and not isinstance(system,(Group, int, str)):
+            __type_error__("system", "Optional[System | str | int]", system)
+        if group is not None and not isinstance(group, (Group, int, str)):
+            __type_error__("group", "Optional[Group | str | int", group)
+        if min_id is not None and not isinstance(min_id, (int, Event)):
+            __type_error__("min_id", "Optional[int | Event]", min_id)
+        if max_id is not None and not isinstance(max_id, (int, Event)):
+            __type_error__("max_id", "Optional[int | Event]", max_id)
+        if min_time is not None and not isinstance(min_time, datetime):
+            __type_error__("min_time", "Optional[datetime]", min_time)
+        if max_time is not None and not isinstance(max_time, datetime):
+            __type_error__("max_time", "Optional[datetime]", max_time)
+        if limit is not None and not isinstance(limit, int):
+            __type_error__("limit", "Optional[int]", limit)
+
+        # Parameter check:
+        if min_id is not None and min_time is not None:
+            error: str = "Cannot use min_id and min_time at the same time."
+            raise ParameterError(error)
+        if max_id is not None and max_time is not None:
+            error: str = "Cannot use max_id and max_time at the same time."
+            raise ParameterError(error)
+
+        # Build search parameters:
+        search_params: dict = {}
+        if query is not None:
+            search_params['q'] = query
+        if system is not None:
+            if common.USE_WARNINGS and not self._systems.is_loaded:
+                warning: str = "Systems not loaded, not verifying system input."
+                warn(warning, PapertrailWarning)
+            if isinstance(system, System):
+                if self._systems.is_loaded and system not in self._systems:
+                    error: str = "Provided System not in Systems."
+                    raise IndexError(error)
+                search_params['system_id'] = system.id
+            else:
+                if self._systems.is_loaded:
+                    search_params['system_id'] = self._systems[system].id  # Raises IndexError if system not found.
+                else:  # Assume the input is correct:
+                    search_params['system_id'] = system
+        if group is not None:
+            if common.USE_WARNINGS and not self._groups.is_loaded:
+                warning: str = "Groups not loaded, not verifying group input."
+                warn(warning, PapertrailWarning)
+            if isinstance(group, Group):
+                if self._groups.is_loaded and group not in self._groups:
+                    error: str = "Provided group not in groups."
+                    raise IndexError(error)
+                search_params['group_id'] = group.id
+            else:
+                if self._groups.is_loaded:
+                    search_params['group_id'] = self._groups[group].id  # Raises IndexError if group not found.
+                else:  # Assume the input is correct, but can only be an int..
+                    if isinstance(group, int):
+                        search_params['group_id'] = group
+                    else:
+                        error: str = "Groups not loaded, can't use str as group id. Abort."
+                        TypeError(error)
+        if min_id is not None:
+            if isinstance(min_id, Event):
+                search_params['min_id'] = min_id.id
+            else:
+                search_params['min_id'] = min_id
+        if max_id is not None:
+            if isinstance(max_id, Event):
+                search_params['max_id'] = max_id.id
+            else:
+                search_params['max_id'] = max_id
+        if min_time is not None:
+            search_params['min_time'] = convert_to_utc(min_time).timestamp()
+        if max_time is not None:
+            search_params['max_time'] = convert_to_utc(max_time).timestamp()
+        if limit is not None:
+            search_params['limit'] = limit
+        # Build search url:
+        search_url = BASE_URL + "events/search.json"
+        if len(search_params.keys()) != 0:
+            search_url += '?'
+            search_url += urlencode(search_params)
+        # Make search request:
+        raw_results = requests_get(url=search_url, api_key=self._api_key)
+        # Parse results:
+        search_results = Results(raw_results=raw_results)
+        return search_results
+
+##################################
 # Properties:
 ##################################
-    @property
-    def is_loaded(self) -> bool:
-        """
-        True if this instance has been loaded.
-        :return: Bool.
-        """
-        return self.IS_LOADED
-
     @property
     def archives(self) -> Archives:
         """
@@ -166,10 +292,18 @@ class Papertrail(object):
         :return:
         """
         return self._usage
+
+
 ########################################################################################################################
 # TEST CODE:
 ########################################################################################################################
 if __name__ == '__main__':
     from apiKey import API_KEY
-    papertrail = Papertrail(api_key=API_KEY, do_load=True)
+    papertrail = Papertrail(api_key=API_KEY, do_load=False)
+    papertrail.systems.load()
+    papertrail.groups.load()
+    results = papertrail.search(query="ssh AND error")
+    for event in results._events:
+        print(event.message)
+
     exit(0)
