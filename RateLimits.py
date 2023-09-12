@@ -3,6 +3,7 @@
     File: RateLimits.py
 """
 from typing import Optional
+from requests.models import CaseInsensitiveDict
 from common import __type_error__
 import common
 # Version check:
@@ -26,7 +27,7 @@ remaining: Optional[int] = None
 reset: Optional[int] = None
 
 
-def parse_limit_header(headers: dict) -> None:
+def parse_limit_header(headers: CaseInsensitiveDict[str]) -> None:
     """
     Parse the rate limit headers.
     :param headers: Dict: The headers.
