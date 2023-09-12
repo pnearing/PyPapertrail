@@ -1,0 +1,239 @@
+\hypertarget{classSavedSearches_1_1SavedSearches}{}\doxysection{Saved\+Searches.\+Saved\+Searches Class Reference}
+\label{classSavedSearches_1_1SavedSearches}\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+
+
+Inheritance diagram for Saved\+Searches.\+Saved\+Searches\+:
+% FIG 0
+
+
+Collaboration diagram for Saved\+Searches.\+Saved\+Searches\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a5690acc1c072383e0adbcec6bd88a921}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, bool do\+\_\+load=True)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_af977ba7538f4b5083f7755b6870486f1}\label{classSavedSearches_1_1SavedSearches_af977ba7538f4b5083f7755b6870486f1}} 
+None \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_af977ba7538f4b5083f7755b6870486f1}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\begin{DoxyCompactList}\small\item\em To / from dict\+: \end{DoxyCompactList}\item 
+dict \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_ad73fc36d563da6eb267d9daf8882bcfc}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} ()
+\item 
+None \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_aab51d0faae07fa4c0fc6062f6e8936ed}{load}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a7f7c61f83fd08a1d776d7e5fcf069620}{reload}} (self)
+\item 
+\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a1149d4c6e321ac3f3ad17a3f87504382}{create}} (self, str name, str query, Optional\mbox{[}\mbox{\hyperlink{classGroup_1_1Group}{Group}}$\vert$str$\vert$int\mbox{]} group=None)
+\item 
+\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}$\vert$list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_ae7d11d14b26f0031320314c12de03b41}{\+\_\+\+\_\+getitem\+\_\+\+\_\+}} (self, str$\vert$int item)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_abd4cf96370ead9c23bbe074d7baa3dd1}{\+\_\+\+\_\+len\+\_\+\+\_\+}} (self)
+\item 
+Iterator\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a47f93e9a9d0b173768e6fb6e9f15032a}{\+\_\+\+\_\+iter\+\_\+\+\_\+}} (self)
+\item 
+tuple\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a0700ed82c5680669f211a69bcaf27dc5}{searches}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+datetime \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a70a364b791ae95fbc6c5c4f54f246bb2}{last\+\_\+fetched}} (self)
+\item 
+bool \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a9bb2485554f0fbca601460dc1112a17a}{is\+\_\+loaded}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a78be099f6b7c35940ea83a91a4ade1e1}{get\+\_\+by\+\_\+name}} (str name)
+\begin{DoxyCompactList}\small\item\em Getters\+: \end{DoxyCompactList}\item 
+Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a14b5f30925428880cf4610b3af915ee9}{get\+\_\+by\+\_\+query}} (str query)
+\item 
+Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_a0c99125824bcce1a7a7f4f12d6dd6323}{find\+\_\+in\+\_\+name}} (str search\+\_\+name)
+\item 
+Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} \mbox{\hyperlink{classSavedSearches_1_1SavedSearches_aa09813458863c402285bcbdbda1907ea}{find\+\_\+in\+\_\+query}} (str search\+\_\+query)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store a list of saved searches.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a5690acc1c072383e0adbcec6bd88a921}\label{classSavedSearches_1_1SavedSearches_a5690acc1c072383e0adbcec6bd88a921}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Saved\+Searches.\+Saved\+Searches.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{bool }]{do\+\_\+load = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize the searches instance:
+:param from_dict: Optional[dict]: The dict provided by __to_dict__(), NOTE: if from_dict is defined, then
+    do_load is ignored.
+:param do_load: Bool: Load data from Papertrail on init, default = True.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_ae7d11d14b26f0031320314c12de03b41}\label{classSavedSearches_1_1SavedSearches_ae7d11d14b26f0031320314c12de03b41}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!\_\_getitem\_\_@{\_\_getitem\_\_}}
+\index{\_\_getitem\_\_@{\_\_getitem\_\_}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{\_\_getitem\_\_()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}} $\vert$ list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str $\vert$ int}]{item }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Allow square bracketing by str or int.
+:param item: Str | int: If item is a str, return a list of searches by name, otherwise if item is an int return
+    the saved search that matches that ID.
+:raises IndexError: If name is not found.
+:raises TypeError: If anything other than a str is passed.
+:raises SavedSearchError: If the search list hasn't been loaded.
+:return: SavedSearch | list[SavedSearch]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a47f93e9a9d0b173768e6fb6e9f15032a}\label{classSavedSearches_1_1SavedSearches_a47f93e9a9d0b173768e6fb6e9f15032a}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!\_\_iter\_\_@{\_\_iter\_\_}}
+\index{\_\_iter\_\_@{\_\_iter\_\_}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{\_\_iter\_\_()}{\_\_iter\_\_()}}
+{\footnotesize\ttfamily  Iterator\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+\_\+\+\_\+iter\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return an iterator over the searches.
+:raises SavedSearchError: If the saved search list isn't loaded.
+:return: Iterator
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_abd4cf96370ead9c23bbe074d7baa3dd1}\label{classSavedSearches_1_1SavedSearches_abd4cf96370ead9c23bbe074d7baa3dd1}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!\_\_len\_\_@{\_\_len\_\_}}
+\index{\_\_len\_\_@{\_\_len\_\_}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{\_\_len\_\_()}{\_\_len\_\_()}}
+{\footnotesize\ttfamily  int Saved\+Searches.\+Saved\+Searches.\+\_\+\+\_\+len\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Number of saved searches
+:raise SavedSearchError: If the saved search list isn't loaded.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_ad73fc36d563da6eb267d9daf8882bcfc}\label{classSavedSearches_1_1SavedSearches_ad73fc36d563da6eb267d9daf8882bcfc}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Saved\+Searches.\+Saved\+Searches.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return a JSON / pickle friendly dict.
+:return: Dict
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a1149d4c6e321ac3f3ad17a3f87504382}\label{classSavedSearches_1_1SavedSearches_a1149d4c6e321ac3f3ad17a3f87504382}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!create@{create}}
+\index{create@{create}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{create()}{create()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}} Saved\+Searches.\+Saved\+Searches.\+create (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{name,  }\item[{str}]{query,  }\item[{Optional\mbox{[}\mbox{\hyperlink{classGroup_1_1Group}{Group}} $\vert$ str $\vert$ int\mbox{]} }]{group = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a new saved search.
+:param name: Str: The name of the search.
+:param query: Str: Query to run.
+:param group: Optional[Group | str | int]: The group to associate with, if not specified, it will attach to all
+    systems, or the first group. Either a group object, a str for the group name, and an int for the group id.
+:return: SavedSearch: The newly created saved search object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a0c99125824bcce1a7a7f4f12d6dd6323}\label{classSavedSearches_1_1SavedSearches_a0c99125824bcce1a7a7f4f12d6dd6323}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!find\_in\_name@{find\_in\_name}}
+\index{find\_in\_name@{find\_in\_name}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{find\_in\_name()}{find\_in\_name()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+find\+\_\+in\+\_\+name (\begin{DoxyParamCaption}\item[{str}]{search\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Find in names, run name.find() and if a result, returns it, None if not found.
+:param search_name: Str: The search string to find in names.
+:return: Optional[list[SavedSearch]]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_aa09813458863c402285bcbdbda1907ea}\label{classSavedSearches_1_1SavedSearches_aa09813458863c402285bcbdbda1907ea}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!find\_in\_query@{find\_in\_query}}
+\index{find\_in\_query@{find\_in\_query}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{find\_in\_query()}{find\_in\_query()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+find\+\_\+in\+\_\+query (\begin{DoxyParamCaption}\item[{str}]{search\+\_\+query }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Find in query string, runs query.find() and if a result returns it, None if not found.
+:param search_query: Str: The search string to find in the query.
+:return: Optional[list[SavedSearch]]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a78be099f6b7c35940ea83a91a4ade1e1}\label{classSavedSearches_1_1SavedSearches_a78be099f6b7c35940ea83a91a4ade1e1}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!get\_by\_name@{get\_by\_name}}
+\index{get\_by\_name@{get\_by\_name}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{get\_by\_name()}{get\_by\_name()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+get\+\_\+by\+\_\+name (\begin{DoxyParamCaption}\item[{str}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Getters\+: 
+
+\begin{DoxyVerb}Return a list of saved searches matching a given name. Returns None if not found.
+:param name: Str: The name to search for.
+:raises SavedSearchError: If the saved search list isn't loaded.
+:return: Optional[list[SavedSearch]]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a14b5f30925428880cf4610b3af915ee9}\label{classSavedSearches_1_1SavedSearches_a14b5f30925428880cf4610b3af915ee9}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!get\_by\_query@{get\_by\_query}}
+\index{get\_by\_query@{get\_by\_query}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{get\_by\_query()}{get\_by\_query()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+get\+\_\+by\+\_\+query (\begin{DoxyParamCaption}\item[{str}]{query }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get a list of saved searches by query, returns None if not found.
+:param query: Str: The query to search for.
+:raises SavedSearchError: If the saved search list isn't loaded.
+:return: Optional[list[SavedSearch]]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a9bb2485554f0fbca601460dc1112a17a}\label{classSavedSearches_1_1SavedSearches_a9bb2485554f0fbca601460dc1112a17a}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!is\_loaded@{is\_loaded}}
+\index{is\_loaded@{is\_loaded}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{is\_loaded()}{is\_loaded()}}
+{\footnotesize\ttfamily  bool Saved\+Searches.\+Saved\+Searches.\+is\+\_\+loaded (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Has this been loaded in some way.
+:return: Bool.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a70a364b791ae95fbc6c5c4f54f246bb2}\label{classSavedSearches_1_1SavedSearches_a70a364b791ae95fbc6c5c4f54f246bb2}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  datetime Saved\+Searches.\+Saved\+Searches.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Last time this was loaded from the server.
+:return: Datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_aab51d0faae07fa4c0fc6062f6e8936ed}\label{classSavedSearches_1_1SavedSearches_aab51d0faae07fa4c0fc6062f6e8936ed}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!load@{load}}
+\index{load@{load}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily  None Saved\+Searches.\+Saved\+Searches.\+load (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Load data from Papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a7f7c61f83fd08a1d776d7e5fcf069620}\label{classSavedSearches_1_1SavedSearches_a7f7c61f83fd08a1d776d7e5fcf069620}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!reload@{reload}}
+\index{reload@{reload}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily  None Saved\+Searches.\+Saved\+Searches.\+reload (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Reload data from Papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSavedSearches_1_1SavedSearches_a0700ed82c5680669f211a69bcaf27dc5}\label{classSavedSearches_1_1SavedSearches_a0700ed82c5680669f211a69bcaf27dc5}} 
+\index{SavedSearches.SavedSearches@{SavedSearches.SavedSearches}!searches@{searches}}
+\index{searches@{searches}!SavedSearches.SavedSearches@{SavedSearches.SavedSearches}}
+\doxysubsubsection{\texorpdfstring{searches()}{searches()}}
+{\footnotesize\ttfamily  tuple\mbox{[}\mbox{\hyperlink{classSavedSearch_1_1SavedSearch}{Saved\+Search}}\mbox{]} Saved\+Searches.\+Saved\+Searches.\+searches (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Return a tuple of searches.
+:return: Tuple[SavedSearch]
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Saved\+Searches.\+py\end{DoxyCompactItemize}

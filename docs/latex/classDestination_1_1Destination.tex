@@ -1,0 +1,223 @@
+\hypertarget{classDestination_1_1Destination}{}\doxysection{Destination.\+Destination Class Reference}
+\label{classDestination_1_1Destination}\index{Destination.Destination@{Destination.Destination}}
+
+
+Inheritance diagram for Destination.\+Destination\+:
+% FIG 0
+
+
+Collaboration diagram for Destination.\+Destination\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classDestination_1_1Destination_a469e44b5f7a06d5387a5067c2701146d}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} raw\+\_\+destination=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classDestination_1_1Destination_a597862274935306704fa0e55532c2d88}{last\+\_\+fetched}}=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classDestination_1_1Destination_a9f650db5f0ea009dfbb46dc99e5392a5}{\+\_\+\+\_\+from\+\_\+raw\+\_\+log\+\_\+destination\+\_\+\+\_\+}} (self, raw\+\_\+destination)
+\begin{DoxyCompactList}\small\item\em Load / Save functions\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classDestination_1_1Destination_a6a62ae5f0ec43e78d0b9be59bfb7f7c1}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classDestination_1_1Destination_a7b3bbcaaf56a02eeeec2adcacb564b7e}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+Self \mbox{\hyperlink{classDestination_1_1Destination_a89169be1846b17950d355a58be9d6d92}{reload}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDestination_1_1Destination_a1a5d3b1685f60cae7d42b883382f6200}{\+\_\+\+\_\+eq\+\_\+\+\_\+}} (self, Self$\vert$int$\vert$str other)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classDestination_1_1Destination_ada9c86eb7d2cd91819b4c3753a752fd0}{\+\_\+\+\_\+str\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classDestination_1_1Destination_aa5970832314eadd7f5e1f382c1bdbfd8}{\+\_\+\+\_\+int\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classDestination_1_1Destination_a0917aa5ef0955397377b5799cfb12ddf}{id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classDestination_1_1Destination_a20df1b163b2736129379c58c294a9519}{filter}} (self)
+\item 
+str \mbox{\hyperlink{classDestination_1_1Destination_a5333525667087901c93b8c6ae8e22f98}{syslog\+\_\+host\+\_\+name}} (self)
+\item 
+int \mbox{\hyperlink{classDestination_1_1Destination_a1a2c151f8e39045c7c3c6dd371100262}{syslog\+\_\+port}} (self)
+\item 
+str \mbox{\hyperlink{classDestination_1_1Destination_af7f7f4d70cb18ad8863dd99532e57a49}{description}} (self)
+\item 
+str \mbox{\hyperlink{classDestination_1_1Destination_acc6f45cd6cb867322730616d96fae15f}{info\+\_\+link}} (self)
+\item 
+datetime \mbox{\hyperlink{classDestination_1_1Destination_a597862274935306704fa0e55532c2d88}{last\+\_\+fetched}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class storing a single log destination.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classDestination_1_1Destination_a469e44b5f7a06d5387a5067c2701146d}\label{classDestination_1_1Destination_a469e44b5f7a06d5387a5067c2701146d}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Destination.\+Destination.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+destination = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{Optional\mbox{[}datetime\mbox{]} }]{last\+\_\+fetched = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize a single destination.
+:param api_key: Str: Api key for papertrail.
+:param raw_destination: Dict: The raw response dict from papertrail.
+    Note: If using raw_destination, last_fetched must be defined.
+:param from_dict: Dict: The dict created by __to_dict__().
+:param last_fetched: Datetime object: The date and time this was last fetched from the server.
+:return: None
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classDestination_1_1Destination_a1a5d3b1685f60cae7d42b883382f6200}\label{classDestination_1_1Destination_a1a5d3b1685f60cae7d42b883382f6200}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_eq\_\_@{\_\_eq\_\_}}
+\index{\_\_eq\_\_@{\_\_eq\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_eq\_\_()}{\_\_eq\_\_()}}
+{\footnotesize\ttfamily  bool Destination.\+Destination.\+\_\+\+\_\+eq\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Self $\vert$ int $\vert$ str}]{other }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Equality check, of other is Destination object, it compares id, if other is an int, it compares syslog port,
+otherwise if other is a str it compares syslog host name.
+:param other: Destination | int | str: The object to compare to.
+:return: Bool.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a6a62ae5f0ec43e78d0b9be59bfb7f7c1}\label{classDestination_1_1Destination_a6a62ae5f0ec43e78d0b9be59bfb7f7c1}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Destination.\+Destination.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load from a dict provided by __to_dict__().
+:param from_dict: Dict: The dict to load from.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a9f650db5f0ea009dfbb46dc99e5392a5}\label{classDestination_1_1Destination_a9f650db5f0ea009dfbb46dc99e5392a5}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_from\_raw\_log\_destination\_\_@{\_\_from\_raw\_log\_destination\_\_}}
+\index{\_\_from\_raw\_log\_destination\_\_@{\_\_from\_raw\_log\_destination\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_log\_destination\_\_()}{\_\_from\_raw\_log\_destination\_\_()}}
+{\footnotesize\ttfamily  None Destination.\+Destination.\+\_\+\+\_\+from\+\_\+raw\+\_\+log\+\_\+destination\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{raw\+\_\+destination }\end{DoxyParamCaption})}
+
+
+
+Load / Save functions\+: 
+
+\begin{DoxyVerb}Load from raw destination response from papertrail.
+:param raw_destination: Dict: dict received from papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_aa5970832314eadd7f5e1f382c1bdbfd8}\label{classDestination_1_1Destination_aa5970832314eadd7f5e1f382c1bdbfd8}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_int\_\_@{\_\_int\_\_}}
+\index{\_\_int\_\_@{\_\_int\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_int\_\_()}{\_\_int\_\_()}}
+{\footnotesize\ttfamily  int Destination.\+Destination.\+\_\+\+\_\+int\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Referring as an int returns the syslog port.
+:return: Int: The syslog port.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_ada9c86eb7d2cd91819b4c3753a752fd0}\label{classDestination_1_1Destination_ada9c86eb7d2cd91819b4c3753a752fd0}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_str\_\_@{\_\_str\_\_}}
+\index{\_\_str\_\_@{\_\_str\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_str\_\_()}{\_\_str\_\_()}}
+{\footnotesize\ttfamily  str Destination.\+Destination.\+\_\+\+\_\+str\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Referring as a string returns the syslog host name.
+:return: Str: The syslog host name.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a7b3bbcaaf56a02eeeec2adcacb564b7e}\label{classDestination_1_1Destination_a7b3bbcaaf56a02eeeec2adcacb564b7e}} 
+\index{Destination.Destination@{Destination.Destination}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Destination.\+Destination.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a JSON / Pickle friendly dict of this instance.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_af7f7f4d70cb18ad8863dd99532e57a49}\label{classDestination_1_1Destination_af7f7f4d70cb18ad8863dd99532e57a49}} 
+\index{Destination.Destination@{Destination.Destination}!description@{description}}
+\index{description@{description}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{description()}{description()}}
+{\footnotesize\ttfamily  str Destination.\+Destination.\+description (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Destination description.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a20df1b163b2736129379c58c294a9519}\label{classDestination_1_1Destination_a20df1b163b2736129379c58c294a9519}} 
+\index{Destination.Destination@{Destination.Destination}!filter@{filter}}
+\index{filter@{filter}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{filter()}{filter()}}
+{\footnotesize\ttfamily  str Destination.\+Destination.\+filter (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Filters for this destination.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a0917aa5ef0955397377b5799cfb12ddf}\label{classDestination_1_1Destination_a0917aa5ef0955397377b5799cfb12ddf}} 
+\index{Destination.Destination@{Destination.Destination}!id@{id}}
+\index{id@{id}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily  int Destination.\+Destination.\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Papertrail ID
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_acc6f45cd6cb867322730616d96fae15f}\label{classDestination_1_1Destination_acc6f45cd6cb867322730616d96fae15f}} 
+\index{Destination.Destination@{Destination.Destination}!info\_link@{info\_link}}
+\index{info\_link@{info\_link}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{info\_link()}{info\_link()}}
+{\footnotesize\ttfamily  str Destination.\+Destination.\+info\+\_\+link (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Link to json info.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a597862274935306704fa0e55532c2d88}\label{classDestination_1_1Destination_a597862274935306704fa0e55532c2d88}} 
+\index{Destination.Destination@{Destination.Destination}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  datetime Destination.\+Destination.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Last time this was loaded from the server.
+:return: Datetime: None if not loaded.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a89169be1846b17950d355a58be9d6d92}\label{classDestination_1_1Destination_a89169be1846b17950d355a58be9d6d92}} 
+\index{Destination.Destination@{Destination.Destination}!reload@{reload}}
+\index{reload@{reload}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily  Self Destination.\+Destination.\+reload (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Reload this destination from the server.
+:return: Destination: This instance.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a5333525667087901c93b8c6ae8e22f98}\label{classDestination_1_1Destination_a5333525667087901c93b8c6ae8e22f98}} 
+\index{Destination.Destination@{Destination.Destination}!syslog\_host\_name@{syslog\_host\_name}}
+\index{syslog\_host\_name@{syslog\_host\_name}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{syslog\_host\_name()}{syslog\_host\_name()}}
+{\footnotesize\ttfamily  str Destination.\+Destination.\+syslog\+\_\+host\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Syslog target host name
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classDestination_1_1Destination_a1a2c151f8e39045c7c3c6dd371100262}\label{classDestination_1_1Destination_a1a2c151f8e39045c7c3c6dd371100262}} 
+\index{Destination.Destination@{Destination.Destination}!syslog\_port@{syslog\_port}}
+\index{syslog\_port@{syslog\_port}!Destination.Destination@{Destination.Destination}}
+\doxysubsubsection{\texorpdfstring{syslog\_port()}{syslog\_port()}}
+{\footnotesize\ttfamily  int Destination.\+Destination.\+syslog\+\_\+port (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Syslog target port.
+:return: Int
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Destination.\+py\end{DoxyCompactItemize}

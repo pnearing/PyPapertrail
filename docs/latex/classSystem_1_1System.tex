@@ -1,0 +1,305 @@
+\hypertarget{classSystem_1_1System}{}\doxysection{System.\+System Class Reference}
+\label{classSystem_1_1System}\index{System.System@{System.System}}
+
+
+Inheritance diagram for System.\+System\+:
+% FIG 0
+
+
+Collaboration diagram for System.\+System\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classSystem_1_1System_a6de03ede35c1df42fc8907965fa04578}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classSystem_1_1System_a41d24e3607e2591b8b13a3a4aa15140f}{last\+\_\+fetched}}=None, Optional\mbox{[}dict\mbox{]} raw\+\_\+system=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classSystem_1_1System_a8e3049be1db5687986aea769beaf443f}{\+\_\+\+\_\+from\+\_\+raw\+\_\+system\+\_\+\+\_\+}} (self, dict raw\+\_\+system)
+\begin{DoxyCompactList}\small\item\em Load / Save functions\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classSystem_1_1System_a3f7a935d2010d50200fc6ba8e51a1300}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classSystem_1_1System_a0e131f793a8c543d81d16f65da7345b7}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+Self \mbox{\hyperlink{classSystem_1_1System_a275344512a1e89ca1db9353fcc7102a0}{reload}} (self)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+Self \mbox{\hyperlink{classSystem_1_1System_a87dd6ab55deeda06dbb009a21adb3c22}{update}} (self, Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classSystem_1_1System_a71457246d79dc2bc2d424dd5dd106972}{name}}=None, Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classSystem_1_1System_a058aa5176eded0386096bbba72c839f2}{ip\+\_\+address}}=None, Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classSystem_1_1System_aeeeff83baa7eb220a428a3268c945c90}{host\+\_\+name}}=None, Optional\mbox{[}str\mbox{]} description=None, Optional\mbox{[}bool\mbox{]} \mbox{\hyperlink{classSystem_1_1System_a0d96a69e96e3d40c17138437d89e8c20}{auto\+\_\+delete}}=None)
+\item 
+bool \mbox{\hyperlink{classSystem_1_1System_aa3b9d11601f4d48a91b3a133997cc801}{\+\_\+\+\_\+eq\+\_\+\+\_\+}} (self, Self$\vert$int$\vert$str other)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classSystem_1_1System_ab06f7f1aec8054a9f1abc17b504bd068}{\+\_\+\+\_\+str\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classSystem_1_1System_a8e829d6d05c1b152519f90a84c27b586}{\+\_\+\+\_\+int\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classSystem_1_1System_a5843db09f52cf6f41f676ea74560ebdb}{id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classSystem_1_1System_a71457246d79dc2bc2d424dd5dd106972}{name}} (self)
+\item 
+Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classSystem_1_1System_a7f2e4dd6a0d30d745c6936d1c1dbd009}{last\+\_\+event}} (self)
+\item 
+bool \mbox{\hyperlink{classSystem_1_1System_a0d96a69e96e3d40c17138437d89e8c20}{auto\+\_\+delete}} (self)
+\item 
+str \mbox{\hyperlink{classSystem_1_1System_a1752e6566616b75fb9091f43b1c57eb1}{json\+\_\+info\+\_\+link}} (self)
+\item 
+str \mbox{\hyperlink{classSystem_1_1System_a4ff8ac0e9bc95f6cb956e059080746e9}{html\+\_\+info\+\_\+link}} (self)
+\item 
+str \mbox{\hyperlink{classSystem_1_1System_a03d1a1d832ecd041330f1c3c59a31db3}{search\+\_\+link}} (self)
+\item 
+Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classSystem_1_1System_a058aa5176eded0386096bbba72c839f2}{ip\+\_\+address}} (self)
+\item 
+Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classSystem_1_1System_aeeeff83baa7eb220a428a3268c945c90}{host\+\_\+name}} (self)
+\item 
+str \mbox{\hyperlink{classSystem_1_1System_ae06951ad554bc50926f629f52d469b8a}{syslog\+\_\+host\+\_\+name}} (self)
+\item 
+int \mbox{\hyperlink{classSystem_1_1System_a5d713e538f90b123e130d5a2a11e3516}{syslog\+\_\+port}} (self)
+\item 
+datetime \mbox{\hyperlink{classSystem_1_1System_a41d24e3607e2591b8b13a3a4aa15140f}{last\+\_\+fetched}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store a single system.\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSystem_1_1System_a6de03ede35c1df42fc8907965fa04578}\label{classSystem_1_1System_a6de03ede35c1df42fc8907965fa04578}} 
+\index{System.System@{System.System}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None System.\+System.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}datetime\mbox{]} }]{last\+\_\+fetched = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+system = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize a System object:
+:param api_key: Str: The api key.
+:param last_fetched: Optional[datetime]: The datetime object for when this was last fetched, note: must be set
+    if using the raw_system parameter, and it will be ignored if using from_dict parameter.
+:param raw_system: Dict: The dict received from papertrail.
+:param from_dict: Dict: The dict created by __to_dict__().
+:raises: SystemsError: If raw_system and from_dict are either both None or both defined, or if an invalid
+    raw_system dict, or from_dict dict are lacking a key.
+:raises: TypeError: If an invalid type is passed as a parameter.
+:returns: None
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSystem_1_1System_aa3b9d11601f4d48a91b3a133997cc801}\label{classSystem_1_1System_aa3b9d11601f4d48a91b3a133997cc801}} 
+\index{System.System@{System.System}!\_\_eq\_\_@{\_\_eq\_\_}}
+\index{\_\_eq\_\_@{\_\_eq\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_eq\_\_()}{\_\_eq\_\_()}}
+{\footnotesize\ttfamily  bool System.\+System.\+\_\+\+\_\+eq\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Self $\vert$ int $\vert$ str}]{other }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Equality test, tests system.id.
+:param other: System | int | str: The system to compare to, either a System object, an int for the system id, or
+    a str for the system name.
+:return: Bool: True if ids are equal.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a3f7a935d2010d50200fc6ba8e51a1300}\label{classSystem_1_1System_a3f7a935d2010d50200fc6ba8e51a1300}} 
+\index{System.System@{System.System}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None System.\+System.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load from a dict created by __to_dict__().
+:param from_dict: Dict: The dict to load from.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a8e3049be1db5687986aea769beaf443f}\label{classSystem_1_1System_a8e3049be1db5687986aea769beaf443f}} 
+\index{System.System@{System.System}!\_\_from\_raw\_system\_\_@{\_\_from\_raw\_system\_\_}}
+\index{\_\_from\_raw\_system\_\_@{\_\_from\_raw\_system\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_system\_\_()}{\_\_from\_raw\_system\_\_()}}
+{\footnotesize\ttfamily  None System.\+System.\+\_\+\+\_\+from\+\_\+raw\+\_\+system\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{raw\+\_\+system }\end{DoxyParamCaption})}
+
+
+
+Load / Save functions\+: 
+
+\begin{DoxyVerb}Load from a raw system dict provided by papertrail.
+:param raw_system: Dict: The dict provided by Papertrail.
+:raises: SystemsError: When a key is not defined.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a8e829d6d05c1b152519f90a84c27b586}\label{classSystem_1_1System_a8e829d6d05c1b152519f90a84c27b586}} 
+\index{System.System@{System.System}!\_\_int\_\_@{\_\_int\_\_}}
+\index{\_\_int\_\_@{\_\_int\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_int\_\_()}{\_\_int\_\_()}}
+{\footnotesize\ttfamily  int System.\+System.\+\_\+\+\_\+int\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Refer as an int, return ID.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_ab06f7f1aec8054a9f1abc17b504bd068}\label{classSystem_1_1System_ab06f7f1aec8054a9f1abc17b504bd068}} 
+\index{System.System@{System.System}!\_\_str\_\_@{\_\_str\_\_}}
+\index{\_\_str\_\_@{\_\_str\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_str\_\_()}{\_\_str\_\_()}}
+{\footnotesize\ttfamily  str System.\+System.\+\_\+\+\_\+str\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Refer as a string, return name
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a0e131f793a8c543d81d16f65da7345b7}\label{classSystem_1_1System_a0e131f793a8c543d81d16f65da7345b7}} 
+\index{System.System@{System.System}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict System.\+System.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a JSON / Pickle friendly dict.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a0d96a69e96e3d40c17138437d89e8c20}\label{classSystem_1_1System_a0d96a69e96e3d40c17138437d89e8c20}} 
+\index{System.System@{System.System}!auto\_delete@{auto\_delete}}
+\index{auto\_delete@{auto\_delete}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{auto\_delete()}{auto\_delete()}}
+{\footnotesize\ttfamily  bool System.\+System.\+auto\+\_\+delete (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Auto delete.
+NOTE: I'm not sure what this means, because it's not in the web docs.
+:return: Bool.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_aeeeff83baa7eb220a428a3268c945c90}\label{classSystem_1_1System_aeeeff83baa7eb220a428a3268c945c90}} 
+\index{System.System@{System.System}!host\_name@{host\_name}}
+\index{host\_name@{host\_name}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{host\_name()}{host\_name()}}
+{\footnotesize\ttfamily  Optional\mbox{[}str\mbox{]} System.\+System.\+host\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The host name of this system.
+:return: Optional[str]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a4ff8ac0e9bc95f6cb956e059080746e9}\label{classSystem_1_1System_a4ff8ac0e9bc95f6cb956e059080746e9}} 
+\index{System.System@{System.System}!html\_info\_link@{html\_info\_link}}
+\index{html\_info\_link@{html\_info\_link}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{html\_info\_link()}{html\_info\_link()}}
+{\footnotesize\ttfamily  str System.\+System.\+html\+\_\+info\+\_\+link (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Link to HTML information.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a5843db09f52cf6f41f676ea74560ebdb}\label{classSystem_1_1System_a5843db09f52cf6f41f676ea74560ebdb}} 
+\index{System.System@{System.System}!id@{id}}
+\index{id@{id}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily  int System.\+System.\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Papertrail's system ID.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a058aa5176eded0386096bbba72c839f2}\label{classSystem_1_1System_a058aa5176eded0386096bbba72c839f2}} 
+\index{System.System@{System.System}!ip\_address@{ip\_address}}
+\index{ip\_address@{ip\_address}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{ip\_address()}{ip\_address()}}
+{\footnotesize\ttfamily  Optional\mbox{[}str\mbox{]} System.\+System.\+ip\+\_\+address (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The IP address of the system.
+:return: Optional[str]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a1752e6566616b75fb9091f43b1c57eb1}\label{classSystem_1_1System_a1752e6566616b75fb9091f43b1c57eb1}} 
+\index{System.System@{System.System}!json\_info\_link@{json\_info\_link}}
+\index{json\_info\_link@{json\_info\_link}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{json\_info\_link()}{json\_info\_link()}}
+{\footnotesize\ttfamily  str System.\+System.\+json\+\_\+info\+\_\+link (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Link to json information.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a7f2e4dd6a0d30d745c6936d1c1dbd009}\label{classSystem_1_1System_a7f2e4dd6a0d30d745c6936d1c1dbd009}} 
+\index{System.System@{System.System}!last\_event@{last\_event}}
+\index{last\_event@{last\_event}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{last\_event()}{last\_event()}}
+{\footnotesize\ttfamily  Optional\mbox{[}datetime\mbox{]} System.\+System.\+last\+\_\+event (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Last event date / time.
+:return: Optional timezone-aware datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a41d24e3607e2591b8b13a3a4aa15140f}\label{classSystem_1_1System_a41d24e3607e2591b8b13a3a4aa15140f}} 
+\index{System.System@{System.System}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  datetime System.\+System.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Date/Time this system was last fetched from papertrail.
+:return: Timezone-aware datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a71457246d79dc2bc2d424dd5dd106972}\label{classSystem_1_1System_a71457246d79dc2bc2d424dd5dd106972}} 
+\index{System.System@{System.System}!name@{name}}
+\index{name@{name}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily  str System.\+System.\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}System name.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a275344512a1e89ca1db9353fcc7102a0}\label{classSystem_1_1System_a275344512a1e89ca1db9353fcc7102a0}} 
+\index{System.System@{System.System}!reload@{reload}}
+\index{reload@{reload}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily  Self System.\+System.\+reload (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Reload data from papertrail.
+:return: System: The updated system instance.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a03d1a1d832ecd041330f1c3c59a31db3}\label{classSystem_1_1System_a03d1a1d832ecd041330f1c3c59a31db3}} 
+\index{System.System@{System.System}!search\_link@{search\_link}}
+\index{search\_link@{search\_link}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{search\_link()}{search\_link()}}
+{\footnotesize\ttfamily  str System.\+System.\+search\+\_\+link (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Link to search the logs of this system.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_ae06951ad554bc50926f629f52d469b8a}\label{classSystem_1_1System_ae06951ad554bc50926f629f52d469b8a}} 
+\index{System.System@{System.System}!syslog\_host\_name@{syslog\_host\_name}}
+\index{syslog\_host\_name@{syslog\_host\_name}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{syslog\_host\_name()}{syslog\_host\_name()}}
+{\footnotesize\ttfamily  str System.\+System.\+syslog\+\_\+host\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Syslog target host name.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a5d713e538f90b123e130d5a2a11e3516}\label{classSystem_1_1System_a5d713e538f90b123e130d5a2a11e3516}} 
+\index{System.System@{System.System}!syslog\_port@{syslog\_port}}
+\index{syslog\_port@{syslog\_port}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{syslog\_port()}{syslog\_port()}}
+{\footnotesize\ttfamily  int System.\+System.\+syslog\+\_\+port (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Syslog target port
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classSystem_1_1System_a87dd6ab55deeda06dbb009a21adb3c22}\label{classSystem_1_1System_a87dd6ab55deeda06dbb009a21adb3c22}} 
+\index{System.System@{System.System}!update@{update}}
+\index{update@{update}!System.System@{System.System}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily  Self System.\+System.\+update (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Optional\mbox{[}str\mbox{]} }]{name = {\ttfamily None},  }\item[{Optional\mbox{[}str\mbox{]} }]{ip\+\_\+address = {\ttfamily None},  }\item[{Optional\mbox{[}str\mbox{]} }]{host\+\_\+name = {\ttfamily None},  }\item[{Optional\mbox{[}str\mbox{]} }]{description = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{auto\+\_\+delete = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Update this system.
+:param name: Optional[Str]: The friendly name of the system.
+:param ip_address: Optional[Str]: The ip address of the system.
+:param host_name: Optional[Str]: The host name of the system.
+:param description: Optional[Str]: The freeform description of the system.
+:param auto_delete: Optional[Bool]: Whether to automatically delete the system.
+:raises TypeError: If an invalid type is passed.
+:raises ValueError: If an invalid valid is passed.
+:raises InvalidServerResponse: If server sends bad JSON.
+:raises RequestReadTimeout: If the server fails to respond in time.
+:raises SystemsError:
+    -> When nothing passed.
+    -> When requests.RequestException occurs.
+:return: System: The updated system instance.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+System.\+py\end{DoxyCompactItemize}

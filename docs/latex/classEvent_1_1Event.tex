@@ -1,0 +1,216 @@
+\hypertarget{classEvent_1_1Event}{}\doxysection{Event.\+Event Class Reference}
+\label{classEvent_1_1Event}\index{Event.Event@{Event.Event}}
+
+
+Inheritance diagram for Event.\+Event\+:
+% FIG 0
+
+
+Collaboration diagram for Event.\+Event\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classEvent_1_1Event_a8ca094f82a539d4d850811dfdaead8b3}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, Optional\mbox{[}dict\mbox{]} raw\+\_\+event=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classEvent_1_1Event_aad5bb0250b432754232de1cfe0dadc00}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classEvent_1_1Event_ac41add0a7fbfc5e102d37c069ca37b0d}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+None \mbox{\hyperlink{classEvent_1_1Event_a645050ec8322c667cfa4ea70b66bf71d}{\+\_\+\+\_\+from\+\_\+raw\+\_\+event\+\_\+\+\_\+}} (self, dict raw\+\_\+event)
+\item 
+int \mbox{\hyperlink{classEvent_1_1Event_a53ca9ce1efbfe3006bcaf136751f80f8}{id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classEvent_1_1Event_ad48d2f0d535975c2ddecbb311a2d5792}{source\+\_\+ip}} (self)
+\item 
+Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classEvent_1_1Event_a92fbe2fdbd9cd82917b59e12a43cdcdd}{program}} (self)
+\item 
+str \mbox{\hyperlink{classEvent_1_1Event_aa03c17629e73e41019b1b1163a39bfa3}{message}} (self)
+\item 
+datetime \mbox{\hyperlink{classEvent_1_1Event_a3036c1b57b1225f0f184c8d57dc60db5}{received\+\_\+at}} (self)
+\item 
+datetime \mbox{\hyperlink{classEvent_1_1Event_adac1865291d3ddfe26642ff7478c5a37}{generated\+\_\+at}} (self)
+\item 
+str \mbox{\hyperlink{classEvent_1_1Event_a72b8b9c9418887fa46ac2434dcf07565}{display\+\_\+received\+\_\+at}} (self)
+\item 
+int \mbox{\hyperlink{classEvent_1_1Event_a02f38a9a80f0a80a0ebd3c4c98c21177}{source\+\_\+id}} (self)
+\item 
+str \mbox{\hyperlink{classEvent_1_1Event_a4b3557efd461f8f085486b86baffcac3}{source\+\_\+name}} (self)
+\item 
+str \mbox{\hyperlink{classEvent_1_1Event_af411103291bec7627a42fcddd2acf72d}{host\+\_\+name}} (self)
+\item 
+str \mbox{\hyperlink{classEvent_1_1Event_aaf9a808ac2881848dd2b94f2d3c483f4}{severity}} (self)
+\item 
+str \mbox{\hyperlink{classEvent_1_1Event_ae78da5a59ac443e334e36c6f60c8cd9d}{facility}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store an event.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classEvent_1_1Event_a8ca094f82a539d4d850811dfdaead8b3}\label{classEvent_1_1Event_a8ca094f82a539d4d850811dfdaead8b3}} 
+\index{Event.Event@{Event.Event}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Event.\+Event.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+event = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize an Event object:
+:param raw_event: Optional[dict]: The dict provided by Papertrail.
+:param from_dict: Optional[dict]: A dict provided by __to_dict__().
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classEvent_1_1Event_aad5bb0250b432754232de1cfe0dadc00}\label{classEvent_1_1Event_aad5bb0250b432754232de1cfe0dadc00}} 
+\index{Event.Event@{Event.Event}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Event.\+Event.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load this instance from a dict provided by __to_dict__().
+:param from_dict: Dict: The dict provided by __to_dict__().
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a645050ec8322c667cfa4ea70b66bf71d}\label{classEvent_1_1Event_a645050ec8322c667cfa4ea70b66bf71d}} 
+\index{Event.Event@{Event.Event}!\_\_from\_raw\_event\_\_@{\_\_from\_raw\_event\_\_}}
+\index{\_\_from\_raw\_event\_\_@{\_\_from\_raw\_event\_\_}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_event\_\_()}{\_\_from\_raw\_event\_\_()}}
+{\footnotesize\ttfamily  None Event.\+Event.\+\_\+\+\_\+from\+\_\+raw\+\_\+event\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{raw\+\_\+event }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load from an event dict provided by Papertrail.
+:param raw_event: Dict: The dict provided by papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_ac41add0a7fbfc5e102d37c069ca37b0d}\label{classEvent_1_1Event_ac41add0a7fbfc5e102d37c069ca37b0d}} 
+\index{Event.Event@{Event.Event}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Event.\+Event.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a json / Pickle friendly dict.
+:return: Dict
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a72b8b9c9418887fa46ac2434dcf07565}\label{classEvent_1_1Event_a72b8b9c9418887fa46ac2434dcf07565}} 
+\index{Event.Event@{Event.Event}!display\_received\_at@{display\_received\_at}}
+\index{display\_received\_at@{display\_received\_at}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{display\_received\_at()}{display\_received\_at()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+display\+\_\+received\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Display received at time.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_ae78da5a59ac443e334e36c6f60c8cd9d}\label{classEvent_1_1Event_ae78da5a59ac443e334e36c6f60c8cd9d}} 
+\index{Event.Event@{Event.Event}!facility@{facility}}
+\index{facility@{facility}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{facility()}{facility()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+facility (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The logging facility.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_adac1865291d3ddfe26642ff7478c5a37}\label{classEvent_1_1Event_adac1865291d3ddfe26642ff7478c5a37}} 
+\index{Event.Event@{Event.Event}!generated\_at@{generated\_at}}
+\index{generated\_at@{generated\_at}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{generated\_at()}{generated\_at()}}
+{\footnotesize\ttfamily  datetime Event.\+Event.\+generated\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Datetime object for when this was generated.
+:return: Datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_af411103291bec7627a42fcddd2acf72d}\label{classEvent_1_1Event_af411103291bec7627a42fcddd2acf72d}} 
+\index{Event.Event@{Event.Event}!host\_name@{host\_name}}
+\index{host\_name@{host\_name}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{host\_name()}{host\_name()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+host\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The source host name generating this event.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a53ca9ce1efbfe3006bcaf136751f80f8}\label{classEvent_1_1Event_a53ca9ce1efbfe3006bcaf136751f80f8}} 
+\index{Event.Event@{Event.Event}!id@{id}}
+\index{id@{id}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily  int Event.\+Event.\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Event ID.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_aa03c17629e73e41019b1b1163a39bfa3}\label{classEvent_1_1Event_aa03c17629e73e41019b1b1163a39bfa3}} 
+\index{Event.Event@{Event.Event}!message@{message}}
+\index{message@{message}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{message()}{message()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+message (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Message
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a92fbe2fdbd9cd82917b59e12a43cdcdd}\label{classEvent_1_1Event_a92fbe2fdbd9cd82917b59e12a43cdcdd}} 
+\index{Event.Event@{Event.Event}!program@{program}}
+\index{program@{program}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{program()}{program()}}
+{\footnotesize\ttfamily  Optional\mbox{[}str\mbox{]} Event.\+Event.\+program (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Program, can be None if not defined by papertrail.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a3036c1b57b1225f0f184c8d57dc60db5}\label{classEvent_1_1Event_a3036c1b57b1225f0f184c8d57dc60db5}} 
+\index{Event.Event@{Event.Event}!received\_at@{received\_at}}
+\index{received\_at@{received\_at}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{received\_at()}{received\_at()}}
+{\footnotesize\ttfamily  datetime Event.\+Event.\+received\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Datetime object for when this was received.
+:return: Datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_aaf9a808ac2881848dd2b94f2d3c483f4}\label{classEvent_1_1Event_aaf9a808ac2881848dd2b94f2d3c483f4}} 
+\index{Event.Event@{Event.Event}!severity@{severity}}
+\index{severity@{severity}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{severity()}{severity()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+severity (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The severity of the event.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a02f38a9a80f0a80a0ebd3c4c98c21177}\label{classEvent_1_1Event_a02f38a9a80f0a80a0ebd3c4c98c21177}} 
+\index{Event.Event@{Event.Event}!source\_id@{source\_id}}
+\index{source\_id@{source\_id}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{source\_id()}{source\_id()}}
+{\footnotesize\ttfamily  int Event.\+Event.\+source\+\_\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The source system ID of this event
+:return: Int.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_ad48d2f0d535975c2ddecbb311a2d5792}\label{classEvent_1_1Event_ad48d2f0d535975c2ddecbb311a2d5792}} 
+\index{Event.Event@{Event.Event}!source\_ip@{source\_ip}}
+\index{source\_ip@{source\_ip}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{source\_ip()}{source\_ip()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+source\+\_\+ip (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Source IP address.
+:return: Str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classEvent_1_1Event_a4b3557efd461f8f085486b86baffcac3}\label{classEvent_1_1Event_a4b3557efd461f8f085486b86baffcac3}} 
+\index{Event.Event@{Event.Event}!source\_name@{source\_name}}
+\index{source\_name@{source\_name}!Event.Event@{Event.Event}}
+\doxysubsubsection{\texorpdfstring{source\_name()}{source\_name()}}
+{\footnotesize\ttfamily  str Event.\+Event.\+source\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The name of the source system.
+:return: Str.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Event.\+py\end{DoxyCompactItemize}

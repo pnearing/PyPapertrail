@@ -1,0 +1,175 @@
+\hypertarget{namespacecommon}{}\doxysection{common Namespace Reference}
+\label{namespacecommon}\index{common@{common}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Optional\mbox{[}No\+Return\mbox{]} \mbox{\hyperlink{namespacecommon_aff2accea61acee7ff670307afde32e69}{\+\_\+\+\_\+version\+\_\+check\+\_\+\+\_\+}} ()
+\item 
+bool \mbox{\hyperlink{namespacecommon_a0dda7ecce5d46679fd79796bb5963fe5}{is\+\_\+timezone\+\_\+aware}} (datetime dt)
+\item 
+datetime \mbox{\hyperlink{namespacecommon_a5324d179571d1c68fac0c03707d9ddb1}{convert\+\_\+to\+\_\+utc}} (datetime date\+\_\+time\+\_\+obj)
+\item 
+None \mbox{\hyperlink{namespacecommon_a534b44a407649bdd509ec09c4650b998}{parse\+\_\+limit\+\_\+header}} (requests.\+models.\+Case\+Insensitive\+Dict\mbox{[}str\mbox{]} headers)
+\item 
+No\+Return \mbox{\hyperlink{namespacecommon_a83aad795970374751002cca9f3644a62}{\+\_\+\+\_\+type\+\_\+error\+\_\+\+\_\+}} (str argument\+\_\+name, str desired\+\_\+types, Any received\+\_\+obj)
+\item 
+No\+Return \mbox{\hyperlink{namespacecommon_adadf20370745fdf75eddeb87ec1b0821}{\+\_\+\+\_\+raise\+\_\+for\+\_\+http\+\_\+error\+\_\+\+\_\+}} (requests.\+Response request, requests.\+HTTPError exception)
+\item 
+Optional\mbox{[}list$\vert$dict\mbox{]} \mbox{\hyperlink{namespacecommon_a7bf4f85393ec1aa5462c155e7b83eba3}{requests\+\_\+get}} (str url, str api\+\_\+key, bool returns\+\_\+json=True)
+\item 
+Optional\mbox{[}list$\vert$dict\mbox{]} \mbox{\hyperlink{namespacecommon_a14f0ed079fd9a82f384d95ca621dc1c3}{requests\+\_\+post}} (str url, str api\+\_\+key, Any json\+\_\+data, bool returns\+\_\+json=True)
+\item 
+Optional\mbox{[}list$\vert$dict\mbox{]} \mbox{\hyperlink{namespacecommon_af4a8fce33534dd0340aee9dbffb5509c}{requests\+\_\+put}} (str url, str api\+\_\+key, Any json\+\_\+data, bool returns\+\_\+json=True)
+\item 
+Optional\mbox{[}dict\mbox{]} \mbox{\hyperlink{namespacecommon_ad27a649a069ddb293cfdd8d6fd6b0a3e}{requests\+\_\+del}} (str url, str api\+\_\+key, bool returns\+\_\+json=True)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacecommon_ac89b27f3def5814d37134e998b937603}\label{namespacecommon_ac89b27f3def5814d37134e998b937603}} 
+{\bfseries Archive} = Type\+Var(\char`\"{}Archive\char`\"{}, bound=\char`\"{}Archive\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacecommon_a27d55643b87f8de041a26b7aca7794a1}\label{namespacecommon_a27d55643b87f8de041a26b7aca7794a1}} 
+{\bfseries Destination} = Type\+Var(\char`\"{}Destination\char`\"{}, bound=\char`\"{}Destination\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacecommon_a2d93d7f072ea188c5f2e738b0b4ec8e5}\label{namespacecommon_a2d93d7f072ea188c5f2e738b0b4ec8e5}} 
+{\bfseries Group} = Type\+Var(\char`\"{}Group\char`\"{}, bound=\char`\"{}Group\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacecommon_a3c0899ec7eebff7afde05525cf7ef6ab}\label{namespacecommon_a3c0899ec7eebff7afde05525cf7ef6ab}} 
+{\bfseries Saved\+Search} = Type\+Var(\char`\"{}Saved\+Search\char`\"{}, bound=\char`\"{}Saved\+Search\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacecommon_ae5234e4e7f751a3a76a06b9f8e3f07c0}\label{namespacecommon_ae5234e4e7f751a3a76a06b9f8e3f07c0}} 
+{\bfseries System} = Type\+Var(\char`\"{}System\char`\"{}, bound=\char`\"{}System\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacecommon_aa124964bf1d73870ca3ab8db85a5b8e5}\label{namespacecommon_aa124964bf1d73870ca3ab8db85a5b8e5}} 
+{\bfseries User} = Type\+Var(\char`\"{}User\char`\"{}, bound=\char`\"{}User\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacecommon_a5d544910951e70b01e7a190656d217c7}\label{namespacecommon_a5d544910951e70b01e7a190656d217c7}} 
+{\bfseries str}
+\item 
+\mbox{\Hypertarget{namespacecommon_a6adf5a41d5ed2753b2aa7ce31ce99867}\label{namespacecommon_a6adf5a41d5ed2753b2aa7ce31ce99867}} 
+{\bfseries bool}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Common variables / functions for papertrail api.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacecommon_adadf20370745fdf75eddeb87ec1b0821}\label{namespacecommon_adadf20370745fdf75eddeb87ec1b0821}} 
+\index{common@{common}!\_\_raise\_for\_http\_error\_\_@{\_\_raise\_for\_http\_error\_\_}}
+\index{\_\_raise\_for\_http\_error\_\_@{\_\_raise\_for\_http\_error\_\_}!common@{common}}
+\doxysubsubsection{\texorpdfstring{\_\_raise\_for\_http\_error\_\_()}{\_\_raise\_for\_http\_error\_\_()}}
+{\footnotesize\ttfamily  No\+Return common.\+\_\+\+\_\+raise\+\_\+for\+\_\+http\+\_\+error\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{requests.\+Response}]{request,  }\item[{requests.\+HTTPError}]{exception }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Raise the appropriate Exception on known http errors.
+:param request: A requests.Response object: The request with the http error.
+:param exception: An Exception object: The exception (requests.HTTPError) that caused something to be raised.
+:return: None | NoReturn: NoReturn if a known error, None if an unknown error.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_a83aad795970374751002cca9f3644a62}\label{namespacecommon_a83aad795970374751002cca9f3644a62}} 
+\index{common@{common}!\_\_type\_error\_\_@{\_\_type\_error\_\_}}
+\index{\_\_type\_error\_\_@{\_\_type\_error\_\_}!common@{common}}
+\doxysubsubsection{\texorpdfstring{\_\_type\_error\_\_()}{\_\_type\_error\_\_()}}
+{\footnotesize\ttfamily  No\+Return common.\+\_\+\+\_\+type\+\_\+error\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{str}]{argument\+\_\+name,  }\item[{str}]{desired\+\_\+types,  }\item[{Any}]{received\+\_\+obj }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Raise a TypeError with a good message.
+:param argument_name: Str: String of the variable name.
+:param desired_types: Str: String of desired type(s).
+:param received_obj: The var which was received, note: type() will be called on it.
+:return: NoReturn
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_aff2accea61acee7ff670307afde32e69}\label{namespacecommon_aff2accea61acee7ff670307afde32e69}} 
+\index{common@{common}!\_\_version\_check\_\_@{\_\_version\_check\_\_}}
+\index{\_\_version\_check\_\_@{\_\_version\_check\_\_}!common@{common}}
+\doxysubsubsection{\texorpdfstring{\_\_version\_check\_\_()}{\_\_version\_check\_\_()}}
+{\footnotesize\ttfamily  Optional\mbox{[}No\+Return\mbox{]} common.\+\_\+\+\_\+version\+\_\+check\+\_\+\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check the python version and exit gracefully if wrong version.
+:return: Optional[NoReturn]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_a5324d179571d1c68fac0c03707d9ddb1}\label{namespacecommon_a5324d179571d1c68fac0c03707d9ddb1}} 
+\index{common@{common}!convert\_to\_utc@{convert\_to\_utc}}
+\index{convert\_to\_utc@{convert\_to\_utc}!common@{common}}
+\doxysubsubsection{\texorpdfstring{convert\_to\_utc()}{convert\_to\_utc()}}
+{\footnotesize\ttfamily  datetime common.\+convert\+\_\+to\+\_\+utc (\begin{DoxyParamCaption}\item[{datetime}]{date\+\_\+time\+\_\+obj }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Takes a datetime object that is either timezone-aware or timezone-naive, and returns a datetime object that is
+timezone-aware and is in UTC time.
+:param date_time_obj: Datetime object: The datetime to convert.
+:return: Datetime: Timezone-aware UTC datetime.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_a0dda7ecce5d46679fd79796bb5963fe5}\label{namespacecommon_a0dda7ecce5d46679fd79796bb5963fe5}} 
+\index{common@{common}!is\_timezone\_aware@{is\_timezone\_aware}}
+\index{is\_timezone\_aware@{is\_timezone\_aware}!common@{common}}
+\doxysubsubsection{\texorpdfstring{is\_timezone\_aware()}{is\_timezone\_aware()}}
+{\footnotesize\ttfamily  bool common.\+is\+\_\+timezone\+\_\+aware (\begin{DoxyParamCaption}\item[{datetime}]{dt }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Checks if a given datetime object is timezone-aware.
+:param dt: The datetime object to check.
+:return: Bool, True if timezone-aware, False if timezone-unaware.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_a534b44a407649bdd509ec09c4650b998}\label{namespacecommon_a534b44a407649bdd509ec09c4650b998}} 
+\index{common@{common}!parse\_limit\_header@{parse\_limit\_header}}
+\index{parse\_limit\_header@{parse\_limit\_header}!common@{common}}
+\doxysubsubsection{\texorpdfstring{parse\_limit\_header()}{parse\_limit\_header()}}
+{\footnotesize\ttfamily  None common.\+parse\+\_\+limit\+\_\+header (\begin{DoxyParamCaption}\item[{requests.\+models.\+Case\+Insensitive\+Dict\mbox{[}str\mbox{]}}]{headers }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parse the rate limit headers.
+:param headers: Dict: The headers.
+:raises IndexError | ValueError: If an invalid dict is passed.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_ad27a649a069ddb293cfdd8d6fd6b0a3e}\label{namespacecommon_ad27a649a069ddb293cfdd8d6fd6b0a3e}} 
+\index{common@{common}!requests\_del@{requests\_del}}
+\index{requests\_del@{requests\_del}!common@{common}}
+\doxysubsubsection{\texorpdfstring{requests\_del()}{requests\_del()}}
+{\footnotesize\ttfamily  Optional\mbox{[}dict\mbox{]} common.\+requests\+\_\+del (\begin{DoxyParamCaption}\item[{str}]{url,  }\item[{str}]{api\+\_\+key,  }\item[{bool }]{returns\+\_\+json = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Send a 'delete' request to the given url.
+:param url: Str: The url to send the request to.
+:param api_key: Str: The API Key.
+:param returns_json: Bool: The request returns JSON data, default = True.
+:return: Dict: JSON Decoded response.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_a7bf4f85393ec1aa5462c155e7b83eba3}\label{namespacecommon_a7bf4f85393ec1aa5462c155e7b83eba3}} 
+\index{common@{common}!requests\_get@{requests\_get}}
+\index{requests\_get@{requests\_get}!common@{common}}
+\doxysubsubsection{\texorpdfstring{requests\_get()}{requests\_get()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list $\vert$ dict\mbox{]} common.\+requests\+\_\+get (\begin{DoxyParamCaption}\item[{str}]{url,  }\item[{str}]{api\+\_\+key,  }\item[{bool }]{returns\+\_\+json = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make a requests.get() call, and return the json data.
+:param url: Str: The url to get.
+:param api_key: Str: The api key
+:param returns_json: Bool: The request returns JSON, default = True.
+:return: List | dict: The response data.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_a14f0ed079fd9a82f384d95ca621dc1c3}\label{namespacecommon_a14f0ed079fd9a82f384d95ca621dc1c3}} 
+\index{common@{common}!requests\_post@{requests\_post}}
+\index{requests\_post@{requests\_post}!common@{common}}
+\doxysubsubsection{\texorpdfstring{requests\_post()}{requests\_post()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list $\vert$ dict\mbox{]} common.\+requests\+\_\+post (\begin{DoxyParamCaption}\item[{str}]{url,  }\item[{str}]{api\+\_\+key,  }\item[{Any}]{json\+\_\+data,  }\item[{bool }]{returns\+\_\+json = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make a requests.post() call, and return the json data.
+:param url: Str: The url to post to.
+:param api_key: Str: The API Key.
+:param json_data: Any: The json data to post.
+:param returns_json: Bool: The request returns JSON.
+:return: A list | dict: The server response.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacecommon_af4a8fce33534dd0340aee9dbffb5509c}\label{namespacecommon_af4a8fce33534dd0340aee9dbffb5509c}} 
+\index{common@{common}!requests\_put@{requests\_put}}
+\index{requests\_put@{requests\_put}!common@{common}}
+\doxysubsubsection{\texorpdfstring{requests\_put()}{requests\_put()}}
+{\footnotesize\ttfamily  Optional\mbox{[}list $\vert$ dict\mbox{]} common.\+requests\+\_\+put (\begin{DoxyParamCaption}\item[{str}]{url,  }\item[{str}]{api\+\_\+key,  }\item[{Any}]{json\+\_\+data,  }\item[{bool }]{returns\+\_\+json = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make a requests.put() call, and return the json response data.
+:param url: Str: The url to put to.
+:param api_key: Str: The API Key
+:param json_data: Any: The json data to send.
+:param returns_json: Bool: The request returns JSON data, default=True.
+:return: A list | dict: The server response data.
+\end{DoxyVerb}
+ 

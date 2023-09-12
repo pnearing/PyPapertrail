@@ -1,0 +1,316 @@
+\hypertarget{classArchive_1_1Archive}{}\doxysection{Archive.\+Archive Class Reference}
+\label{classArchive_1_1Archive}\index{Archive.Archive@{Archive.Archive}}
+
+
+Inheritance diagram for Archive.\+Archive\+:
+% FIG 0
+
+
+Collaboration diagram for Archive.\+Archive\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classArchive_1_1Archive_abd2709f063a391a8f973cb71ed209ffb}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} raw\+\_\+archive=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classArchive_1_1Archive_a4423c1c52576898244ab85c591338569}{last\+\_\+fetched}}=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classArchive_1_1Archive_abdafbbe8f3547982b4092801f9956c00}{\+\_\+\+\_\+from\+\_\+raw\+\_\+archive\+\_\+\+\_\+}} (self, dict raw\+\_\+archive)
+\begin{DoxyCompactList}\small\item\em Load / Save functions\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classArchive_1_1Archive_a1964c33e3c481e14d8e73c38377677ba}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classArchive_1_1Archive_a7f364d80d6cbb138609b688a0f61a28a}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+tuple\mbox{[}bool, str$\vert$int, Optional\mbox{[}str\mbox{]}\mbox{]} \mbox{\hyperlink{classArchive_1_1Archive_a13af239349fa8d5d6795c6522c27252b}{download}} (self, str destination\+\_\+dir, Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classArchive_1_1Archive_aaaf20595253f479c681235265f887e03}{file\+\_\+name}}=None, bool overwrite=False, Optional\mbox{[}Callable\mbox{]} callback=None, Any argument=None, int chunk\+\_\+size=8196)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classArchive_1_1Archive_a3bb0707c60f23a5b79aa21fe3719015b}{\+\_\+\+\_\+eq\+\_\+\+\_\+}} (self, Self$\vert$int$\vert$str other)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classArchive_1_1Archive_a6b5c4e3d9ad5ce5344af80be7938a5df}{\+\_\+\+\_\+str\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classArchive_1_1Archive_a30ee043affac865a5a25634af6810e9b}{\+\_\+\+\_\+int\+\_\+\+\_\+}} (self)
+\item 
+bool \mbox{\hyperlink{classArchive_1_1Archive_af51bfd95716c6931db2d8ae4804b1878}{\+\_\+\+\_\+gt\+\_\+\+\_\+}} (self, Self$\vert$datetime other)
+\item 
+bool \mbox{\hyperlink{classArchive_1_1Archive_a399291fa6af3207eb72badd57e07274c}{\+\_\+\+\_\+lt\+\_\+\+\_\+}} (self, Self$\vert$datetime other)
+\item 
+datetime \mbox{\hyperlink{classArchive_1_1Archive_ae6cb41b2f16ace03c5b9d71e26cb679b}{start\+\_\+time}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+datetime \mbox{\hyperlink{classArchive_1_1Archive_a0ea85136d143edc90ef7b1782d123f90}{end\+\_\+time}} (self)
+\item 
+str \mbox{\hyperlink{classArchive_1_1Archive_a9e81cbb47317f44e5fe78eb4620fa8c9}{formatted\+\_\+start\+\_\+time}} (self)
+\item 
+str \mbox{\hyperlink{classArchive_1_1Archive_ab2e8502369c539666ba1409c88d657a6}{formatted\+\_\+duration}} (self)
+\item 
+str \mbox{\hyperlink{classArchive_1_1Archive_aaaf20595253f479c681235265f887e03}{file\+\_\+name}} (self)
+\item 
+int \mbox{\hyperlink{classArchive_1_1Archive_afa907fb9b896beb905ee59e3daff2ccc}{file\+\_\+size}} (self)
+\item 
+str \mbox{\hyperlink{classArchive_1_1Archive_a9a846e84cb1c9803756b4dce6bc216ef}{link}} (self)
+\item 
+int \mbox{\hyperlink{classArchive_1_1Archive_a783a2e0e80a14c6a85d0b5c988f6d596}{duration}} (self)
+\item 
+bool \mbox{\hyperlink{classArchive_1_1Archive_a20a22d47ec90193f71c0a2ae1283e4b8}{is\+\_\+downloading}} (self)
+\item 
+bool \mbox{\hyperlink{classArchive_1_1Archive_a7ae18484282631d94329d5d7f689535e}{is\+\_\+downloaded}} (self)
+\item 
+Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classArchive_1_1Archive_ae44f4f83ed9d2a3c775d9b625cd61461}{download\+\_\+path}} (self)
+\item 
+datetime \mbox{\hyperlink{classArchive_1_1Archive_a4423c1c52576898244ab85c591338569}{last\+\_\+fetched}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class representing a Papertrail archive.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classArchive_1_1Archive_abd2709f063a391a8f973cb71ed209ffb}\label{classArchive_1_1Archive_abd2709f063a391a8f973cb71ed209ffb}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Archive.\+Archive.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+archive = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{Optional\mbox{[}datetime\mbox{]} }]{last\+\_\+fetched = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize the archive.
+:param api_key: Str: The api key.
+:param raw_archive: Optional[dict]: The raw dict from papertrail listing. Default = None
+    Note: if raw_archive is used, last_fetched must be defined.
+:param from_dict: Optional[dict]: Load from a saved dict created by __to_dict__().
+:return: None
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArchive_1_1Archive_a3bb0707c60f23a5b79aa21fe3719015b}\label{classArchive_1_1Archive_a3bb0707c60f23a5b79aa21fe3719015b}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_eq\_\_@{\_\_eq\_\_}}
+\index{\_\_eq\_\_@{\_\_eq\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_eq\_\_()}{\_\_eq\_\_()}}
+{\footnotesize\ttfamily  bool Archive.\+Archive.\+\_\+\+\_\+eq\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Self $\vert$ int $\vert$ str}]{other }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Equality test, tests start time equality if other == System object, file size if other == Int, and
+    file name if other == Str.
+:param other: System | int | str: The other object.
+:return: Bool.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a1964c33e3c481e14d8e73c38377677ba}\label{classArchive_1_1Archive_a1964c33e3c481e14d8e73c38377677ba}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Archive.\+Archive.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load the properties from a dict made by __to_dict__().
+:param from_dict: Dict: the dictionary to load from.
+:raises: ArchiveError: On key error.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_abdafbbe8f3547982b4092801f9956c00}\label{classArchive_1_1Archive_abdafbbe8f3547982b4092801f9956c00}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_from\_raw\_archive\_\_@{\_\_from\_raw\_archive\_\_}}
+\index{\_\_from\_raw\_archive\_\_@{\_\_from\_raw\_archive\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_archive\_\_()}{\_\_from\_raw\_archive\_\_()}}
+{\footnotesize\ttfamily  None Archive.\+Archive.\+\_\+\+\_\+from\+\_\+raw\+\_\+archive\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{raw\+\_\+archive }\end{DoxyParamCaption})}
+
+
+
+Load / Save functions\+: 
+
+\begin{DoxyVerb}Load the properties from the raw archive dict received from papertrail.
+:param raw_archive: Dict: The raw response dict from papertrail.
+:raises: ArchiveError: On key error.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_af51bfd95716c6931db2d8ae4804b1878}\label{classArchive_1_1Archive_af51bfd95716c6931db2d8ae4804b1878}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_gt\_\_@{\_\_gt\_\_}}
+\index{\_\_gt\_\_@{\_\_gt\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_gt\_\_()}{\_\_gt\_\_()}}
+{\footnotesize\ttfamily  bool Archive.\+Archive.\+\_\+\+\_\+gt\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Self $\vert$ datetime}]{other }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Compare if this is greater than 'other', which is either an Archive object or a datetime object.
+:param other: Archive | datetime: other can be either an Archive object that compares start_times, or a
+    datetime which is converted to UTC then compared to start_time.
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a30ee043affac865a5a25634af6810e9b}\label{classArchive_1_1Archive_a30ee043affac865a5a25634af6810e9b}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_int\_\_@{\_\_int\_\_}}
+\index{\_\_int\_\_@{\_\_int\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_int\_\_()}{\_\_int\_\_()}}
+{\footnotesize\ttfamily  int Archive.\+Archive.\+\_\+\+\_\+int\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Refer to this as an int, produce the file size in bytes.
+:return: Int: The file size in bytes.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a399291fa6af3207eb72badd57e07274c}\label{classArchive_1_1Archive_a399291fa6af3207eb72badd57e07274c}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_lt\_\_@{\_\_lt\_\_}}
+\index{\_\_lt\_\_@{\_\_lt\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_lt\_\_()}{\_\_lt\_\_()}}
+{\footnotesize\ttfamily  bool Archive.\+Archive.\+\_\+\+\_\+lt\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Self $\vert$ datetime}]{other }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Compare if this is less than 'other', which is either an Archive or a datetime object.
+:param other: Archive | datetime: other can be either an Archive object that compares start_times, or a
+    datetime object which is converted to UTC then compared to start_time.
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a6b5c4e3d9ad5ce5344af80be7938a5df}\label{classArchive_1_1Archive_a6b5c4e3d9ad5ce5344af80be7938a5df}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_str\_\_@{\_\_str\_\_}}
+\index{\_\_str\_\_@{\_\_str\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_str\_\_()}{\_\_str\_\_()}}
+{\footnotesize\ttfamily  str Archive.\+Archive.\+\_\+\+\_\+str\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Refer to this as a str, produce the file name.
+:return: Str: The file name.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a7f364d80d6cbb138609b688a0f61a28a}\label{classArchive_1_1Archive_a7f364d80d6cbb138609b688a0f61a28a}} 
+\index{Archive.Archive@{Archive.Archive}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Archive.\+Archive.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create a dict containing all the information in a json / pickle friendly format.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a13af239349fa8d5d6795c6522c27252b}\label{classArchive_1_1Archive_a13af239349fa8d5d6795c6522c27252b}} 
+\index{Archive.Archive@{Archive.Archive}!download@{download}}
+\index{download@{download}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{download()}{download()}}
+{\footnotesize\ttfamily  tuple\mbox{[}bool, str $\vert$ int, Optional\mbox{[}str\mbox{]}\mbox{]} Archive.\+Archive.\+download (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{destination\+\_\+dir,  }\item[{Optional\mbox{[}str\mbox{]} }]{file\+\_\+name = {\ttfamily None},  }\item[{bool }]{overwrite = {\ttfamily False},  }\item[{Optional\mbox{[}Callable\mbox{]} }]{callback = {\ttfamily None},  }\item[{Any }]{argument = {\ttfamily None},  }\item[{int }]{chunk\+\_\+size = {\ttfamily 8196} }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Download this archive.
+:param destination_dir: Str. Directory to save file in.
+:param file_name: Optional[str]. Override the default file name with this file name. Default=None
+:param overwrite: Bool. Overwrite existing files. Default = False
+:param callback: Optional[Callable]. The call back to call each chunk downloaded. Default = None.
+    The function signature is: callback (archive: Archive, bytes_downloaded: int, argument: Any)
+:param argument: Object. An optional argument to pass to the callback.  Default = None
+:param chunk_size: Int. The chunk size to download at a time in bytes. Default = 8196 (8K)
+:return: Tuple[bool, str | int, Optional[str]]: The first element is a status flag indicating success, True
+    being a success, and False a failure. If the first element is True, then the second element will be
+    the total number of bytes downloaded, and the third element will be the path to the downloaded file.
+    If the first element is False, the second element will be an error message indicating what went
+    wrong, and the third element will optionally be the path to the partially downloaded file.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_ae44f4f83ed9d2a3c775d9b625cd61461}\label{classArchive_1_1Archive_ae44f4f83ed9d2a3c775d9b625cd61461}} 
+\index{Archive.Archive@{Archive.Archive}!download\_path@{download\_path}}
+\index{download\_path@{download\_path}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{download\_path()}{download\_path()}}
+{\footnotesize\ttfamily  Optional\mbox{[}str\mbox{]} Archive.\+Archive.\+download\+\_\+path (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Path to the downloaded file if successfully downloaded. None if not downloaded.
+:return: Optional[str]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a783a2e0e80a14c6a85d0b5c988f6d596}\label{classArchive_1_1Archive_a783a2e0e80a14c6a85d0b5c988f6d596}} 
+\index{Archive.Archive@{Archive.Archive}!duration@{duration}}
+\index{duration@{duration}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{duration()}{duration()}}
+{\footnotesize\ttfamily  int Archive.\+Archive.\+duration (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Duration of the archive in minutes.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a0ea85136d143edc90ef7b1782d123f90}\label{classArchive_1_1Archive_a0ea85136d143edc90ef7b1782d123f90}} 
+\index{Archive.Archive@{Archive.Archive}!end\_time@{end\_time}}
+\index{end\_time@{end\_time}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{end\_time()}{end\_time()}}
+{\footnotesize\ttfamily  datetime Archive.\+Archive.\+end\+\_\+time (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}End time of the archive.
+:return: Timezone-aware datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_aaaf20595253f479c681235265f887e03}\label{classArchive_1_1Archive_aaaf20595253f479c681235265f887e03}} 
+\index{Archive.Archive@{Archive.Archive}!file\_name@{file\_name}}
+\index{file\_name@{file\_name}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{file\_name()}{file\_name()}}
+{\footnotesize\ttfamily  str Archive.\+Archive.\+file\+\_\+name (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}File name of the archive.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_afa907fb9b896beb905ee59e3daff2ccc}\label{classArchive_1_1Archive_afa907fb9b896beb905ee59e3daff2ccc}} 
+\index{Archive.Archive@{Archive.Archive}!file\_size@{file\_size}}
+\index{file\_size@{file\_size}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{file\_size()}{file\_size()}}
+{\footnotesize\ttfamily  int Archive.\+Archive.\+file\+\_\+size (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Size of the archive in bytes.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_ab2e8502369c539666ba1409c88d657a6}\label{classArchive_1_1Archive_ab2e8502369c539666ba1409c88d657a6}} 
+\index{Archive.Archive@{Archive.Archive}!formatted\_duration@{formatted\_duration}}
+\index{formatted\_duration@{formatted\_duration}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{formatted\_duration()}{formatted\_duration()}}
+{\footnotesize\ttfamily  str Archive.\+Archive.\+formatted\+\_\+duration (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Formatted duration of the archive.
+:return: English str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a9e81cbb47317f44e5fe78eb4620fa8c9}\label{classArchive_1_1Archive_a9e81cbb47317f44e5fe78eb4620fa8c9}} 
+\index{Archive.Archive@{Archive.Archive}!formatted\_start\_time@{formatted\_start\_time}}
+\index{formatted\_start\_time@{formatted\_start\_time}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{formatted\_start\_time()}{formatted\_start\_time()}}
+{\footnotesize\ttfamily  str Archive.\+Archive.\+formatted\+\_\+start\+\_\+time (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Formatted start time.
+:return: English str.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a7ae18484282631d94329d5d7f689535e}\label{classArchive_1_1Archive_a7ae18484282631d94329d5d7f689535e}} 
+\index{Archive.Archive@{Archive.Archive}!is\_downloaded@{is\_downloaded}}
+\index{is\_downloaded@{is\_downloaded}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{is\_downloaded()}{is\_downloaded()}}
+{\footnotesize\ttfamily  bool Archive.\+Archive.\+is\+\_\+downloaded (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Has the archive been downloaded? True if so, False if not.
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a20a22d47ec90193f71c0a2ae1283e4b8}\label{classArchive_1_1Archive_a20a22d47ec90193f71c0a2ae1283e4b8}} 
+\index{Archive.Archive@{Archive.Archive}!is\_downloading@{is\_downloading}}
+\index{is\_downloading@{is\_downloading}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{is\_downloading()}{is\_downloading()}}
+{\footnotesize\ttfamily  bool Archive.\+Archive.\+is\+\_\+downloading (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Is the archive currently downloading? True if downloading, False if not.
+:return: Bool
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a4423c1c52576898244ab85c591338569}\label{classArchive_1_1Archive_a4423c1c52576898244ab85c591338569}} 
+\index{Archive.Archive@{Archive.Archive}!last\_fetched@{last\_fetched}}
+\index{last\_fetched@{last\_fetched}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{last\_fetched()}{last\_fetched()}}
+{\footnotesize\ttfamily  datetime Archive.\+Archive.\+last\+\_\+fetched (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Last time this was read from the server, times in UTC.
+:return: Datetime object.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_a9a846e84cb1c9803756b4dce6bc216ef}\label{classArchive_1_1Archive_a9a846e84cb1c9803756b4dce6bc216ef}} 
+\index{Archive.Archive@{Archive.Archive}!link@{link}}
+\index{link@{link}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{link()}{link()}}
+{\footnotesize\ttfamily  str Archive.\+Archive.\+link (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Download link of the archive.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classArchive_1_1Archive_ae6cb41b2f16ace03c5b9d71e26cb679b}\label{classArchive_1_1Archive_ae6cb41b2f16ace03c5b9d71e26cb679b}} 
+\index{Archive.Archive@{Archive.Archive}!start\_time@{start\_time}}
+\index{start\_time@{start\_time}!Archive.Archive@{Archive.Archive}}
+\doxysubsubsection{\texorpdfstring{start\_time()}{start\_time()}}
+{\footnotesize\ttfamily  datetime Archive.\+Archive.\+start\+\_\+time (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Start time of the archive.
+:return: Timezone-aware datetime object.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Archive.\+py\end{DoxyCompactItemize}

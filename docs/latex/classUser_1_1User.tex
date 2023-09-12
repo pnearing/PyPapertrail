@@ -1,0 +1,125 @@
+\hypertarget{classUser_1_1User}{}\doxysection{User.\+User Class Reference}
+\label{classUser_1_1User}\index{User.User@{User.User}}
+
+
+Inheritance diagram for User.\+User\+:
+% FIG 0
+
+
+Collaboration diagram for User.\+User\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classUser_1_1User_a9220ea8122acb6b9275c058ff30cdf60}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str api\+\_\+key, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None, Optional\mbox{[}dict\mbox{]} raw\+\_\+user=None)
+\item 
+\mbox{\Hypertarget{classUser_1_1User_ab581bb4733da0d75f23503f04d0ba01e}\label{classUser_1_1User_ab581bb4733da0d75f23503f04d0ba01e}} 
+None \mbox{\hyperlink{classUser_1_1User_ab581bb4733da0d75f23503f04d0ba01e}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\begin{DoxyCompactList}\small\item\em To / From dict, and from raw user\+: \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classUser_1_1User_ae6bcbd5ea16ed6244f311391e23d0ef1}\label{classUser_1_1User_ae6bcbd5ea16ed6244f311391e23d0ef1}} 
+dict {\bfseries \+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classUser_1_1User_a65f7fec90120c5b38184f9073627f46e}\label{classUser_1_1User_a65f7fec90120c5b38184f9073627f46e}} 
+None {\bfseries \+\_\+\+\_\+from\+\_\+raw\+\_\+user\+\_\+\+\_\+} (self, dict raw\+\_\+user)
+\item 
+Self \mbox{\hyperlink{classUser_1_1User_a13e5dd2e5de0b0fe56f0bf254ffa0f15}{update}} (self, Optional\mbox{[}str\mbox{]} \mbox{\hyperlink{classUser_1_1User_aafdf9899f94b8013d711f0fcf8b7dcb0}{email}}=None, Optional\mbox{[}bool\mbox{]} read\+\_\+only=None, Optional\mbox{[}bool\mbox{]} manage\+\_\+members=None, Optional\mbox{[}bool\mbox{]} manage\+\_\+billing=None, Optional\mbox{[}bool\mbox{]} purge\+\_\+logs=None, Optional\mbox{[}bool\mbox{]} all\+\_\+groups=None, Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classGroup_1_1Group}{Group}}$\vert$int$\vert$str\mbox{]}\mbox{]} groups=None)
+\begin{DoxyCompactList}\small\item\em Methods\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classUser_1_1User_a845879eac3da1ab70e39bc8146a3c3e4}{\+\_\+\+\_\+str\+\_\+\+\_\+}} (self)
+\begin{DoxyCompactList}\small\item\em Overrides\+: \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classUser_1_1User_a2296623d3e7c084e6a5a49b74494992a}{\+\_\+\+\_\+int\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classUser_1_1User_af0780dd022f67c26dd095c05e10f9e0c}{id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+str \mbox{\hyperlink{classUser_1_1User_aafdf9899f94b8013d711f0fcf8b7dcb0}{email}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store a single user.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classUser_1_1User_a9220ea8122acb6b9275c058ff30cdf60}\label{classUser_1_1User_a9220ea8122acb6b9275c058ff30cdf60}} 
+\index{User.User@{User.User}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!User.User@{User.User}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None User.\+User.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{api\+\_\+key,  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+user = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialize a user.
+:param api_key: Str: Api key.
+:param from_dict: Dict: A dict provided by __to_dict__().
+:param raw_user: Dict: Raw dict provided by Papertrail.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classUser_1_1User_a2296623d3e7c084e6a5a49b74494992a}\label{classUser_1_1User_a2296623d3e7c084e6a5a49b74494992a}} 
+\index{User.User@{User.User}!\_\_int\_\_@{\_\_int\_\_}}
+\index{\_\_int\_\_@{\_\_int\_\_}!User.User@{User.User}}
+\doxysubsubsection{\texorpdfstring{\_\_int\_\_()}{\_\_int\_\_()}}
+{\footnotesize\ttfamily  int User.\+User.\+\_\+\+\_\+int\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Refer as integer, get the user id.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classUser_1_1User_a845879eac3da1ab70e39bc8146a3c3e4}\label{classUser_1_1User_a845879eac3da1ab70e39bc8146a3c3e4}} 
+\index{User.User@{User.User}!\_\_str\_\_@{\_\_str\_\_}}
+\index{\_\_str\_\_@{\_\_str\_\_}!User.User@{User.User}}
+\doxysubsubsection{\texorpdfstring{\_\_str\_\_()}{\_\_str\_\_()}}
+{\footnotesize\ttfamily  str User.\+User.\+\_\+\+\_\+str\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Overrides\+: 
+
+\begin{DoxyVerb}Refer as a string, get the email address.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classUser_1_1User_aafdf9899f94b8013d711f0fcf8b7dcb0}\label{classUser_1_1User_aafdf9899f94b8013d711f0fcf8b7dcb0}} 
+\index{User.User@{User.User}!email@{email}}
+\index{email@{email}!User.User@{User.User}}
+\doxysubsubsection{\texorpdfstring{email()}{email()}}
+{\footnotesize\ttfamily  str User.\+User.\+email (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Users' email address.
+:return: Str
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classUser_1_1User_af0780dd022f67c26dd095c05e10f9e0c}\label{classUser_1_1User_af0780dd022f67c26dd095c05e10f9e0c}} 
+\index{User.User@{User.User}!id@{id}}
+\index{id@{id}!User.User@{User.User}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily  int User.\+User.\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Return the user id.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classUser_1_1User_a13e5dd2e5de0b0fe56f0bf254ffa0f15}\label{classUser_1_1User_a13e5dd2e5de0b0fe56f0bf254ffa0f15}} 
+\index{User.User@{User.User}!update@{update}}
+\index{update@{update}!User.User@{User.User}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily  Self User.\+User.\+update (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Optional\mbox{[}str\mbox{]} }]{email = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{read\+\_\+only = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{manage\+\_\+members = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{manage\+\_\+billing = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{purge\+\_\+logs = {\ttfamily None},  }\item[{Optional\mbox{[}bool\mbox{]} }]{all\+\_\+groups = {\ttfamily None},  }\item[{Optional\mbox{[}list\mbox{[}\mbox{\hyperlink{classGroup_1_1Group}{Group}} $\vert$ int $\vert$ str\mbox{]}\mbox{]} }]{groups = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Methods\+: 
+
+\begin{DoxyVerb}Update this user, NOTE: one of the parameters must be defined.
+:param email: Optional[str]: The users' email address.
+:param read_only: Optional[bool]: User is read only.
+:param manage_members: Optional[bool]: User can manage members.
+:param manage_billing: Optional[bool]: User can manage billing.
+:param purge_logs: Optional[bool]: User can delete logs.
+:param all_groups: Optional[bool]: User can access all groups.
+:param groups: Optional[list[Group | int | str]]: List of Group objects, group id's[int], or group names[str]
+:return: User: The updated instance.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+User.\+py\end{DoxyCompactItemize}

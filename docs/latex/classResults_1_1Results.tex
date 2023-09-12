@@ -1,0 +1,198 @@
+\hypertarget{classResults_1_1Results}{}\doxysection{Results.\+Results Class Reference}
+\label{classResults_1_1Results}\index{Results.Results@{Results.Results}}
+
+
+Inheritance diagram for Results.\+Results\+:
+% FIG 0
+
+
+Collaboration diagram for Results.\+Results\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classResults_1_1Results_a8a6567df91ef381538061f5f6880f862}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, Optional\mbox{[}dict\mbox{]} raw\+\_\+results=None, Optional\mbox{[}dict\mbox{]} from\+\_\+dict=None)
+\begin{DoxyCompactList}\small\item\em Initialize\+: \end{DoxyCompactList}\item 
+None \mbox{\hyperlink{classResults_1_1Results_a529a811ed9fc58ab216fd97655591010}{\+\_\+\+\_\+from\+\_\+raw\+\_\+results\+\_\+\+\_\+}} (self, dict raw\+\_\+results)
+\item 
+None \mbox{\hyperlink{classResults_1_1Results_a8c7476077d26026101e3af84c48e0c1c}{\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+}} (self, dict from\+\_\+dict)
+\item 
+dict \mbox{\hyperlink{classResults_1_1Results_adac2eea01fd688540fd27ad92e120fb2}{\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+}} (self)
+\item 
+int \mbox{\hyperlink{classResults_1_1Results_a91364c80afeae4dd67273974b38cdbbb}{min\+\_\+id}} (self)
+\begin{DoxyCompactList}\small\item\em Properties\+: \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classResults_1_1Results_aa4daeb4cc8b3efe3f2b9addba1dce74c}{max\+\_\+id}} (self)
+\item 
+Optional\mbox{[}bool\mbox{]} \mbox{\hyperlink{classResults_1_1Results_abacd71ae799b69129ad7e65fb25430b9}{reached\+\_\+beginning}} (self)
+\item 
+Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classResults_1_1Results_a1d3e05d32dac35f4175580eed105aa89}{min\+\_\+time\+\_\+it}} (self)
+\item 
+Optional\mbox{[}datetime\mbox{]} \mbox{\hyperlink{classResults_1_1Results_aeb13b1620b19a5316149252446926cb9}{max\+\_\+time\+\_\+at}} (self)
+\item 
+Optional\mbox{[}bool\mbox{]} \mbox{\hyperlink{classResults_1_1Results_a95303fec38fdb0eed8a3847689b296bb}{reached\+\_\+time\+\_\+limit}} (self)
+\item 
+Optional\mbox{[}bool\mbox{]} \mbox{\hyperlink{classResults_1_1Results_ad85076bdc1c52b301866f8a8ec176a1b}{reached\+\_\+record\+\_\+limit}} (self)
+\item 
+Optional\mbox{[}bool\mbox{]} \mbox{\hyperlink{classResults_1_1Results_a8d6bd3c811677909345d85fd81a9685e}{reached\+\_\+end}} (self)
+\item 
+Optional\mbox{[}bool\mbox{]} \mbox{\hyperlink{classResults_1_1Results_a66edb12de7fd517001abbdaa947fc191}{sawmill}} (self)
+\item 
+tuple\mbox{[}\mbox{\hyperlink{classEvent_1_1Event}{Event}}\mbox{]} \mbox{\hyperlink{classResults_1_1Results_a29f5db034d43c09f1cdf1234b5d13494}{events}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Class to store search results.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classResults_1_1Results_a8a6567df91ef381538061f5f6880f862}\label{classResults_1_1Results_a8a6567df91ef381538061f5f6880f862}} 
+\index{Results.Results@{Results.Results}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None Results.\+Results.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Optional\mbox{[}dict\mbox{]} }]{raw\+\_\+results = {\ttfamily None},  }\item[{Optional\mbox{[}dict\mbox{]} }]{from\+\_\+dict = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Initialize\+: 
+
+\begin{DoxyVerb}Initialize the search results:
+:param raw_results: Optional[dict]: The results dict provided by Papertrail.
+:param from_dict: Optional[dict]: A dict provided by __to_dict__().
+:raises ParameterError: If an invalid parameter combination is provided.
+:raises TypeError: If an invalid type is passed.
+:raises InvalidServerResponse: If a key isn't found in the papertrail dict.
+:raises QueryError: If an invalid dict is passed to from_dict.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classResults_1_1Results_a8c7476077d26026101e3af84c48e0c1c}\label{classResults_1_1Results_a8c7476077d26026101e3af84c48e0c1c}} 
+\index{Results.Results@{Results.Results}!\_\_from\_dict\_\_@{\_\_from\_dict\_\_}}
+\index{\_\_from\_dict\_\_@{\_\_from\_dict\_\_}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_dict\_\_()}{\_\_from\_dict\_\_()}}
+{\footnotesize\ttfamily  None Results.\+Results.\+\_\+\+\_\+from\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{from\+\_\+dict }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load this instance from a dict provided by __to_dict__().
+:param from_dict: Dict: The dict provided by __to_dict__().
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a529a811ed9fc58ab216fd97655591010}\label{classResults_1_1Results_a529a811ed9fc58ab216fd97655591010}} 
+\index{Results.Results@{Results.Results}!\_\_from\_raw\_results\_\_@{\_\_from\_raw\_results\_\_}}
+\index{\_\_from\_raw\_results\_\_@{\_\_from\_raw\_results\_\_}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{\_\_from\_raw\_results\_\_()}{\_\_from\_raw\_results\_\_()}}
+{\footnotesize\ttfamily  None Results.\+Results.\+\_\+\+\_\+from\+\_\+raw\+\_\+results\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict}]{raw\+\_\+results }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load this instance from raw results provided by papertrail.
+:param raw_results: Dict: The dict provided by papertrail.
+:return: None
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_adac2eea01fd688540fd27ad92e120fb2}\label{classResults_1_1Results_adac2eea01fd688540fd27ad92e120fb2}} 
+\index{Results.Results@{Results.Results}!\_\_to\_dict\_\_@{\_\_to\_dict\_\_}}
+\index{\_\_to\_dict\_\_@{\_\_to\_dict\_\_}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{\_\_to\_dict\_\_()}{\_\_to\_dict\_\_()}}
+{\footnotesize\ttfamily  dict Results.\+Results.\+\_\+\+\_\+to\+\_\+dict\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return a JSON / Pickle friendly dict for this instance.
+:return: Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a29f5db034d43c09f1cdf1234b5d13494}\label{classResults_1_1Results_a29f5db034d43c09f1cdf1234b5d13494}} 
+\index{Results.Results@{Results.Results}!events@{events}}
+\index{events@{events}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{events()}{events()}}
+{\footnotesize\ttfamily  tuple\mbox{[}\mbox{\hyperlink{classEvent_1_1Event}{Event}}\mbox{]} Results.\+Results.\+events (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The list of events.
+:return: Tuple[Event]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_aa4daeb4cc8b3efe3f2b9addba1dce74c}\label{classResults_1_1Results_aa4daeb4cc8b3efe3f2b9addba1dce74c}} 
+\index{Results.Results@{Results.Results}!max\_id@{max\_id}}
+\index{max\_id@{max\_id}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{max\_id()}{max\_id()}}
+{\footnotesize\ttfamily  int Results.\+Results.\+max\+\_\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Maximum ID.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_aeb13b1620b19a5316149252446926cb9}\label{classResults_1_1Results_aeb13b1620b19a5316149252446926cb9}} 
+\index{Results.Results@{Results.Results}!max\_time\_at@{max\_time\_at}}
+\index{max\_time\_at@{max\_time\_at}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{max\_time\_at()}{max\_time\_at()}}
+{\footnotesize\ttfamily  Optional\mbox{[}datetime\mbox{]} Results.\+Results.\+max\+\_\+time\+\_\+at (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Max date time.
+:return: Optional[datetime]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a91364c80afeae4dd67273974b38cdbbb}\label{classResults_1_1Results_a91364c80afeae4dd67273974b38cdbbb}} 
+\index{Results.Results@{Results.Results}!min\_id@{min\_id}}
+\index{min\_id@{min\_id}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{min\_id()}{min\_id()}}
+{\footnotesize\ttfamily  int Results.\+Results.\+min\+\_\+id (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Properties\+: 
+
+\begin{DoxyVerb}Minimum ID.
+:return: Int
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a1d3e05d32dac35f4175580eed105aa89}\label{classResults_1_1Results_a1d3e05d32dac35f4175580eed105aa89}} 
+\index{Results.Results@{Results.Results}!min\_time\_it@{min\_time\_it}}
+\index{min\_time\_it@{min\_time\_it}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{min\_time\_it()}{min\_time\_it()}}
+{\footnotesize\ttfamily  Optional\mbox{[}datetime\mbox{]} Results.\+Results.\+min\+\_\+time\+\_\+it (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Min date time.
+:return: Optional[datetime]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_abacd71ae799b69129ad7e65fb25430b9}\label{classResults_1_1Results_abacd71ae799b69129ad7e65fb25430b9}} 
+\index{Results.Results@{Results.Results}!reached\_beginning@{reached\_beginning}}
+\index{reached\_beginning@{reached\_beginning}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{reached\_beginning()}{reached\_beginning()}}
+{\footnotesize\ttfamily  Optional\mbox{[}bool\mbox{]} Results.\+Results.\+reached\+\_\+beginning (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Search reached beginning.
+:return: Optional[bool]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a8d6bd3c811677909345d85fd81a9685e}\label{classResults_1_1Results_a8d6bd3c811677909345d85fd81a9685e}} 
+\index{Results.Results@{Results.Results}!reached\_end@{reached\_end}}
+\index{reached\_end@{reached\_end}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{reached\_end()}{reached\_end()}}
+{\footnotesize\ttfamily  Optional\mbox{[}bool\mbox{]} Results.\+Results.\+reached\+\_\+end (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The search reached the end.
+:return: Optional[bool]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_ad85076bdc1c52b301866f8a8ec176a1b}\label{classResults_1_1Results_ad85076bdc1c52b301866f8a8ec176a1b}} 
+\index{Results.Results@{Results.Results}!reached\_record\_limit@{reached\_record\_limit}}
+\index{reached\_record\_limit@{reached\_record\_limit}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{reached\_record\_limit()}{reached\_record\_limit()}}
+{\footnotesize\ttfamily  Optional\mbox{[}bool\mbox{]} Results.\+Results.\+reached\+\_\+record\+\_\+limit (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Search reached the record limit.
+:return: Optional[bool]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a95303fec38fdb0eed8a3847689b296bb}\label{classResults_1_1Results_a95303fec38fdb0eed8a3847689b296bb}} 
+\index{Results.Results@{Results.Results}!reached\_time\_limit@{reached\_time\_limit}}
+\index{reached\_time\_limit@{reached\_time\_limit}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{reached\_time\_limit()}{reached\_time\_limit()}}
+{\footnotesize\ttfamily  Optional\mbox{[}bool\mbox{]} Results.\+Results.\+reached\+\_\+time\+\_\+limit (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Search reached time limit.
+:return: Optional[bool]
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classResults_1_1Results_a66edb12de7fd517001abbdaa947fc191}\label{classResults_1_1Results_a66edb12de7fd517001abbdaa947fc191}} 
+\index{Results.Results@{Results.Results}!sawmill@{sawmill}}
+\index{sawmill@{sawmill}!Results.Results@{Results.Results}}
+\doxysubsubsection{\texorpdfstring{sawmill()}{sawmill()}}
+{\footnotesize\ttfamily  Optional\mbox{[}bool\mbox{]} Results.\+Results.\+sawmill (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sawmill??
+:return: Optional[bool]
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Results.\+py\end{DoxyCompactItemize}
