@@ -9,7 +9,7 @@ import pytz
 import requests
 from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
 from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
-from RateLimits import parse_limit_header
+import RateLimits
 
 Archive = TypeVar("Archive", bound="Archive")
 Destination = TypeVar("Destination", bound="Destination")
@@ -68,6 +68,22 @@ def convert_to_utc(date_time_obj: datetime) -> datetime:
     if is_timezone_aware(date_time_obj):
         return date_time_obj.astimezone(pytz.utc)
     return pytz.utc.localize(date_time_obj)
+
+
+def parse_limit_header(headers: requests.models.CaseInsensitiveDict[str]) -> None:
+    """
+    Parse the rate limit headers.
+    :param headers: Dict: The headers.
+    :raises IndexError | ValueError: If an invalid dict is passed.
+    :return: None
+    """
+    # Type check:
+    if not isinstance(headers, requests.models.CaseInsensitiveDict):
+        __type_error__("headers", "requests.models.CaseInsensitiveDict", headers)
+    RateLimits.limit = int(headers['X-Rate-Limit-Limit'])
+    RateLimits.remaining = int(headers['X-Rate-Limit-Remaining'])
+    RateLimits.reset = int(headers['X-Rate-Limit-Reset'])
+    return
 
 
 def __type_error__(argument_name: str, desired_types: str, received_obj: Any) -> NoReturn:
