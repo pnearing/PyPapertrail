@@ -9,6 +9,7 @@ import pytz
 import requests
 from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
 from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
+from RateLimits import parse_limit_header
 
 Archive = TypeVar("Archive", bound="Archive")
 Destination = TypeVar("Destination", bound="Destination")
@@ -134,6 +135,8 @@ def requests_get(url: str,
         request.raise_for_status()
     except requests.HTTPError as e:
         __raise_for_http_error__(request=request, exception=e)
+    # Parse rate limit headers:
+    parse_limit_header(request.headers)
     # If we're not expecting JSON, return None:
     if not returns_json:
         return None
@@ -175,6 +178,8 @@ def requests_post(url: str,
         request.raise_for_status()
     except requests.HTTPError as e:
         __raise_for_http_error__(request=request, exception=e)
+    # Parse rate limit headers:
+    parse_limit_header(request.headers)
     # If the request doesn't return JSON data, return None.
     if not returns_json:
         return None
@@ -216,6 +221,8 @@ def requests_put(url: str,
         __raise_for_http_error__(request=request, exception=e)
     except requests.RequestException as e:
         raise UnhandledRequestsError(url=url, method="PUT", exception=e)
+    # Parse rate limit headers:
+    parse_limit_header(request.headers)
     # If we're not expecting JSON, return None:
     if not returns_json:
         return None
@@ -247,6 +254,8 @@ def requests_del(url: str,
         raise RequestReadTimeout(url=url, exception=e)
     except requests.RequestException as e:
         raise UnhandledRequestsError(url=url, method="DELETE", exception=e)
+    # Parse rate limit headers:
+    parse_limit_header(request.headers)
     # If we're not expecting JSON, return None
     if not returns_json:
         return None
