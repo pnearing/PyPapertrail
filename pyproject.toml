@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PyPapertrail"
-version = "1.0"
+version = "1.1"
 authors = [
 	{ name="Peter Nearing", email="me@peternearing.ca" }
 ]
