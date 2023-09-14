@@ -4,9 +4,10 @@
 """
 from typing import Optional
 
-limit: Optional[int] = None
-remaining: Optional[int] = None
-reset: Optional[int] = None
+# Defaults taken from: https://www.papertrail.com/help/http-api/
+limit: int = 25
+remaining: int = limit
+reset: int = 5
 
 
 class RateLimits(object):
