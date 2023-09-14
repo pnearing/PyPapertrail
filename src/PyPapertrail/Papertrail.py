@@ -6,19 +6,35 @@ from typing import Optional
 from urllib.parse import urlencode
 from datetime import datetime
 from warnings import warn
-import common
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get
-from Archives import Archives
-from Destinations import Destinations
-from Groups import Groups
-from Systems import Systems
-from Usage import Usage
-from Exceptions import PapertrailError, ParameterError, PapertrailWarning
-from Results import Results
-from System import System
-from Group import Group
-from Event import Event
-from RateLimits import RateLimits
+try:
+    import common
+    from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+    from Archives import Archives
+    from Destinations import Destinations
+    from Groups import Groups
+    from Systems import Systems
+    from Usage import Usage
+    from Exceptions import PapertrailError, ParameterError, PapertrailWarning
+    from Results import Results
+    from System import System
+    from Group import Group
+    from Event import Event
+    from RateLimits import RateLimits
+except ModuleNotFoundError:
+    import PyPapertrail.common as common
+    from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get
+    from PyPapertrail.Archives import Archives
+    from PyPapertrail.Destinations import Destinations
+    from PyPapertrail.Groups import Groups
+    from PyPapertrail.Systems import Systems
+    from PyPapertrail.Usage import Usage
+    from PyPapertrail.Exceptions import PapertrailError, ParameterError, PapertrailWarning
+    from PyPapertrail.Results import Results
+    from PyPapertrail.System import System
+    from PyPapertrail.Group import Group
+    from PyPapertrail.Event import Event
+    from PyPapertrail.RateLimits import RateLimits
+
 # Version check:
 common.__version_check__()
 # Define Self:

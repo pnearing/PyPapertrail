@@ -4,10 +4,16 @@
 """
 from typing import Optional
 from datetime import datetime
-from common import __type_error__
-import common
-from Event import Event
-from Exceptions import QueryError, InvalidServerResponse, ParameterError
+try:
+    from common import __type_error__
+    import common
+    from Event import Event
+    from Exceptions import QueryError, InvalidServerResponse, ParameterError
+except ModuleNotFoundError:
+    from PyPapertrail.common import __type_error__
+    import PyPapertrail.common as common
+    from PyPapertrail.Event import Event
+    from PyPapertrail.Exceptions import QueryError, InvalidServerResponse, ParameterError
 # Version check:
 common.__version_check__()
 # Define Self:

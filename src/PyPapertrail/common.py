@@ -7,9 +7,14 @@ from typing import Any, NoReturn, Optional, TypeVar
 from datetime import datetime
 import pytz
 import requests
-from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
-from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
-import RateLimits
+try:
+    from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
+    from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
+    import RateLimits
+except ModuleNotFoundError:
+    from PyPapertrail.Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
+    from PyPapertrail.Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
+    import PyPapertrail.RateLimits
 
 Archive = TypeVar("Archive", bound="Archive")
 Destination = TypeVar("Destination", bound="Destination")

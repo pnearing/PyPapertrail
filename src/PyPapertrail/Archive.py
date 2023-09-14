@@ -7,9 +7,15 @@ import os
 import requests
 from datetime import datetime
 import pytz
-from common import __type_error__, convert_to_utc, __raise_for_http_error__
-import common
-from Exceptions import ArchiveError, RequestReadTimeout, ParameterError
+try:
+    from common import __type_error__, convert_to_utc, __raise_for_http_error__
+    import common
+    from Exceptions import ArchiveError, RequestReadTimeout, ParameterError
+except ModuleNotFoundError:
+    from PyPapertrail.common import __type_error__, convert_to_utc, __raise_for_http_error__
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import ArchiveError, RequestReadTimeout, ParameterError
+
 # Version check:
 common.__version_check__()
 # Define Self:

@@ -5,12 +5,21 @@
 from typing import Optional, Iterator
 from datetime import datetime
 from warnings import warn
-from common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
-import common
-from Exceptions import UsersError, PapertrailWarning, ParameterError
-from User import User
-from Group import Group
-from Groups import Groups
+try:
+    from common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
+    import common
+    from Exceptions import UsersError, PapertrailWarning, ParameterError
+    from User import User
+    from Group import Group
+    from Groups import Groups
+except ModuleNotFoundError:
+    from PyPapertrail.common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import UsersError, PapertrailWarning, ParameterError
+    from PyPapertrail.User import User
+    from PyPapertrail.Group import Group
+    from PyPapertrail.Groups import Groups
+
 # Version check:
 common.__version_check__()
 # Define Self:

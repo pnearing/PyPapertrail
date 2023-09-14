@@ -4,10 +4,17 @@
 """
 from typing import Optional
 from datetime import datetime
-from common import __type_error__, requests_get, requests_put, convert_to_utc
-import common
-from Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
-from Group import Group
+try:
+    from common import __type_error__, requests_get, requests_put, convert_to_utc
+    import common
+    from Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
+    from Group import Group
+except ModuleNotFoundError:
+    from PyPapertrail.common import __type_error__, requests_get, requests_put, convert_to_utc
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
+    from PyPapertrail.Group import Group
+
 # Version check:
 common.__version_check__()
 # Define Self:

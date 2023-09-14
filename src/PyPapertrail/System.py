@@ -4,9 +4,15 @@
 """
 from typing import Optional
 from datetime import datetime
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put
-import common
-from Exceptions import SystemsError, InvalidServerResponse, ParameterError
+try:
+    from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put
+    import common
+    from Exceptions import SystemsError, InvalidServerResponse, ParameterError
+except ModuleNotFoundError:
+    from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_put
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import SystemsError, InvalidServerResponse, ParameterError
+
 # Version check:
 common.__version_check__()
 # Define Self:

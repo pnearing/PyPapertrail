@@ -3,10 +3,16 @@
     File: Destination.py
 """
 from typing import Optional
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get
-import common
-from Exceptions import DestinationError, ParameterError, InvalidServerResponse
 from datetime import datetime
+try:
+    from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+    import common
+    from Exceptions import DestinationError, ParameterError, InvalidServerResponse
+except ModuleNotFoundError:
+    from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import DestinationError, ParameterError, InvalidServerResponse
+
 # Version check:
 common.__version_check__()
 # Define Self:

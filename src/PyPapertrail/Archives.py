@@ -4,10 +4,17 @@
 """
 from typing import Optional, Iterator, Any
 from datetime import datetime
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get
-import common
-from Exceptions import ArchiveError
-from Archive import Archive
+try:
+    from common import BASE_URL, __type_error__, convert_to_utc, requests_get
+    import common
+    from Exceptions import ArchiveError
+    from Archive import Archive
+except ModuleNotFoundError:
+    from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import ArchiveError
+    from PyPapertrail.Archive import Archive
+
 # Version check:
 common.__version_check__()
 # Define Self:

@@ -4,11 +4,19 @@
 """
 from typing import Optional
 from warnings import warn
-from common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
-import common
-from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
-from Groups import Groups
-from Group import Group
+try:
+    from common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
+    import common
+    from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
+    from Groups import Groups
+    from Group import Group
+except ModuleNotFoundError:
+    from PyPapertrail.common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
+    from PyPapertrail.Groups import Groups
+    from PyPapertrail.Group import Group
+
 # Version check:
 common.__version_check__()
 # Define Self:

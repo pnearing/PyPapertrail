@@ -4,11 +4,19 @@
 """
 from typing import Optional, Iterator
 from datetime import datetime
-from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
-import common
-from Exceptions import SystemsError, InvalidServerResponse, ParameterError
-from Destinations import Destination
-from System import System
+try:
+    from common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+    import common
+    from Exceptions import SystemsError, InvalidServerResponse, ParameterError
+    from Destinations import Destination
+    from System import System
+except ModuleNotFoundError:
+    from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import SystemsError, InvalidServerResponse, ParameterError
+    from PyPapertrail.Destinations import Destination
+    from PyPapertrail.System import System
+
 # Version check:
 common.__version_check__()
 # Define Self:

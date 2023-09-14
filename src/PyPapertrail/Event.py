@@ -5,10 +5,17 @@
 from typing import Optional
 from datetime import datetime
 from warnings import warn
-from common import __type_error__
-import common
-from Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
-from System import System
+try:
+    from common import __type_error__
+    import common
+    from Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
+    from System import System
+except ModuleNotFoundError:
+    from PyPapertrail.common import __type_error__
+    import PyPapertrail.common as common
+    from PyPapertrail.Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
+    from PyPapertrail.System import System
+
 # Version check:
 common.__version_check__()
 # Define Self:
