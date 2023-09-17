@@ -14,7 +14,7 @@ try:
 except (ModuleNotFoundError, ImportError):
     from PyPapertrail.Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
     from PyPapertrail.Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
-    import PyPapertrail.RateLimits
+    import PyPapertrail.RateLimits as RateLimits
 
 Archive = TypeVar("Archive", bound="Archive")
 Destination = TypeVar("Destination", bound="Destination")
