@@ -189,7 +189,7 @@ class Archive(object):
         :param file_name: Optional[str]. Override the default file name with this file name. Default=None
         :param overwrite: Bool. Overwrite existing files. Default = False
         :param callback: Optional[Callable]. The call back to call each chunk downloaded. Default = None.
-            The function signature is: callback (archive: Archive, bytes_downloaded: int, argument: Any)
+            The function signature is: callback (archive: Archive, bytes_downloaded: int, argument: Optional[Any]) -> None
         :param argument: Object. An optional argument to pass to the callback.  Default = None
         :param chunk_size: Int. The chunk size to download at a time in bytes. Default = 8196 (8K)
         :return: Tuple[bool, str | int, Optional[str]]: The first element is a status flag indicating success, True
