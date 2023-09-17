@@ -107,12 +107,12 @@ class Archive(object):
         """
         # Extract data from raw_archive dict:
         try:
-            self._start_time = pytz.utc.localize(datetime.fromisoformat(raw_archive['start'][:-1]))
-            self._end_time = pytz.utc.localize(datetime.fromisoformat(raw_archive['end'][:-1]))
+            self._start_time = convert_to_utc(datetime.fromisoformat(raw_archive['start'][:-1]))
+            self._end_time = convert_to_utc(datetime.fromisoformat(raw_archive['end'][:-1]))
             self._formatted_start_time = raw_archive['start_formatted']
             self._formatted_duration = raw_archive['duration_formatted']
             self._file_name = raw_archive['filename']
-            self._file_size = raw_archive['filesize']
+            self._file_size = int(raw_archive['filesize'])
             self._link = raw_archive['_links']['download']['href']
             # Calculate duration in minutes:
             if self._formatted_duration.lower() == '1 hour':
