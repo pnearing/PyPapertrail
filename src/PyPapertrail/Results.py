@@ -9,7 +9,7 @@ try:
     import common
     from Event import Event
     from Exceptions import QueryError, InvalidServerResponse, ParameterError
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import __type_error__
     import PyPapertrail.common as common
     from PyPapertrail.Event import Event

@@ -20,7 +20,7 @@ try:
     from Group import Group
     from Event import Event
     from RateLimits import RateLimits
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     import PyPapertrail.common as common
     from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get
     from PyPapertrail.Archives import Archives

@@ -11,7 +11,7 @@ try:
     from Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
     from Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
     import RateLimits
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.Exceptions import BadRequestError, AuthenticationError, NotFoundError, MethodNotAllowedError, RateLimitError
     from PyPapertrail.Exceptions import InvalidServerResponse, UnhandledHTTPError, RequestReadTimeout, UnhandledRequestsError
     import PyPapertrail.RateLimits

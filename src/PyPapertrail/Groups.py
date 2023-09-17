@@ -11,7 +11,7 @@ try:
     from Exceptions import GroupError, InvalidServerResponse
     from Group import Group
     from System import System
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post, requests_del
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import GroupError, InvalidServerResponse

@@ -12,7 +12,7 @@ try:
     from User import User
     from Group import Group
     from Groups import Groups
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import USE_WARNINGS, BASE_URL, __type_error__, requests_get, requests_del, requests_post, convert_to_utc
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import UsersError, PapertrailWarning, ParameterError

@@ -11,7 +11,7 @@ try:
     from common import __type_error__, convert_to_utc, __raise_for_http_error__
     import common
     from Exceptions import ArchiveError, RequestReadTimeout, ParameterError
-except ModuleNotFoundError:
+except ImportError:
     from PyPapertrail.common import __type_error__, convert_to_utc, __raise_for_http_error__
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import ArchiveError, RequestReadTimeout, ParameterError

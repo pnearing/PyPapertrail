@@ -9,7 +9,7 @@ try:
     import common
     from Exceptions import DestinationError
     from Destination import Destination
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import BASE_URL, __type_error__, convert_to_utc, requests_get
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import DestinationError

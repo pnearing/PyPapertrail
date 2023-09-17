@@ -12,7 +12,7 @@ try:
     from Exceptions import SavedSearchError, PapertrailWarning
     from Group import Group
     from Groups import Groups
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import USE_WARNINGS, BASE_URL, __type_error__, convert_to_utc, requests_get, requests_post
     import PyPapertrail.common as common
     from PyPapertrail.SavedSearch import SavedSearch

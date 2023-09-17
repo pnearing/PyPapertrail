@@ -10,7 +10,7 @@ try:
     import common
     from Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning
     from System import System
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import __type_error__
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import EventError, ParameterError, InvalidServerResponse, PapertrailWarning

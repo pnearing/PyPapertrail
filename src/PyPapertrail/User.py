@@ -10,7 +10,7 @@ try:
     from Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError
     from Groups import Groups
     from Group import Group
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import USE_WARNINGS, BASE_URL, __type_error__, requests_put
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import UsersError, InvalidServerResponse, PapertrailWarning, ParameterError

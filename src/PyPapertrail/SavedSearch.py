@@ -9,7 +9,7 @@ try:
     import common
     from Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
     from Group import Group
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     from PyPapertrail.common import __type_error__, requests_get, requests_put, convert_to_utc
     import PyPapertrail.common as common
     from PyPapertrail.Exceptions import SavedSearchError, InvalidServerResponse, ParameterError
