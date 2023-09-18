@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['query_322',['query',['../classPyPapertrail_1_1SavedSearch_1_1SavedSearch.html#aaa4b2c3fb8e690c88b4d0d5c6f920043',1,'PyPapertrail::SavedSearch::SavedSearch']]]
+  ['query_313',['query',['../classSavedSearch_1_1SavedSearch.html#a6c1c29d47fae0f84a8b3c706a21b6066',1,'SavedSearch::SavedSearch']]]
 ];

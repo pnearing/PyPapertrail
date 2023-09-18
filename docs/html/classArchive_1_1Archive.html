@@ -22,9 +22,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PyPapertrail
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.7</span>
    </div>
-   <div id="projectbrief">Python 3 Papertrial api.</div>
+   <div id="projectbrief">Python &gt;= 3.10 Papertrial api.</div>
   </td>
  </tr>
  </tbody>
@@ -78,11 +78,19 @@ $(function() {
 Inheritance diagram for Archive.Archive:</div>
 <div class="dyncontent">
 <div class="center"><img src="classArchive_1_1Archive__inherit__graph.png" border="0" usemap="#aArchive_8Archive_inherit__map" alt="Inheritance graph"/></div>
+<map name="aArchive_8Archive_inherit__map" id="aArchive_8Archive_inherit__map">
+<area shape="rect" title=" " alt="" coords="5,80,129,107"/>
+<area shape="rect" title=" " alt="" coords="36,5,99,32"/>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Archive.Archive:</div>
 <div class="dyncontent">
 <div class="center"><img src="classArchive_1_1Archive__coll__graph.png" border="0" usemap="#aArchive_8Archive_coll__map" alt="Collaboration graph"/></div>
+<map name="aArchive_8Archive_coll__map" id="aArchive_8Archive_coll__map">
+<area shape="rect" title=" " alt="" coords="5,80,129,107"/>
+<area shape="rect" title=" " alt="" coords="36,5,99,32"/>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -481,7 +489,7 @@ Public Member Functions</h2></td></tr>
 :param file_name: Optional[str]. Override the default file name with this file name. Default=None
 :param overwrite: Bool. Overwrite existing files. Default = False
 :param callback: Optional[Callable]. The call back to call each chunk downloaded. Default = None.
-    The function signature is: callback (archive: Archive, bytes_downloaded: int, argument: Any)
+    The function signature is: callback (archive: Archive, bytes_downloaded: int, argument: Optional[Any]) -&gt; None
 :param argument: Object. An optional argument to pass to the callback.  Default = None
 :param chunk_size: Int. The chunk size to download at a time in bytes. Default = 8196 (8K)
 :return: Tuple[bool, str | int, Optional[str]]: The first element is a status flag indicating success, True
@@ -735,7 +743,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>Archive.py</li>
+<li>src/PyPapertrail/Archive.py</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

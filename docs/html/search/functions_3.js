@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['data_5fused_261',['data_used',['../classPyPapertrail_1_1Usage_1_1Usage.html#ab13cc1f193a0c0d8e4ed53fb81cf93e9',1,'PyPapertrail::Usage::Usage']]],
-  ['data_5fused_5fpercent_262',['data_used_percent',['../classPyPapertrail_1_1Usage_1_1Usage.html#a2afc923576b84ea212ddd468fefb0280',1,'PyPapertrail::Usage::Usage']]],
-  ['delete_263',['delete',['../classPyPapertrail_1_1Groups_1_1Groups.html#a5d10747c7640fb7aea0e0d64d5d6bfd9',1,'PyPapertrail.Groups.Groups.delete()'],['../classPyPapertrail_1_1Users_1_1Users.html#a93211dea174a780c86f776f2151c5e02',1,'PyPapertrail.Users.Users.delete()']]],
-  ['description_264',['description',['../classPyPapertrail_1_1Destination_1_1Destination.html#a007a9a41bc90d981cce2ecf7b4f8c5c9',1,'PyPapertrail::Destination::Destination']]],
-  ['destinations_265',['destinations',['../classPyPapertrail_1_1Destinations_1_1Destinations.html#a91ad59561946098ebbed7d69974d4460',1,'PyPapertrail.Destinations.Destinations.destinations()'],['../classPyPapertrail_1_1Papertrail_1_1Papertrail.html#af04f53ded7dfe63e74e4f6f5f3aefe67',1,'PyPapertrail.Papertrail.Papertrail.destinations()']]],
-  ['display_5freceived_5fat_266',['display_received_at',['../classPyPapertrail_1_1Event_1_1Event.html#acfd9801da4feeb5aae7e55fdda0f0d51',1,'PyPapertrail::Event::Event']]],
-  ['download_267',['download',['../classPyPapertrail_1_1Archive_1_1Archive.html#aafc1c8a610aee6bb444685d13064e67b',1,'PyPapertrail::Archive::Archive']]],
-  ['download_5fpath_268',['download_path',['../classPyPapertrail_1_1Archive_1_1Archive.html#a127f7605952ece0ed469c00ba1b18fb2',1,'PyPapertrail::Archive::Archive']]],
-  ['duration_269',['duration',['../classPyPapertrail_1_1Archive_1_1Archive.html#af6fc081c3f1e3433505cd9072edcff11',1,'PyPapertrail::Archive::Archive']]]
+  ['data_5fused_252',['data_used',['../classUsage_1_1Usage.html#a2008d3898f7425e1805c141c64886e85',1,'Usage::Usage']]],
+  ['data_5fused_5fpercent_253',['data_used_percent',['../classUsage_1_1Usage.html#a8dbd7b3ac483cd00461be60c7032c245',1,'Usage::Usage']]],
+  ['delete_254',['delete',['../classGroups_1_1Groups.html#a274902efcc93bfbea7074737792f737c',1,'Groups.Groups.delete()'],['../classUsers_1_1Users.html#ab7b8e51b793747168f1cc86747b3d1d7',1,'Users.Users.delete()']]],
+  ['description_255',['description',['../classDestination_1_1Destination.html#af7f7f4d70cb18ad8863dd99532e57a49',1,'Destination::Destination']]],
+  ['destinations_256',['destinations',['../classDestinations_1_1Destinations.html#afe04cd4bc84d5536a9fdb8ebaf29d366',1,'Destinations.Destinations.destinations()'],['../classPapertrail_1_1Papertrail.html#aaa2174456f25a73b024f26c0fb891a31',1,'Papertrail.Papertrail.destinations()']]],
+  ['display_5freceived_5fat_257',['display_received_at',['../classEvent_1_1Event.html#a72b8b9c9418887fa46ac2434dcf07565',1,'Event::Event']]],
+  ['download_258',['download',['../classArchive_1_1Archive.html#a13af239349fa8d5d6795c6522c27252b',1,'Archive::Archive']]],
+  ['download_5fpath_259',['download_path',['../classArchive_1_1Archive.html#ae44f4f83ed9d2a3c775d9b625cd61461',1,'Archive::Archive']]],
+  ['duration_260',['duration',['../classArchive_1_1Archive.html#a783a2e0e80a14c6a85d0b5c988f6d596',1,'Archive::Archive']]]
 ];
